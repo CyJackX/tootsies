@@ -2,59 +2,49 @@
 import HeaderLink from "./HeaderLink.astro";
 import { SITE_TITLE } from "../consts";
 import { Image } from "astro:assets";
-import logo from '../assets/img/logo.JPG';
+import logo from "../assets/img/logo.JPG";
 ---
 
-<header>
-  <nav>
-    <h2><a href="/">{SITE_TITLE}</a></h2>
+<header class="flex flex-col items-center justify-center bg-white">
+  <Image src={logo} alt="Tootsies Video Vault Logo" class="w-50" />
+  <nav class="flex flex-row items-center justify-center w-full">
+    <!-- <h1 class="flex-1 text-center"><a href="#home">{SITE_TITLE}</a></h1> -->
 
-    <div class="flex flex-col items-center justify-center">
-      <Image
-        src={logo}
-        alt="Tootsies Video Vault Logo"
-		class="w-50"
-      />
-      <div class="internal-links">
+    <!-- <div class="flex flex-col items-center justify-center mx-auto"> -->
+      <!-- <div class="flex flex-row items-center justify-center gap-4"> -->
         <HeaderLink href="#home">Home</HeaderLink>
+		<HeaderLink href="#how-it-works">How It Works</HeaderLink>
         <HeaderLink href="#past-videos">Past Videos</HeaderLink>
-        <HeaderLink href="#bts-photos">BTS Photos</HeaderLink>
+        <HeaderLink href="#photos">BTS Photos</HeaderLink>
         <HeaderLink href="#next-show">Next Show</HeaderLink>
-        <HeaderLink href="#who-we-are">Who We Are</HeaderLink>
-      </div>
+        <HeaderLink href="#team">Who We Are</HeaderLink>
+        <a href="https://www.instagram.com/tootsiesvideovault/" target="_blank">
+          <span class="sr-only">Follow Tootsies Video Vault on Instagram</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="36"
+            height="36"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-instagram-icon lucide-instagram"
+            ><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path
+              d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line
+              x1="17.5"
+              x2="17.51"
+              y1="6.5"
+              y2="6.5"></line></svg
+          >
+        </a>
+      <!-- </div>
     </div>
-    <div class="social-links">
-      <a href="https://www.instagram.com/tootsiesvideovault/" target="_blank">
-        <span class="sr-only">Follow Tootsies Video Vault on Instagram</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="lucide lucide-instagram-icon lucide-instagram"
-          ><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path
-            d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line
-            x1="17.5"
-            x2="17.51"
-            y1="6.5"
-            y2="6.5"></line></svg
-        >
-      </a>
-    </div>
+    <div class="flex justify-end flex-1"></div> -->
   </nav>
 </header>
 <style>
-  header {
-    margin: 0;
-    padding: 0 1em;
-    background: white;
-    box-shadow: 0 2px 8px rgba(var(--black), 5%);
-  }
   h2 {
     margin: 0;
     font-size: 1em;
@@ -63,11 +53,6 @@ import logo from '../assets/img/logo.JPG';
   h2 a,
   h2 a.active {
     text-decoration: none;
-  }
-  nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
   }
   nav a {
     padding: 1em 0.5em;
@@ -78,14 +63,5 @@ import logo from '../assets/img/logo.JPG';
   nav a.active {
     text-decoration: none;
     border-bottom-color: var(--accent);
-  }
-  .social-links,
-  .social-links a {
-    display: flex;
-  }
-  @media (max-width: 720px) {
-    .social-links {
-      display: none;
-    }
   }
 </style>
