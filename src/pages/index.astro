@@ -139,29 +139,23 @@ const downresAlbums = Object.values(downresAlbumMap)
                   data-album={album.id}
                   hidden={index === 0 ? undefined : true}
                 >
-                  <SwiperCarousel options={{ loop: true, 
-                  spaceBetween: 10,
-                  lazyPreloadPrevNext: 1,
-                  freeMode: true,
-                  autoHeight: true,
-                  slidesPerView: 'auto',
-                  breakpoints: {
-                    480: {
-                      slidesPerView: 1,
-                    },
-                    768: {
-                      slidesPerView: 2,
-                    },
-                  },
-                   }}
-                   >
+                  <SwiperCarousel
+                    options={{
+                      loop: true,
+                      spaceBetween: 10,
+                      lazyPreloadPrevNext: 1,
+                      freeMode: true,
+                      slidesPerView: "auto",
+                      centeredSlides: true,
+                    }}
+                  >
                     {album.images.map((image) => (
-                      <SwiperSlide>
+                      <SwiperSlide class="w-auto!">
                         <Image
                           src={image}
                           alt={`BTS ${album.label} still`}
-                          class="my-4 h-100"
                           loading="lazy"
+                          class="h-48! sm:h-96! w-auto"
                         />
                       </SwiperSlide>
                     ))}
@@ -294,4 +288,5 @@ const downresAlbums = Object.values(downresAlbumMap)
     border-color: transparent;
     color: white;
   }
+
 </style>
