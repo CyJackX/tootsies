@@ -1,0 +1,41 @@
+---
+import {
+  Swiper,
+  SwiperWrapper,
+  SwiperSlide,
+  SwiperButtonPrev,
+  SwiperButtonNext,
+} from "astro-swiper";
+import type { AstroSwiperType } from "astro-swiper";
+
+type Props = {
+  slidesPerView?: number;
+};
+
+const { slidesPerView = 3 } = Astro.props as Props;
+
+const astroSwiperOptions: AstroSwiperType = {
+  options: {
+    loop: true,
+    slidesPerView: slidesPerView,
+    spaceBetween: 10,
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+  },
+};
+---
+
+<!-- Slider main container -->
+<Swiper options={astroSwiperOptions.options} class="not-content">
+  <!-- Additional required wrapper -->
+  <SwiperWrapper>
+    <slot />
+
+    <!-- navigation buttons -->
+    <SwiperButtonPrev />
+    <SwiperButtonNext />
+  </SwiperWrapper>
+</Swiper
+>

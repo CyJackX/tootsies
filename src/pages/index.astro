@@ -8,10 +8,11 @@ import tvvbestcrowd from "../assets/img/tvvbestcrowd.webp";
 import tvvcrowd2 from "../assets/img/tvvcrowd2.webp";
 import crowdpic from "../assets/img/crowdpic.webp";
 import Profile from "../components/Profile.astro";
-import TreeCarousel from "../components/TreeCarousel.astro";
+import SwiperCarousel from "../components/SwiperCarousel.astro";
 import andy from "../assets/img/andy.jpg";
 import katie from "../assets/img/katie.jpg";
 import alec from "../assets/img/alec.png";
+import { SwiperSlide } from "astro-swiper";
 ---
 
 <!doctype html>
@@ -19,7 +20,7 @@ import alec from "../assets/img/alec.png";
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
-  <body>
+  <body >
     <Header />
     <main class="max-w-5xl mx-auto p-8">
       <section id="home" class="text-center">
@@ -53,15 +54,34 @@ import alec from "../assets/img/alec.png";
       </section>
       <section id="past-videos">
         <h2 class="text-right">Past Videos</h2>
-        <p>Past Videos</p>
+        <SwiperCarousel slidesPerView={1}>
+          <SwiperSlide>
+            <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="my-4 w-auto" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="my-4 w-auto" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="my-4 w-auto" />
+          </SwiperSlide>
+        </SwiperCarousel>
       </section>
       <section id="photos">
         <h2>BTS Photos</h2>
-        <TreeCarousel title="" wrapperClass="mt-4" />
+        <SwiperCarousel slidesPerView={3}>  
+          <SwiperSlide>
+            <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="my-4 w-auto" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="my-4 w-auto" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="my-4 w-auto" />
+          </SwiperSlide>
+        </SwiperCarousel>
       </section>
       <section id="next-show">
         <h2 class="text-right">Next Show</h2>
-        <p>Next Show</p>
       </section>
       <section id="team">
         <h2 class="text-center">The Team</h2>
