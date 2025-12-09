@@ -4,6 +4,7 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import tvvbestcrowd from "../assets/img/tvvbestcrowd.webp";
 import tvvcrowd2 from "../assets/img/tvvcrowd2.webp";
 import crowdpic from "../assets/img/crowdpic.webp";
@@ -13,6 +14,47 @@ import andy from "../assets/img/andy.jpg";
 import katie from "../assets/img/katie.jpg";
 import alec from "../assets/img/alec.png";
 import { SwiperSlide } from "astro-swiper";
+
+type DownresAlbum = {
+  id: string;
+  label: string;
+  images: ImageMetadata[];
+};
+
+const downresImports = import.meta.glob(
+  "../assets/img/trees/downres/*/*.{webp,png,jpg,jpeg}",
+  { eager: true }
+);
+
+const downresAlbumMap = Object.entries(downresImports).reduce<
+  Record<string, DownresAlbum>
+>((albums, [path, module]) => {
+  const segments = path.split("/");
+  const folder = segments.at(-2);
+  const image = (module as { default: ImageMetadata }).default;
+
+  if (!folder || !image) {
+    return albums;
+  }
+
+  if (!albums[folder]) {
+    albums[folder] = {
+      id: folder,
+      label: folder.toUpperCase(),
+      images: [],
+    };
+  }
+
+  albums[folder].images.push(image);
+  return albums;
+}, {});
+
+const downresAlbums = Object.values(downresAlbumMap)
+  .map((album) => ({
+    ...album,
+    images: [...album.images].sort((a, b) => a.src.localeCompare(b.src)),
+  }))
+  .sort((a, b) => a.id.localeCompare(b.id));
 ---
 
 <!doctype html>
@@ -22,7 +64,7 @@ import { SwiperSlide } from "astro-swiper";
   </head>
   <body >
     <Header />
-    <main class="max-w-5xl mx-auto p-8">
+    <main class="max-w-6xl mx-auto p-8">
       <section id="home" class="text-center">
         <h2>Welcome to Tootsies Video Vault!</h2>
         <p>
@@ -31,7 +73,7 @@ import { SwiperSlide } from "astro-swiper";
           local filmmakers!
         </p>
 
-        <Image src={tvvcrowd2} alt="TVV Crowd" class="my-4 w-2/3 mx-auto" />
+        <Image src={tvvcrowd2} alt="TVV Crowd" class="my-4 w-full" />
       </section>
       <section
         id="how-it-works"
@@ -54,7 +96,7 @@ import { SwiperSlide } from "astro-swiper";
       </section>
       <section id="past-videos">
         <h2 class="text-right">Past Videos</h2>
-        <SwiperCarousel slidesPerView={1}>
+        <SwiperCarousel>
           <SwiperSlide>
             <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="my-4 w-auto" />
           </SwiperSlide>
@@ -68,20 +110,107 @@ import { SwiperSlide } from "astro-swiper";
       </section>
       <section id="photos">
         <h2>BTS Photos</h2>
-        <SwiperCarousel slidesPerView={3}>  
-          <SwiperSlide>
-            <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="my-4 w-auto" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="my-4 w-auto" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="my-4 w-auto" />
-          </SwiperSlide>
-        </SwiperCarousel>
+        {downresAlbums.length === 0 ? (
+          <p class="text-center text-sm opacity-70">
+            Behind-the-scenes photos coming soon.
+          </p>
+        ) : (
+          <div class="downres-gallery">
+            <div class="downres-toggle flex flex-wrap gap-2 justify-center mb-4">
+              {downresAlbums.map((album, index) => (
+                <button
+                  type="button"
+                  class={`downres-toggle__btn ${
+                    index === 0 ? "is-active" : ""
+                  }`}
+                  data-downres-toggle
+                  data-target={album.id}
+                  aria-pressed={index === 0 ? "true" : "false"}
+                >
+                  {album.label}
+                </button>
+              ))}
+            </div>
+            <div class="downres-carousels space-y-6">
+              {downresAlbums.map((album, index) => (
+                <div
+                  class="downres-carousels__panel"
+                  data-downres-panel
+                  data-album={album.id}
+                  hidden={index === 0 ? undefined : true}
+                >
+                  <SwiperCarousel options={{ loop: true, 
+                  spaceBetween: 10,
+                  lazyPreloadPrevNext: 1,
+                  freeMode: true,
+                  autoHeight: true,
+                  slidesPerView: 'auto',
+                  breakpoints: {
+                    480: {
+                      slidesPerView: 1,
+                    },
+                    768: {
+                      slidesPerView: 2,
+                    },
+                  },
+                   }}
+                   >
+                    {album.images.map((image) => (
+                      <SwiperSlide>
+                        <Image
+                          src={image}
+                          alt={`BTS ${album.label} still`}
+                          class="my-4 h-100"
+                          loading="lazy"
+                        />
+                      </SwiperSlide>
+                    ))}
+                  </SwiperCarousel>
+                </div>
+              ))}
+            </div>
+            <script type="module" is:inline>
+              const toggles = Array.from(
+                document.querySelectorAll("[data-downres-toggle]")
+              );
+              const panels = Array.from(
+                document.querySelectorAll("[data-downres-panel]")
+              );
+
+              if (toggles.length && panels.length) {
+                toggles.forEach((btn) => {
+                  btn.addEventListener("click", () => {
+                    const target = btn.dataset.target;
+
+                    toggles.forEach((toggle) => {
+                      const isActive = toggle === btn;
+                      toggle.classList.toggle("is-active", isActive);
+                      toggle.setAttribute(
+                        "aria-pressed",
+                        isActive ? "true" : "false"
+                      );
+                    });
+
+                    panels.forEach((panel) => {
+                      const matches = panel.dataset.album === target;
+                      panel.toggleAttribute("hidden", !matches);
+                      if (matches) {
+                        const swiperRoot = panel.querySelector(".swiper");
+                        if (swiperRoot?.swiper?.update) {
+                          swiperRoot.swiper.update();
+                        }
+                      }
+                    });
+                  });
+                });
+              }
+            </script>
+          </div>
+        )}
       </section>
-      <section id="next-show">
+      <section id="next-show" class="h-100">
         <h2 class="text-right">Next Show</h2>
+        <p>lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
       </section>
       <section id="team">
         <h2 class="text-center">The Team</h2>
@@ -144,5 +273,25 @@ import { SwiperSlide } from "astro-swiper";
     background-color: rgb(var(--color-neutral-surface));
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     margin: 2em 0;
+  }
+
+  .downres-toggle__btn {
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background-color: rgb(var(--color-neutral-surface));
+    font-weight: 600;
+    transition: background-color 0.2s ease, color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .downres-toggle__btn:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .downres-toggle__btn.is-active {
+    background-color: rgb(var(--color-primary));
+    border-color: transparent;
+    color: white;
   }
 </style>

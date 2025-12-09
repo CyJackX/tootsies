@@ -9,16 +9,12 @@ import {
 import type { AstroSwiperType } from "astro-swiper";
 
 type Props = {
-  slidesPerView?: number;
+  options?: AstroSwiperType["options"]; 
 };
-
-const { slidesPerView = 3 } = Astro.props as Props;
 
 const astroSwiperOptions: AstroSwiperType = {
   options: {
-    loop: true,
-    slidesPerView: slidesPerView,
-    spaceBetween: 10,
+    ...Astro.props.options,
     navigation: {
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev",
@@ -34,8 +30,7 @@ const astroSwiperOptions: AstroSwiperType = {
     <slot />
 
     <!-- navigation buttons -->
-    <SwiperButtonPrev />
-    <SwiperButtonNext />
   </SwiperWrapper>
-</Swiper
->
+  <SwiperButtonPrev />
+  <SwiperButtonNext />
+</Swiper>
