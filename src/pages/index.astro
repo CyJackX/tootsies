@@ -4,71 +4,16 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { Image } from "astro:assets";
-import type { ImageMetadata } from "astro";
 import tvvbestcrowd from "../assets/img/tvvbestcrowd.webp";
 import tvvcrowd2 from "../assets/img/tvvcrowd2.webp";
 import crowdpic from "../assets/img/crowdpic.webp";
 import Profile from "../components/Profile.astro";
 import SwiperCarousel from "../components/SwiperCarousel.astro";
+import AlbumGallery from "../components/AlbumGallery.astro";
 import andy from "../assets/img/andy.jpg";
 import katie from "../assets/img/katie.jpg";
 import alec from "../assets/img/alec.png";
 import { SwiperSlide } from "astro-swiper";
-
-type DownresAlbum = {
-  id: string;
-  label: string;
-  date?: string;
-  images: ImageMetadata[];
-};
-
-const downresImports = import.meta.glob(
-  "../assets/img/trees/downres/*/*.{webp,png,jpg,jpeg}",
-  { eager: true }
-);
-
-const albums = [
-  { id: "ep4", label: "Tootsie's 4", date: "2025-06-06" },
-  { id: "ep3", label: "Tootsie's 3", date: "2024-05-31" },
-  { id: "ep2", label: "Tootsie's 2", date: "2023-10-13" },
-  { id: "ep1", label: "Tootsie's 1", date: "2023-06-30" },
-];
-
-const downresAlbumMap = Object.entries(downresImports).reduce<
-  Record<string, DownresAlbum>
->((albums, [path, module]) => {
-  const segments = path.split("/");
-  const folder = segments.at(-2);
-  const image = (module as { default: ImageMetadata }).default;
-
-  if (!folder || !image) {
-    return albums;
-  }
-
-  if (!albums[folder]) {
-    albums[folder] = {
-      id: folder,
-      label: folder.toUpperCase(),
-      images: [],
-    };
-  }
-
-  albums[folder].images.push(image);
-  return albums;
-}, {});
-
-const downresAlbums = albums
-  .map(({ id, label, date }) => {
-    const album = downresAlbumMap[id];
-    if (!album) return null;
-    return {
-      ...album,
-      label,
-      date,
-      images: [...album.images].sort((a, b) => a.src.localeCompare(b.src)),
-    };
-  })
-  .filter(Boolean) as DownresAlbum[];
 ---
 
 <!doctype html>
@@ -76,7 +21,7 @@ const downresAlbums = albums
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
-  <body >
+  <body>
     <Header />
     <main class="max-w-6xl mx-auto p-8">
       <section id="home" class="text-center">
@@ -96,12 +41,17 @@ const downresAlbums = albums
         <div class="flex flex-col items-start lg:w-1/3">
           <h2>How It Works</h2>
           <ul class="mx-4">
-            <li>Submit a <strong>free</strong> application with examples of past work.</li>
             <li>
-              If accepted, participants pay a prize pool fee and get 3 months to produce a brand new
-              short film under 3 minutes in length.
+              Submit a <strong>free</strong> application with examples of past work.
             </li>
-            <li>Attend the premiere and have a blast with prizes, trophies, and a great crowd!</li>
+            <li>
+              If accepted, participants pay a prize pool fee and get 3 months to
+              produce a brand new short film under 3 minutes in length.
+            </li>
+            <li>
+              Attend the premiere and have a blast with prizes, trophies, and a
+              great crowd!
+            </li>
           </ul>
         </div>
         <div class="lg:flex-1">
@@ -112,204 +62,38 @@ const downresAlbums = albums
         <h2 class="text-right">Past Videos</h2>
         <SwiperCarousel>
           <SwiperSlide>
-            <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="my-4 w-auto" />
+            <!-- /*videos go here*/ -->
           </SwiperSlide>
           <SwiperSlide>
-            <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="my-4 w-auto" />
+            <!-- /*videos go here*/ -->
           </SwiperSlide>
           <SwiperSlide>
-            <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="my-4 w-auto" />
+            <!-- /*videos go here*/ -->
           </SwiperSlide>
         </SwiperCarousel>
-      </section>
-      <section id="photos">
+      </section><section id="photos">
         <h2>BTS Photos</h2>
-        {downresAlbums.length === 0 ? (
-          <p class="text-center text-sm opacity-70">
-            Behind-the-scenes photos coming soon.
-          </p>
-        ) : (
-          <div class="downres-gallery">
-            <div class="downres-toggle flex flex-wrap gap-2 justify-center mb-4">
-              {downresAlbums.map((album, index) => (
-                <button
-                  type="button"
-                  class={`downres-toggle__btn ${
-                    index === 0 ? "is-active" : ""
-                  }`}
-                  data-downres-toggle
-                  data-target={album.id}
-                  aria-pressed={index === 0 ? "true" : "false"}
-                >
-                  <span class="downres-toggle__label">{album.label}</span>
-                  {album.date && (
-                    <span class="downres-toggle__date">
-                      {new Date(album.date).toLocaleDateString(undefined, {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div>
-            <div class="downres-carousels space-y-6">
-              {downresAlbums.map((album, index) => (
-                <div
-                  class="downres-carousels__panel"
-                  data-downres-panel
-                  data-album={album.id}
-                  hidden={index === 0 ? undefined : true}
-                >
-                  <SwiperCarousel
-                    options={{
-                      loop: true,
-                      spaceBetween: 10,
-                      lazyPreloadPrevNext: 2,
-                      freeMode: true,
-                      slidesPerView: "auto",
-                      centeredSlides: true,
-                    }}
-                  >
-                    {album.images.map((image) => (
-                      <SwiperSlide class="w-auto!">
-                        <Image
-                          src={image}
-                          alt={`BTS ${album.label} still`}
-                          loading="lazy"
-                          data-downres-image
-                          data-downres-full={image.src}
-                          class="h-48! sm:h-96! w-auto cursor-zoom-in"
-                        />
-                      </SwiperSlide>
-                    ))}
-                  </SwiperCarousel>
-                </div>
-              ))}
-            </div>
-            <script type="module" is:inline>
-              const toggles = Array.from(
-                document.querySelectorAll("[data-downres-toggle]")
-              );
-              const panels = Array.from(
-                document.querySelectorAll("[data-downres-panel]")
-              );
-
-              if (toggles.length && panels.length) {
-                toggles.forEach((btn) => {
-                  btn.addEventListener("click", () => {
-                    const target = btn.dataset.target;
-
-                    toggles.forEach((toggle) => {
-                      const isActive = toggle === btn;
-                      toggle.classList.toggle("is-active", isActive);
-                      toggle.setAttribute(
-                        "aria-pressed",
-                        isActive ? "true" : "false"
-                      );
-                    });
-
-                    panels.forEach((panel) => {
-                      const matches = panel.dataset.album === target;
-                      panel.toggleAttribute("hidden", !matches);
-                      if (matches) {
-                        const swiperRoot = panel.querySelector(".swiper");
-                        if (swiperRoot?.swiper?.update) {
-                          swiperRoot.swiper.update();
-                        }
-                      }
-                    });
-                  });
-                });
-              }
-
-              const modal = document.querySelector("[data-downres-modal]");
-              const modalImage = modal?.querySelector(
-                "[data-downres-modal-image]"
-              );
-              const modalClose = modal?.querySelector(
-                "[data-downres-modal-close]"
-              );
-              const downresImages = Array.from(
-                document.querySelectorAll("[data-downres-image]")
-              );
-              let activeTrigger = null;
-
-              const openModal = (trigger) => {
-                if (!modal || !modalImage) return;
-                const fullSrc = trigger.dataset.downresFull || trigger.src;
-                const altText = trigger.getAttribute("alt") ?? "";
-                modalImage.src = fullSrc;
-                modalImage.alt = altText;
-                modal.removeAttribute("hidden");
-                document.body.classList.add("modal-open");
-                activeTrigger = trigger;
-                modalClose?.focus();
-              };
-
-              const closeModal = () => {
-                if (!modal || !modalImage) return;
-                modal.setAttribute("hidden", "");
-                modalImage.src = "";
-                modalImage.alt = "";
-                document.body.classList.remove("modal-open");
-                if (activeTrigger) {
-                  activeTrigger.focus();
-                  activeTrigger = null;
-                }
-              };
-
-              downresImages.forEach((img) => {
-                img.addEventListener("click", () => openModal(img));
-              });
-
-              modalClose?.addEventListener("click", closeModal);
-
-              modal?.addEventListener("click", () => {
-                closeModal();
-              });
-
-              document.addEventListener("keydown", (event) => {
-                if (event.key === "Escape" && !modal?.hasAttribute("hidden")) {
-                  closeModal();
-                }
-              });
-            </script>
-            <div
-              class="downres-modal"
-              data-downres-modal
-              hidden
-              role="dialog"
-              aria-modal="true"
-            >
-              <figure class="downres-modal__figure">
-                <button
-                  type="button"
-                  class="downres-modal__close"
-                  data-downres-modal-close
-                  aria-label="Close full-size image"
-                >
-                  ×
-                </button>
-                <img
-                  src=""
-                  alt=""
-                  data-downres-modal-image
-                  class="downres-modal__image"
-                />
-              </figure>
-            </div>
-          </div>
-        )}
+        <AlbumGallery />
       </section>
       <section id="next-show" class="h-100">
         <h2 class="text-right">Next Show</h2>
-        <p>lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+        <p>
+          lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book. It has survived not only
+          five centuries, but also the leap into electronic typesetting,
+          remaining essentially unchanged. It was popularised in the 1960s with
+          the release of Letraset sheets containing Lorem Ipsum passages, and
+          more recently with desktop publishing software like Aldus PageMaker
+          including versions of Lorem Ipsum
+        </p>
       </section>
       <section id="team">
         <h2 class="text-center">The Team</h2>
-        <div class="team-grid flex flex-col sm:flex-row gap-4 justify-center items-center sm:items-start">
+        <div
+          class="team-grid flex flex-col sm:flex-row gap-4 justify-center items-center sm:items-start"
+        >
           <Profile
             image={andy}
             blurb="Andy Zou is a producer-director that has been working with comedians all over NYC for the better part of a decade.  He’s done videos for ClickHole, Snapchat, Funny or Die, and spent the last three years at Comedy Central Digital."
@@ -348,7 +132,6 @@ const downresAlbums = albums
     grid-auto-rows: 1fr;
     align-items: stretch;
     justify-items: center; */
-	
   }
   Profile {
     margin: 0;
@@ -369,86 +152,4 @@ const downresAlbums = albums
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     margin: 2em 0;
   }
-
-  .downres-toggle__btn {
-    padding: 0.5rem 2rem;
-    border-radius: 9999px;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    background-color: rgb(var(--color-neutral-surface));
-    transition: background-color 0.2s ease, color 0.2s ease,
-      border-color 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.125rem;
-  }
-
-  .downres-toggle__btn:hover {
-    background-color: rgba(0, 0, 0, 0.08);
-  }
-
-  .downres-toggle__btn.is-active {
-    background-color: rgb(var(--color-secondary));
-    border-color: transparent;
-    color: white;
-  }
-
-
-  :global(body.modal-open) {
-    overflow: hidden;
-  }
-
-  .downres-modal {
-    position: fixed;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    padding: 2rem;
-    background-color: rgba(0, 0, 0, 0.85);
-    z-index: 50;
-  }
-
-  .downres-modal[hidden] {
-    display: none;
-  }
-
-  .downres-modal__figure {
-  width: min(90vw, 1200px);
-  max-height: 90vh;
-  display: flex;
-  justify-content: center;
-}
-
-.downres-modal__image {
-  max-width: 100%;
-  max-height: 90vh;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  border-radius: 0.5rem;
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
-}
-
-  .downres-modal__close {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    width: 2.75rem;
-    height: 2.75rem;
-    border-radius: 9999px;
-    border: none;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    font-size: 1.5rem;
-    line-height: 1;
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-
-  .downres-modal__close:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-
 </style>

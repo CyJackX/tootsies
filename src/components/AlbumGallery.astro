@@ -1,0 +1,319 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import SwiperCarousel from "./SwiperCarousel.astro";
+import { SwiperSlide } from "astro-swiper";
+
+type Album = {
+  id: string;
+  label: string;
+  date?: string;
+  images: ImageMetadata[];
+};
+
+const albumImports = import.meta.glob(
+  "../assets/img/trees/downres/*/*.{webp,png,jpg,jpeg}",
+  { eager: true }
+);
+
+const ALBUMS_CONFIG = [
+  { id: "ep4", label: "Tootsie's 4", date: "2025-06-06" },
+  { id: "ep3", label: "Tootsie's 3", date: "2024-05-31" },
+  { id: "ep2", label: "Tootsie's 2", date: "2023-10-13" },
+  { id: "ep1", label: "Tootsie's 1", date: "2023-06-30" },
+];
+
+const albumMap = Object.entries(albumImports).reduce<
+  Record<string, Album>
+>((albumMap, [path, module]) => {
+  const segments = path.split("/");
+  const folder = segments.at(-2);
+  const image = (module as { default: ImageMetadata }).default;
+
+  if (!folder || !image) {
+    return albumMap;
+  }
+
+  if (!albumMap[folder]) {
+    albumMap[folder] = {
+      id: folder,
+      label: folder.toUpperCase(),
+      images: [],
+    };
+  }
+
+  albumMap[folder].images.push(image);
+  return albumMap;
+}, {});
+
+const albumData = ALBUMS_CONFIG
+  .map(({ id, label, date }) => {
+    const album = albumMap[id];
+    if (!album) return null;
+    return {
+      ...album,
+      label,
+      date,
+      images: [...album.images].sort((a, b) => a.src.localeCompare(b.src)),
+    };
+  })
+  .filter(Boolean) as Album[];
+---
+
+
+  {albumData.length === 0 ? (
+    <p class="text-center text-sm opacity-70">
+      Behind-the-scenes photos coming soon.
+    </p>
+  ) : (
+    <div class="album-gallery">
+      <div class="album-toggle flex flex-wrap gap-2 justify-center mb-4">
+        {albumData.map((album, index) => (
+          <button
+            type="button"
+            class={`album-toggle__btn ${index === 0 ? "is-active" : ""}`}
+            data-album-toggle
+            data-target={album.id}
+            aria-pressed={index === 0 ? "true" : "false"}
+          >
+            <span class="album-toggle__label">{album.label}</span>
+            {album.date && (
+              <span class="album-toggle__date">
+                {new Date(album.date).toLocaleDateString(undefined, {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+      <div class="album-carousels space-y-6">
+        {albumData.map((album, index) => (
+          <div
+            class="album-carousels__panel"
+            data-album-panel
+            data-album={album.id}
+            hidden={index === 0 ? undefined : true}
+          >
+            <SwiperCarousel
+              options={{
+                loop: true,
+                spaceBetween: 10,
+                lazyPreloadPrevNext: 2,
+                freeMode: true,
+                slidesPerView: "auto",
+                centeredSlides: true,
+              }}
+            >
+              {album.images.map((image) => (
+                <SwiperSlide class="w-auto!">
+                  <Image
+                    src={image}
+                    alt={`BTS ${album.label} still`}
+                    loading="lazy"
+                    data-album-image
+                    data-album-full={image.src}
+                    class="h-48! sm:h-96! w-auto cursor-zoom-in"
+                  />
+                </SwiperSlide>
+              ))}
+            </SwiperCarousel>
+          </div>
+        ))}
+      </div>
+      <script type="module" is:inline>
+        const toggles = Array.from(
+          document.querySelectorAll("[data-album-toggle]")
+        );
+        const panels = Array.from(
+          document.querySelectorAll("[data-album-panel]")
+        );
+
+        if (toggles.length && panels.length) {
+          toggles.forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const target = btn.dataset.target;
+
+              toggles.forEach((toggle) => {
+                const isActive = toggle === btn;
+                toggle.classList.toggle("is-active", isActive);
+                toggle.setAttribute(
+                  "aria-pressed",
+                  isActive ? "true" : "false"
+                );
+              });
+
+              panels.forEach((panel) => {
+                const matches = panel.dataset.album === target;
+                panel.toggleAttribute("hidden", !matches);
+                if (matches) {
+                  const swiperRoot = panel.querySelector(".swiper");
+                  if (swiperRoot?.swiper?.update) {
+                    swiperRoot.swiper.update();
+                  }
+                }
+              });
+            });
+          });
+        }
+
+        const modal = document.querySelector("[data-album-modal]");
+        const modalImage = modal?.querySelector("[data-album-modal-image]");
+        const modalClose = modal?.querySelector("[data-album-modal-close]");
+        const albumImages = Array.from(
+          document.querySelectorAll("[data-album-image]")
+        );
+        let activeTrigger = null;
+
+        const openModal = (trigger) => {
+          if (!modal || !modalImage) return;
+          const fullSrc = trigger.dataset.albumFull || trigger.src;
+          const altText = trigger.getAttribute("alt") ?? "";
+          modalImage.src = fullSrc;
+          modalImage.alt = altText;
+          modal.removeAttribute("hidden");
+          document.body.classList.add("modal-open");
+          activeTrigger = trigger;
+          modalClose?.focus();
+        };
+
+        const closeModal = () => {
+          if (!modal || !modalImage) return;
+          modal.setAttribute("hidden", "");
+          modalImage.src = "";
+          modalImage.alt = "";
+          document.body.classList.remove("modal-open");
+          if (activeTrigger) {
+            activeTrigger.focus();
+            activeTrigger = null;
+          }
+        };
+
+        albumImages.forEach((img) => {
+          img.addEventListener("click", () => openModal(img));
+        });
+
+        modalClose?.addEventListener("click", closeModal);
+
+        modal?.addEventListener("click", () => {
+          closeModal();
+        });
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && !modal?.hasAttribute("hidden")) {
+            closeModal();
+          }
+        });
+      </script>
+      <div
+        class="album-modal"
+        data-album-modal
+        hidden
+        role="dialog"
+        aria-modal="true"
+      >
+        <figure class="album-modal__figure">
+          <button
+            type="button"
+            class="album-modal__close"
+            data-album-modal-close
+            aria-label="Close full-size image"
+          >
+            ×
+          </button>
+          <img
+            src=""
+            alt=""
+            data-album-modal-image
+            class="album-modal__image"
+          />
+        </figure>
+      </div>
+    </div>
+  )}
+
+
+<style>
+  .album-toggle__btn {
+    padding: 0.5rem 2rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background-color: rgb(var(--color-neutral-surface));
+    transition: background-color 0.2s ease, color 0.2s ease,
+      border-color 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.125rem;
+  }
+
+  .album-toggle__btn:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .album-toggle__btn.is-active {
+    background-color: rgb(var(--color-secondary));
+    border-color: transparent;
+    color: white;
+  }
+
+  :global(body.modal-open) {
+    overflow: hidden;
+  }
+
+  .album-modal {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 50;
+  }
+
+  .album-modal[hidden] {
+    display: none;
+  }
+
+  .album-modal__figure {
+    width: min(90vw, 1200px);
+    max-height: 90vh;
+    display: flex;
+    justify-content: center;
+  }
+
+  .album-modal__image {
+    max-width: 100%;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
+  }
+
+  .album-modal__close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 1.5rem;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .album-modal__close:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+</style>
+
