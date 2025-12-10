@@ -124,40 +124,13 @@ const albumData = ALBUMS_CONFIG
         ))}
       </div>
       <script type="module" is:inline>
-        const toggles = Array.from(
-          document.querySelectorAll("[data-album-toggle]")
-        );
-        const panels = Array.from(
-          document.querySelectorAll("[data-album-panel]")
-        );
-
-        if (toggles.length && panels.length) {
-          toggles.forEach((btn) => {
-            btn.addEventListener("click", () => {
-              const target = btn.dataset.target;
-
-              toggles.forEach((toggle) => {
-                const isActive = toggle === btn;
-                toggle.classList.toggle("is-active", isActive);
-                toggle.setAttribute(
-                  "aria-pressed",
-                  isActive ? "true" : "false"
-                );
-              });
-
-              panels.forEach((panel) => {
-                const matches = panel.dataset.album === target;
-                panel.toggleAttribute("hidden", !matches);
-                if (matches) {
-                  const swiperRoot = panel.querySelector(".swiper");
-                  if (swiperRoot?.swiper?.update) {
-                    swiperRoot.swiper.update();
-                  }
-                }
-              });
-            });
-          });
-        }
+        import { initToggleGallery } from "../utils/initToggleGallery";
+        initToggleGallery({
+          toggleSelector: "[data-album-toggle]",
+          panelSelector: "[data-album-panel]",
+          getTarget: (toggle) => toggle.dataset.target,
+          matchPanel: (panel, target) => panel.dataset.album === target,
+        });
 
         const modal = document.querySelector("[data-album-modal]");
         const modalImage = modal?.querySelector("[data-album-modal-image]");
