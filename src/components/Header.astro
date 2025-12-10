@@ -1,67 +1,163 @@
 ---
 import HeaderLink from "./HeaderLink.astro";
-import { SITE_TITLE } from "../consts";
 import { Image } from "astro:assets";
 import logo from "../assets/img/logo.JPG";
 ---
 
-<header class="flex flex-col items-center justify-center bg-white">
-  <Image src={logo} alt="Tootsies Video Vault Logo" class="w-50" />
-  <nav class="flex flex-row items-center justify-center w-full">
-    <!-- <h1 class="flex-1 text-center"><a href="#home">{SITE_TITLE}</a></h1> -->
-
-    <!-- <div class="flex flex-col items-center justify-center mx-auto"> -->
-      <!-- <div class="flex flex-row items-center justify-center gap-4"> -->
-        <HeaderLink href="/#home">Home</HeaderLink>
-		<HeaderLink href="/#how-it-works">How It Works</HeaderLink>
-        <HeaderLink href="/#past-videos">Past Videos</HeaderLink>
-        <HeaderLink href="/#photos">BTS Photos</HeaderLink>
-        <HeaderLink href="/#next-show">Next Show</HeaderLink>
-        <HeaderLink href="/#team">Who We Are</HeaderLink>
-        <a href="https://www.instagram.com/tootsiesvideovault/" target="_blank">
-          <span class="sr-only">Follow Tootsies Video Vault on Instagram</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="36"
-            height="36"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-instagram-icon lucide-instagram"
-            ><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path
-              d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line
-              x1="17.5"
-              x2="17.51"
-              y1="6.5"
-              y2="6.5"></line></svg
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="/#home" class="site-header__brand" aria-label="Back to top">
+      <Image src={logo} alt="Tootsies Video Vault Logo" class="site-header__logo" />
+    </a>
+    <nav class="site-header__nav" aria-label="Primary navigation">
+      <ul class="site-header__menu">
+        <li>
+          <HeaderLink href="/#home" class="site-header__link">Home</HeaderLink>
+        </li>
+        <li>
+          <HeaderLink href="/#how-it-works" class="site-header__link">
+            How It Works
+          </HeaderLink>
+        </li>
+        <li>
+          <HeaderLink href="/#past-videos" class="site-header__link">
+            Past Videos
+          </HeaderLink>
+        </li>
+        <li>
+          <HeaderLink href="/#photos" class="site-header__link">
+            BTS Photos
+          </HeaderLink>
+        </li>
+        <li>
+          <HeaderLink href="/#next-show" class="site-header__link">
+            Next Show
+          </HeaderLink>
+        </li>
+        <li>
+          <HeaderLink href="/#team" class="site-header__link">
+            Who We Are
+          </HeaderLink>
+        </li>
+        <li class="site-header__social">
+          <a
+            href="https://www.instagram.com/tootsiesvideovault/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="site-header__link site-header__link--icon"
+            aria-label="Follow Tootsies Video Vault on Instagram"
           >
-        </a>
-      <!-- </div>
-    </div>
-    <div class="flex justify-end flex-1"></div> -->
-  </nav>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </header>
 <style>
-  h2 {
-    margin: 0;
-    font-size: 1em;
+  .site-header {
+    background-color: rgb(var(--color-neutral-surface));
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1.5rem 1rem;
   }
 
-  h2 a,
-  h2 a.active {
-    text-decoration: none;
+  .site-header__inner {
+    max-width: 96rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
   }
-  nav a {
-    padding: 1em 0.5em;
-    color: var(--black);
-    border-bottom: 4px solid transparent;
-    text-decoration: none;
+
+  .site-header__brand {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
-  nav a.active {
-    text-decoration: none;
-    border-bottom-color: var(--accent);
+
+  .site-header__logo {
+    width: min(180px, 45vw);
+    height: auto;
+  }
+
+  .site-header__nav {
+    width: 100%;
+  }
+
+  .site-header__menu {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .site-header__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: .25rem;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    color: rgb(var(--color-neutral));
+    transition: color 0.2s ease, border-color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .site-header__link:hover,
+  .site-header__link:focus-visible {
+    border-color: rgba(0, 0, 0, 0.12);
+    background-color: rgba(0, 0, 0, 0.04);
+    outline: none;
+  }
+
+  .site-header__link.active {
+    border-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.08);
+    font-weight: 600;
+  }
+
+  .site-header__link--icon {
+    padding-inline: 0.85rem;
+  }
+
+  .site-header__link--icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .site-header__inner {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .site-header__nav {
+      flex: 1;
+    }
+
+    .site-header__menu {
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
   }
 </style>
