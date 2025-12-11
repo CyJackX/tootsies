@@ -72,18 +72,18 @@ const slugify = (value: string) =>
 
         return (
           <div
-            class="video-carousels__panel"
+            class="video-carousels__panel flex items-center justify-center"
             data-video-panel
             data-group={groupKey}
             hidden={index === 0 ? undefined : true}
           >
+            <button class={navPrev + " nav-button"} type="button" aria-label="Previous slide">
+              <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><path fill="currentColor" d="M609.408 149.376L277.76 489.6a32 32 0 0 0 0 44.672l331.648 340.352a29.12 29.12 0 0 0 41.728 0a30.59 30.59 0 0 0 0-42.752L339.264 511.936l311.872-319.872a30.59 30.59 0 0 0 0-42.688a29.12 29.12 0 0 0-41.728 0"/></svg>
+            </button>
             <Swiper
               options={{
-                loop: true,
-                lazyPreloadPrevNext: 1,
                 slidesPerView: 1,
                 spaceBetween: 8,
-                autoHeight: true,
                 navigation: {
                   nextEl: `.${navNext}`,
                   prevEl: `.${navPrev}`,
@@ -91,8 +91,11 @@ const slugify = (value: string) =>
                 breakpoints: {
                   768: {
                     slidesPerView: 2,
-                    spaceBetween: 16,
                   },
+                },
+                grid: {
+                  fill: "row",
+                  rows: 2,
                 },
               }}
               class="not-content"
@@ -131,11 +134,11 @@ const slugify = (value: string) =>
                               allowfullscreen={true}
                               referrerpolicy="strict-origin-when-cross-origin"
                             ></iframe>
-                            <div class="max-w-2/3 mx-auto p-4">
-                              <h3 class="text-center">{video.title}</h3>
-                              <p class="text-center">By {video.description.credits}</p>
+                            <div class="max-w-2/3 mx-auto pt-4 text-center">
+                              <h3 >{video.title}</h3>
+                              <p >By {video.description.credits}</p>
                               {video.description.details && (
-                                <p class="text-center text-sm">{video.description.details}</p>
+                                <p class="text-sm">{video.description.details}</p>
                               )}
                             </div>
                           </div>
@@ -147,9 +150,10 @@ const slugify = (value: string) =>
                   </SwiperSlide>
                 ))}
               </SwiperWrapper>
-              <SwiperButtonPrev class={navPrev} />
-              <SwiperButtonNext class={navNext} />
             </Swiper>
+            <button class={navNext + " nav-button"} type="button" aria-label="Next slide">
+              <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><path fill="currentColor" d="M340.864 149.312a30.59 30.59 0 0 0 0 42.752L652.736 512L340.864 831.872a30.59 30.59 0 0 0 0 42.752a29.12 29.12 0 0 0 41.728 0L714.24 534.336a32 32 0 0 0 0-44.672L382.592 149.376a29.12 29.12 0 0 0-41.728 0z"/></svg>
+            </button>
           </div>
         );
       })}
@@ -242,6 +246,33 @@ const slugify = (value: string) =>
     border-radius: 0.75rem;
     border: 1px solid rgba(0, 0, 0, 0.1);
     background: rgba(255, 255, 255, 0.7);
+  }
+
+  .video-carousels__panel {
+    gap: 0.75rem;
+  }
+
+  .video-carousels__panel > .swiper {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .nav-button {
+    flex: 0 0 auto;
+    padding: 0.5rem;
+    width: 3rem;
+    height: 3rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  .nav-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 </style>
 
