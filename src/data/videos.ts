@@ -96,11 +96,7 @@ export const videoGroups: VideoGroup[] = [
     label: "Tootsie's 3",
     date: "2024-05-31",
     videos: [
-      {
-        title: "When Jacob Jinkers Came to Town (Trailer)",
-        url: "https://vimeo.com/1116278508",
-        description: { credits: "Max Levine and Alex Schulman" },
-      },
+
       {
         title: "Unfamiliar",
         url: "https://vimeo.com/832076218?fl=pl&fe=vl",
@@ -112,6 +108,11 @@ export const videoGroups: VideoGroup[] = [
         description: {
           credits: "Joe Natalzia, Alexa Kresojevich, and Shawn Gray",
         },
+      },
+      {
+        title: "When Jacob Jinkers Came to Town (Trailer)",
+        url: "https://vimeo.com/1116278508",
+        description: { credits: "Max Levine and Alex Schulman" },
       },
       {
         title: "For the Love of the Game",
