@@ -131,6 +131,27 @@ img {
 	border-color: transparent;
 	color: white;
 }
+
+/* shared swiper nav buttons */
+.nav-button {
+	flex: 0 0 auto;
+	padding: 0.5rem;
+	width: 3rem;
+	height: 3rem;
+	display: grid;
+	place-items: center;
+	border-radius: 50%;
+	transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-button:hover {
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
+.nav-button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
 code {
 	padding: 2px 5px;
 	background-color: rgb(var(--gray-light));

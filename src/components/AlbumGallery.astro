@@ -1,8 +1,13 @@
 ---
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
-import SwiperCarousel from "./SwiperCarousel.astro";
-import { SwiperSlide } from "astro-swiper";
+import {
+  Swiper,
+  SwiperWrapper,
+  SwiperSlide,
+  SwiperButtonPrev,
+  SwiperButtonNext,
+} from "astro-swiper";
 
 type Album = {
   id: string;
@@ -90,41 +95,53 @@ const albumData = ALBUMS_CONFIG
         ))}
       </div>
       <div class="album-carousels space-y-6">
-        {albumData.map((album, index) => (
+        {albumData.map((album, index) => {
+          const navNext = `album-nav-next-${index}`;
+          const navPrev = `album-nav-prev-${index}`;
+          return (
           <div
             class="album-carousels__panel"
             data-album-panel
             data-album={album.id}
             hidden={index === 0 ? undefined : true}
           >
-            <SwiperCarousel
-              options={{
-                spaceBetween: 10,
-                lazyPreloadPrevNext: 4,
-                // freeMode: true,
-                slidesPerView: 2,
-                // centeredSlides: true,
-                grid: {
-                  fill: "row",
-                  rows: 2,
-                },
-              }}
-            >
-              {album.images.map((image) => (
-                <SwiperSlide class="w-auto!">
-                  <Image
-                    src={image}
-                    alt={`BTS ${album.label} still`}
-                    loading="lazy"
-                    data-album-image
-                    data-album-full={image.src}
-                    class="h-48! lg:h-80! w-auto cursor-zoom-in"
-                  />
-                </SwiperSlide>
-              ))}
-            </SwiperCarousel>
+            <button class={navPrev + " nav-button"} type="button" aria-label="Previous slide">
+              <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><path fill="currentColor" d="M609.408 149.376L277.76 489.6a32 32 0 0 0 0 44.672l331.648 340.352a29.12 29.12 0 0 0 41.728 0a30.59 30.59 0 0 0 0-42.752L339.264 511.936l311.872-319.872a30.59 30.59 0 0 0 0-42.688a29.12 29.12 0 0 0-41.728 0"/></svg>
+            </button>
+            <Swiper options={
+              {spaceBetween: 10,
+              lazyPreloadPrevNext: 4,
+              slidesPerView: 2,
+              grid: {
+                fill: "row",
+                rows: 2,
+              },
+              navigation: {
+                nextEl: `.${navNext}`,
+                prevEl: `.${navPrev}`,
+              },
+            }} class="not-content">
+              <SwiperWrapper>
+                {album.images.map((image) => (
+                  <SwiperSlide class="w-auto!">
+                    <Image
+                      src={image}
+                      alt={`BTS ${album.label} still`}
+                      loading="lazy"
+                      data-album-image
+                      data-album-full={image.src}
+                      class="h-48! lg:h-80! w-auto cursor-zoom-in"
+                    />
+                  </SwiperSlide>
+                ))}
+              </SwiperWrapper>
+            </Swiper>
+            <button class={navNext + " nav-button"} type="button" aria-label="Next slide">
+              <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><path fill="currentColor" d="M340.864 149.312a30.59 30.59 0 0 0 0 42.752L652.736 512L340.864 831.872a30.59 30.59 0 0 0 0 42.752a29.12 29.12 0 0 0 41.728 0L714.24 534.336a32 32 0 0 0 0-44.672L382.592 149.376a29.12 29.12 0 0 0-41.728 0z"/></svg>
+            </button>
           </div>
-        ))}
+        );
+      })}
       </div>
       <script type="module" is:inline>
         const toggles = Array.from(
@@ -294,6 +311,36 @@ const albumData = ALBUMS_CONFIG
 
   .album-modal__close:hover {
     background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .album-carousels__panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .album-carousels__panel > .swiper {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .nav-button {
+    flex: 0 0 auto;
+    padding: 0.5rem;
+    width: 3rem;
+    height: 3rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  .nav-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 </style>
 
