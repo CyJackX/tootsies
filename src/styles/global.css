@@ -135,13 +135,14 @@ img {
 /* shared swiper nav buttons */
 .nav-button {
 	flex: 0 0 auto;
-	padding: 0.5rem;
-	width: 3rem;
-	height: 3rem;
+	width: 5rem;
+	height: 5rem;
 	display: grid;
 	place-items: center;
+	color: rgb(var(--color-secondary));
 	border-radius: 50%;
-	transition: background-color 0.2s ease, opacity 0.2s ease;
+	transition: all 0.2s ease;
+	cursor: pointer;
 }
 
 .nav-button:hover {
@@ -151,6 +152,10 @@ img {
 .nav-button:disabled {
 	opacity: 0.5;
 	cursor: not-allowed;
+	color: rgb(var(--color-neutral));
+	&:hover {
+		background-color: transparent;
+	}
 }
 code {
 	padding: 2px 5px;
