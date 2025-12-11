@@ -124,7 +124,8 @@ const slugify = (value: string) =>
                         return (
                           <div class="video-frame">
                             <iframe
-                              src={embed.iframe.src}
+                              data-src={embed.iframe.src}
+                              data-video-embed
                               title={embed.iframe.title}
                               loading="lazy"
                               allowfullscreen={true}
@@ -160,6 +161,32 @@ const slugify = (value: string) =>
       const panels = Array.from(
         document.querySelectorAll("[data-video-panel]")
       );
+      const embeds = Array.from(
+        document.querySelectorAll("[data-video-embed]")
+      );
+
+      const loadIframe = (iframe) => {
+        if (!iframe || iframe.dataset.loaded === "true") return;
+        const src = iframe.dataset.src;
+        if (!src) return;
+        iframe.src = src;
+        iframe.dataset.loaded = "true";
+      };
+
+      // Lazy-load embeds when they approach viewport
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              loadIframe(entry.target);
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { rootMargin: "200px" }
+      );
+
+      embeds.forEach((iframe) => observer.observe(iframe));
 
       if (toggles.length && panels.length) {
         const activate = (next) => {
