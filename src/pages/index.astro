@@ -15,48 +15,9 @@ import andy from "../assets/img/andy.jpg";
 import katie from "../assets/img/katie.jpg";
 import alec from "../assets/img/alec.png";
 import { SwiperSlide } from "astro-swiper";
-import type { VideoGroup } from "../utils/videoEmbeds";
+import { videoGroups } from "../data/videos";
 
-const videoGroups: VideoGroup[] = [
-  {
-    id: "highlights-2025",
-    label: "2025 Highlights",
-    date: "2025-06-01",
-    videos: [
-      {
-        id: "highlight-trailer",
-        label: "2025 Trailer",
-        url: "https://www.youtube.com/watch?v=ysz5S6PUM-U",
-        description: "A fast-cut teaser for this year's race kickoff.",
-      },
-      {
-        id: "director-bts",
-        label: "Directors BTS",
-        url: "https://vimeo.com/76979871",
-        description: "A peek into the sprint that makes premiere night pop.",
-      },
-    ],
-  },
-  {
-    id: "fan-favorites",
-    label: "Fan Favorites",
-    date: "2024-05-30",
-    videos: [
-      {
-        id: "recap-2024",
-        label: "2024 Recap",
-        url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
-        description: "Audience-favorite sketches and trophy moments.",
-      },
-      {
-        id: "reel-premiere",
-        label: "Premiere Night Reel",
-        url: "https://www.instagram.com/reel/CwY9iYts9Zu/",
-        description: "Quick cuts from the red carpet and award winners.",
-      },
-    ],
-  },
-];
+
 ---
 
 <!doctype html>
@@ -79,7 +40,7 @@ const videoGroups: VideoGroup[] = [
       </section>
       <section
         id="how-it-works"
-        class="flex flex-col lg:flex-row lg:items-center card"
+        class="flex flex-col lg:flex-row lg:items-center"
       >
         <div class="flex flex-col items-start lg:w-1/3">
           <h2>How It Works</h2>
@@ -103,20 +64,6 @@ const videoGroups: VideoGroup[] = [
       </section>
       <section id="past-videos">
         <h2 class="text-right">Past Videos</h2>
-        <SwiperCarousel>
-          <SwiperSlide>
-            <!-- /*videos go here*/ -->
-          </SwiperSlide>
-          <SwiperSlide>
-            <!-- /*videos go here*/ -->
-          </SwiperSlide>
-          <SwiperSlide>
-            <!-- /*videos go here*/ -->
-          </SwiperSlide>
-        </SwiperCarousel>
-      </section>
-      <section id="spotlight-reels">
-        <h2 class="text-center">Spotlight Reels</h2>
         <VideoGallery groups={videoGroups} />
       </section>
       <section id="photos">

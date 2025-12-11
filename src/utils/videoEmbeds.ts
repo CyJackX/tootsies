@@ -1,20 +1,17 @@
 export type VideoProvider = "youtube" | "vimeo" | "instagram" | "unknown";
 
 export interface VideoItem {
-  id: string;
-  label: string;
+  /**
+   * Human-friendly label for toggles and iframe titles.
+   */
+  title: string;
   url: string;
-  provider?: VideoProvider;
-  description?: string;
-  date?: string;
-  autoplay?: boolean;
-  loop?: boolean;
+  description: { credits: string; details?: string };
 }
 
 export interface VideoGroup {
-  id: string;
   label: string;
-  date?: string;
+  date: string;
   videos: VideoItem[];
 }
 
@@ -23,8 +20,6 @@ export interface VideoEmbed {
   iframe?: {
     src: string;
     title: string;
-    allow?: string;
-    allowFullscreen?: boolean;
   };
   html?: string;
 }
@@ -60,58 +55,39 @@ export function detectVideoProvider(url: string): VideoProvider {
 }
 
 export function getVideoEmbed(video: VideoItem): VideoEmbed | null {
-  const provider = video.provider ?? detectVideoProvider(video.url);
+  const provider = detectVideoProvider(video.url);
   switch (provider) {
     case "youtube": {
       const id = extractYouTubeId(video.url);
       if (!id) return null;
-      const search = new URLSearchParams();
-      if (video.autoplay) search.set("autoplay", "1");
-      if (video.loop) {
-        search.set("loop", "1");
-        search.set("playlist", id);
-      }
-      const query = search.toString();
       return {
         provider,
         iframe: {
-          src: `https://www.youtube.com/embed/${id}${query ? `?${query}` : ""}`,
-          title: video.label,
-          allow: YOUTUBE_ALLOW,
-          allowFullscreen: true,
+          src: `https://www.youtube.com/embed/${id}`,
+          title: video.title,
         },
       };
     }
     case "vimeo": {
       const id = extractVimeoId(video.url);
       if (!id) return null;
-      const params = new URLSearchParams();
-      if (video.autoplay) params.set("autoplay", "1");
-      if (video.loop) params.set("loop", "1");
-      const query = params.toString();
       return {
         provider,
         iframe: {
-          src: `https://player.vimeo.com/video/${id}${
-            query ? `?${query}` : ""
-          }`,
-          title: video.label,
-          allow: VIMEO_ALLOW,
-          allowFullscreen: true,
+          src: `https://player.vimeo.com/video/${id}`,
+          title: video.title,
         },
       };
     }
     case "instagram": {
       const id = extractInstagramId(video.url);
       if (!id) return null;
-      const embedUrl = `https://www.instagram.com/reel/${id}/embed`;
+      const embedUrl = `https://www.instagram.com/p/${id}/embed`;
       return {
         provider,
         iframe: {
           src: embedUrl,
-          title: video.label,
-          allow: "encrypted-media; picture-in-picture",
-          allowFullscreen: true,
+          title: video.title,
         },
       };
     }
@@ -168,4 +144,3 @@ function extractInstagramId(url: string): string | null {
   }
   return null;
 }
-

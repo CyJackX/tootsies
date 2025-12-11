@@ -71,7 +71,7 @@ const albumData = ALBUMS_CONFIG
         {albumData.map((album, index) => (
           <button
             type="button"
-            class={`album-toggle__btn ${index === 0 ? "is-active" : ""}`}
+            class={`album-toggle__btn tab-toggle__btn ${index === 0 ? "is-active" : ""}`}
             data-album-toggle
             data-target={album.id}
             aria-pressed={index === 0 ? "true" : "false"}
@@ -124,13 +124,40 @@ const albumData = ALBUMS_CONFIG
         ))}
       </div>
       <script type="module" is:inline>
-        import { initToggleGallery } from "../utils/initToggleGallery";
-        initToggleGallery({
-          toggleSelector: "[data-album-toggle]",
-          panelSelector: "[data-album-panel]",
-          getTarget: (toggle) => toggle.dataset.target,
-          matchPanel: (panel, target) => panel.dataset.album === target,
-        });
+        const toggles = Array.from(
+          document.querySelectorAll("[data-album-toggle]")
+        );
+        const panels = Array.from(
+          document.querySelectorAll("[data-album-panel]")
+        );
+
+        if (toggles.length && panels.length) {
+          toggles.forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const target = btn.dataset.target;
+
+              toggles.forEach((toggle) => {
+                const isActive = toggle === btn;
+                toggle.classList.toggle("is-active", isActive);
+                toggle.setAttribute(
+                  "aria-pressed",
+                  isActive ? "true" : "false"
+                );
+              });
+
+              panels.forEach((panel) => {
+                const matches = panel.dataset.album === target;
+                panel.toggleAttribute("hidden", !matches);
+                if (matches) {
+                  const swiperRoot = panel.querySelector(".swiper");
+                  if (swiperRoot?.swiper?.update) {
+                    swiperRoot.swiper.update();
+                  }
+                }
+              });
+            });
+          });
+        }
 
         const modal = document.querySelector("[data-album-modal]");
         const modalImage = modal?.querySelector("[data-album-modal-image]");
@@ -209,29 +236,6 @@ const albumData = ALBUMS_CONFIG
 
 
 <style>
-  .album-toggle__btn {
-    padding: 0.5rem 2rem;
-    border-radius: 9999px;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    background-color: rgb(var(--color-neutral-surface));
-    transition: background-color 0.2s ease, color 0.2s ease,
-      border-color 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.125rem;
-  }
-
-  .album-toggle__btn:hover {
-    background-color: rgba(0, 0, 0, 0.08);
-  }
-
-  .album-toggle__btn.is-active {
-    background-color: rgb(var(--color-secondary));
-    border-color: transparent;
-    color: white;
-  }
-
   :global(body.modal-open) {
     overflow: hidden;
   }
