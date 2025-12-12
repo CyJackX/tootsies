@@ -15,7 +15,7 @@
 @import "tailwindcss";
 
 :root {
-	--color-primary: 35 55 255;
+	--color-primary: 59 132 51;
 	--color-primary-foreground: 255 255 255;
 	--color-secondary: 228 114 29;
 	--color-secondary-foreground: 255 255 255;
@@ -45,9 +45,7 @@ h3,
 h4,
 h5,
 h6 {
-	margin: 0 0 0.5rem 0;
 	color: rgb(var(--black));
-	line-height: 1.2;
 }
 h1 {
 	font-size: 2.5em;

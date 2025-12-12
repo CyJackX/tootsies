@@ -29,7 +29,7 @@ export const videoGroups: VideoGroup[] = [
       {
         title: "The Tree & Me",
         url: "https://youtu.be/tHfLHRO2j8E?si=5CNSoA3tDqVm_gap",
-        description: { credits: "Eric Feurer" },
+        description: { credits: "Eric Feurer", details: "Best Dressed" },
       },
       //   {
       //     title: "Farewell to a Friend",
@@ -39,7 +39,7 @@ export const videoGroups: VideoGroup[] = [
       {
         title: "The Only Morning Show",
         url: "https://www.youtube.com/watch?v=I4aQrFztoQ8",
-        description: { credits: "Joe Miles" },
+        description: { credits: "Joe Miles", details: "Runner Up for Audience Vote!" },
       },
       {
         title: "Bushwick Bateman",
@@ -55,7 +55,7 @@ export const videoGroups: VideoGroup[] = [
       //   {
       //     title: "Ifs",
       //     url: "https://www.instagram.com/reel/DKuVCDFxXTe/",
-      //     description: { credits: "Hoff Matthews" },
+      //     description: { credits: "Hoff Matthews", details: "Director: Kelsey Fischer" },
       //   },
       //   {
       //     title: "Aftercare",
@@ -101,6 +101,14 @@ export const videoGroups: VideoGroup[] = [
         title: "Unfamiliar",
         url: "https://vimeo.com/832076218?fl=pl&fe=vl",
         description: { credits: "Sophia Marshall" },
+      },
+      {
+        title: "SCRAPBOOKING",
+        url: "https://www.youtube.com/watch?v=mM5wVPIytiM",
+        description: {
+          credits: "SCRAPBOOKING by Will Jacobs and Matt Antonucci",
+          details: "Winner of Audience Vote!",
+        },
       },
       {
         title: "To Kill a Spider",
@@ -152,13 +160,7 @@ export const videoGroups: VideoGroup[] = [
             "Trevor Williams, starring Masha King, Vincent Peone, Katie Sicking, Andrew Bourne. Shot by Nathan Russell.",
         },
       },
-      {
-        title: "SCRAPBOOKING",
-        url: "https://www.youtube.com/watch?v=mM5wVPIytiM",
-        description: {
-          credits: "SCRAPBOOKING by Will Jacobs and Matt Antonucci",
-        },
-      },
+      
       {
         title: "Pick a Random Number",
         url: "https://www.youtube.com/watch?v=Plx-cJik2n8&t=1s",
