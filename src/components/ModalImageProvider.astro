@@ -1,0 +1,142 @@
+---
+// Renders a shared modal and wires up click-to-zoom on any element
+// with [data-modal-image]. Include once per page.
+---
+
+<div
+  class="image-modal"
+  data-image-modal
+  hidden
+  role="dialog"
+  aria-modal="true"
+>
+  <figure class="image-modal__figure">
+    <button
+      type="button"
+      class="image-modal__close"
+      data-image-modal-close
+      aria-label="Close full-size image"
+    >
+      ×
+    </button>
+    <img
+      src=""
+      alt=""
+      data-image-modal-image
+      class="image-modal__image"
+    />
+  </figure>
+</div>
+
+<script type="module" is:inline>
+  const modal = document.querySelector("[data-image-modal]");
+  const modalImage = modal?.querySelector("[data-image-modal-image]");
+  const modalClose = modal?.querySelector("[data-image-modal-close]");
+  const triggers = Array.from(
+    document.querySelectorAll("[data-modal-image]")
+  );
+  let activeTrigger = null;
+
+  const openModal = (trigger) => {
+    if (!modal || !modalImage) return;
+    const fullSrc = trigger.dataset.modalFull || trigger.src;
+    const altText = trigger.getAttribute("alt") ?? "";
+    modalImage.src = fullSrc;
+    modalImage.alt = altText;
+    modal.removeAttribute("hidden");
+    document.body.classList.add("modal-open");
+    activeTrigger = trigger;
+    modalClose?.focus();
+  };
+
+  const closeModal = () => {
+    if (!modal || !modalImage) return;
+    modal.setAttribute("hidden", "");
+    modalImage.src = "";
+    modalImage.alt = "";
+    document.body.classList.remove("modal-open");
+    if (activeTrigger) {
+      activeTrigger.focus();
+      activeTrigger = null;
+    }
+  };
+
+  triggers.forEach((img) => {
+    img.addEventListener("click", () => openModal(img));
+    img.classList.add("cursor-zoom-in");
+  });
+
+  modalClose?.addEventListener("click", closeModal);
+  modal?.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      closeModal();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !modal?.hasAttribute("hidden")) {
+      closeModal();
+    }
+  });
+</script>
+
+<style>
+  :global(body.modal-open) {
+    overflow: hidden;
+  }
+
+  .image-modal {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 50;
+  }
+
+  .image-modal[hidden] {
+    display: none;
+  }
+
+  .image-modal__figure {
+    width: min(90vw, 1200px);
+    max-height: 90vh;
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+
+  .image-modal__image {
+    max-width: 100%;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
+  }
+
+  .image-modal__close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 1.5rem;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .image-modal__close:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+</style>
+

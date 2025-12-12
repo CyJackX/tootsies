@@ -7,6 +7,10 @@ import { Image } from "astro:assets";
 import tvvbestcrowd from "../assets/img/tvvbestcrowd.jpg";
 import tvvcrowd2 from "../assets/img/tvvcrowd2.webp";
 import crowdpic from "../assets/img/crowdpic.webp";
+import prizebelt from "../assets/img/prizebelt.jpg";
+import superlatives from "../assets/img/superlatives.jpg";
+import trophies from "../assets/img/trophies.jpg";
+import ModalImageProvider from "../components/ModalImageProvider.astro";
 import Profile from "../components/Profile.astro";
 import AlbumGallery from "../components/AlbumGallery.astro";
 import VideoGallery from "../components/VideoGallery.astro";
@@ -24,6 +28,7 @@ import { videoGroups } from "../data/videos";
   <body>
     <Header />
     <main class="max-w-6xl mx-auto p-4 lg:p-8">
+      <ModalImageProvider />
       <section id="home" class="text-center">
         <h2>Welcome to Tootsies Video Vault!</h2>
         <p>
@@ -43,17 +48,60 @@ import { videoGroups } from "../data/videos";
                 Submit a <strong>free</strong> application with examples of past work.
               </li>
               <li>
-                If accepted, participants pay a prize pool fee and get 3 months to
-                produce a brand new short film under 3 minutes in length.
+                If accepted, participants pay a prize pool fee and get 3 months
+                to produce a brand new short film under 3 minutes in length.
               </li>
               <li>
-                Attend the premiere and have a blast with prizes, trophies, and a
-                great crowd!
+                Attend the premiere and have a blast with prizes, trophies, and
+                a great crowd!
               </li>
             </ul>
           </div>
           <div class="lg:w-2/3 flex justify-center">
-            <Image src={crowdpic} alt="TVV Best Crowd" class="my-4 w-full max-w-3xl" />
+            <Image
+              src={crowdpic}
+              alt="TVV Best Crowd"
+              class="my-4 w-full max-w-3xl"
+            />
+          </div>
+        </div>
+        <div class="flex">
+          <div class="flex w-full flex-wrap justify-center">
+            <figure class="w-full md:w-1/2">
+              <Image
+                src={trophies}
+                alt="Tootsie's Video Vault trophies on a table"
+                class="rounded-lg"
+                loading="lazy"
+                data-modal-image
+                data-modal-full={trophies.src}
+              />
+              <figcaption>Sweet trophies!</figcaption>
+            </figure>
+            <figure class="w-full md:w-1/2">
+              <Image
+                src={prizebelt}
+                alt="Winners posing with the Tootsie's Video Vault championship belt"
+                class="rounded-lg"
+                loading="lazy"
+                data-modal-image
+                data-modal-full={prizebelt.src}
+              />
+              <figcaption>
+                Audience Favorite gets the championship belt!
+              </figcaption>
+            </figure>
+            <figure class="w-full md:w-1/2">
+              <Image
+                src={superlatives}
+                alt="Winners holding a best dressed award"
+                class="rounded-lg"
+                loading="lazy"
+                data-modal-image
+                data-modal-full={superlatives.src}
+              />
+              <figcaption>Fun superlatives throughout the night!</figcaption>
+            </figure>
           </div>
         </div>
       </section>
@@ -67,19 +115,13 @@ import { videoGroups } from "../data/videos";
       </section>
       <section id="next-show">
         <h2 class="text-center">Next Show</h2>
-        <p>
-          lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with
-          the release of Letraset sheets containing Lorem Ipsum passages, and
-          more recently with desktop publishing software like Aldus PageMaker
-          including versions of Lorem Ipsum
-        </p>
-        <p>Wanna submit to the next show?  Send us an email and get on our mailing list!
-          <a href="mailto:tootsiesvideovault@gmail.com">tootsiesvideovault@gmail.com</a>
+        <p class="text-center">
+          Wanna submit to the next show? Send us an email and get on our mailing
+          list!
+          <br />
+          <a href="mailto:tootsiesvideovault@gmail.com"
+            >tootsiesvideovault@gmail.com</a
+          >
         </p>
       </section>
       <section id="team">
@@ -110,7 +152,7 @@ import { videoGroups } from "../data/videos";
           />
         </div>
       </section>
-      <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="mt-4"/>
+      <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="mt-4" />
       <Footer />
     </main>
   </body>
@@ -144,5 +186,12 @@ import { videoGroups } from "../data/videos";
     background-color: rgb(var(--color-neutral-surface));
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     margin: 2em 0;
+  }
+  figure {
+    padding: 0.5em;
+  }
+  figcaption {
+    text-align: center;
+    font-size: 0.8em;
   }
 </style>
