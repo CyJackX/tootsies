@@ -70,7 +70,7 @@ import logo from "../assets/img/logo.JPG";
 <style>
   .site-header {
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    padding: 1.5rem 1rem;
+    padding: 1rem;
   }
 
   .site-header__inner {
@@ -115,19 +115,16 @@ import logo from "../assets/img/logo.JPG";
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: .5rem;
+    padding: 0 .5rem;
     border-radius: 9999px;
     border: 1px solid transparent;
-    color: rgb(var(--color-neutral));
     transition: color 0.2s ease, border-color 0.2s ease,
       background-color 0.2s ease;
   }
 
   .site-header__link:hover,
   .site-header__link:focus-visible {
-    border-color: rgba(0, 0, 0, 0.12);
-    background-color: rgba(0, 0, 0, 0.04);
-    outline: none;
+    text-decoration: underline;
   }
 
   .site-header__link.active {
