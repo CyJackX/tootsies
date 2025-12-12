@@ -5,8 +5,8 @@
  */
 
 @font-face {
-	font-family: "Atelier";
-	src: url("../assets/Atelier-zsyrhz.otf") format("opentype");
+	font-family: "Atelia";
+	src: url("../assets/Atelia.woff2") format("woff2");
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
@@ -54,9 +54,8 @@ h1 {
 }
 h2 {
 	font-size: 3em;
-	line-height: 1.2;
-	margin-bottom:1rem;
-	font-family: "Atelier";
+	margin-bottom:.75rem;
+	font-family: "Atelia";
 }
 h3 {
 	font-size: 1.5em;
@@ -145,13 +144,14 @@ img {
 
 /* shared swiper nav buttons */
 .nav-button {
+	width: 2rem;
+	height: 4rem;
 	flex: 0 0 auto;
-	width: 5rem;
-	height: 5rem;
-	display: grid;
-	place-items: center;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	color: rgb(var(--color-secondary));
-	border-radius: 50%;
+	border-radius: 9999px;
 	transition: all 0.2s ease;
 	cursor: pointer;
 }

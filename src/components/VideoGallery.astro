@@ -89,10 +89,13 @@ const slugify = (value: string) =>
                   768: {
                     slidesPerView: 2,
                   },
-                },
-                grid: {
-                  fill: "row",
-                  rows: 2,
+                  1024: {
+                    slidesPerView: 2,
+                    grid: {
+                      fill: "row",
+                      rows: 2,
+                    },
+                  },
                 },
               }}
               class="not-content"
@@ -131,7 +134,7 @@ const slugify = (value: string) =>
                               allowfullscreen={true}
                               referrerpolicy="strict-origin-when-cross-origin"
                             ></iframe>
-                            <div class="max-w-2/3 mx-auto pt-4 text-center">
+                            <div class="max-w-2/3 mx-auto pt-4 text-center hidden">
                               <h3 >{video.title}</h3>
                               <p >By {video.description.credits}</p>
                               {video.description.details && (
@@ -247,9 +250,6 @@ const slugify = (value: string) =>
     background: rgba(255, 255, 255, 0.7);
   }
 
-  .video-carousels__panel {
-    gap: 0.75rem;
-  }
 
   .video-carousels__panel > .swiper {
     flex: 1 1 0;

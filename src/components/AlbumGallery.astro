@@ -107,16 +107,24 @@ const albumData = ALBUMS_CONFIG
               />
               <Swiper
                 options={{
+                  loop: true,
                   spaceBetween: 10,
                   lazyPreloadPrevNext: 4,
                   slidesPerView: "auto",
-                  grid: {
-                    fill: "row",
-                    rows: 2,
-                  },
+                  centeredSlides: true,
                   navigation: {
                     nextEl: `.${navNext}`,
                     prevEl: `.${navPrev}`,
+                  },
+                  breakpoints: {
+                    1024: {
+                      centeredSlides: false,
+                      loop: false,
+                      grid: {
+                        fill: "row",
+                        rows: 2,
+                      },
+                    },
                   },
                 }}
                 class="not-content"
@@ -130,7 +138,7 @@ const albumData = ALBUMS_CONFIG
                         loading="lazy"
                         data-album-image
                         data-album-full={image.src}
-                        class="h-48! lg:h-80! w-auto cursor-zoom-in"
+                        class="h-64! lg:h-80! w-auto cursor-zoom-in"
                       />
                     </SwiperSlide>
                   ))}
@@ -319,7 +327,6 @@ const albumData = ALBUMS_CONFIG
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
   }
 
   .album-carousels__panel > .swiper {
