@@ -2,6 +2,7 @@
 import HeaderLink from "./HeaderLink.astro";
 import { Image } from "astro:assets";
 import logo from "../assets/img/logo.JPG";
+
 ---
 
 <header class="site-header">
@@ -49,8 +50,6 @@ import logo from "../assets/img/logo.JPG";
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="28"
-              height="28"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -70,7 +69,6 @@ import logo from "../assets/img/logo.JPG";
 </header>
 <style>
   .site-header {
-    background-color: rgb(var(--color-neutral-surface));
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     padding: 1.5rem 1rem;
   }
@@ -80,7 +78,6 @@ import logo from "../assets/img/logo.JPG";
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
     align-items: center;
   }
 
@@ -96,7 +93,7 @@ import logo from "../assets/img/logo.JPG";
   }
 
   .site-header__nav {
-    width: 100%;
+    width: fit-content
   }
 
   .site-header__menu {
@@ -109,11 +106,16 @@ import logo from "../assets/img/logo.JPG";
     gap: 0.5rem;
   }
 
+  .site-header__social {
+    display: flex;
+    justify-content: center;
+  }
+
   .site-header__link {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: .25rem;
+    padding: .5rem;
     border-radius: 9999px;
     border: 1px solid transparent;
     color: rgb(var(--color-neutral));
@@ -146,17 +148,15 @@ import logo from "../assets/img/logo.JPG";
   @media (min-width: 768px) {
     .site-header__inner {
       flex-direction: row;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      gap: 2rem;
     }
 
     .site-header__nav {
-      flex: 1;
+      width: fit-content;
     }
 
     .site-header__menu {
-      justify-content: space-between;
       gap: 0.75rem;
     }
   }
