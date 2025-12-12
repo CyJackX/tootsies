@@ -4,7 +4,7 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { Image } from "astro:assets";
-import tvvbestcrowd from "../assets/img/tvvbestcrowd.webp";
+import tvvbestcrowd from "../assets/img/tvvbestcrowd.jpg";
 import tvvcrowd2 from "../assets/img/tvvcrowd2.webp";
 import crowdpic from "../assets/img/crowdpic.webp";
 import Profile from "../components/Profile.astro";
@@ -65,7 +65,7 @@ import { videoGroups } from "../data/videos";
         <h2 class="text-center">BTS Photos</h2>
         <AlbumGallery />
       </section>
-      <section id="next-show" class="h-100">
+      <section id="next-show">
         <h2 class="text-center">Next Show</h2>
         <p>
           lorem Ipsum is simply dummy text of the printing and typesetting
@@ -82,21 +82,24 @@ import { videoGroups } from "../data/videos";
       <section id="team">
         <h2 class="text-center">The Team</h2>
         <div
-          class="team-grid flex flex-col sm:flex-row gap-4 justify-center items-center sm:items-start"
+          class="team-grid flex flex-wrap gap-4 justify-center items-stretch"
         >
           <Profile
+            class="flex-1 max-w-[24rem] h-full"
             image={andy}
             blurb="Andy Zou is a producer-director that has been working with comedians all over NYC for the better part of a decade.  He’s done videos for ClickHole, Snapchat, Funny or Die, and spent the last three years at Comedy Central Digital."
             name="Andy Zou"
             link="https://www.andyzou.com/"
           />
           <Profile
+            class="flex-1 max-w-[24rem] h-full"
             image={katie}
             blurb="Katie Sicking is a writer & director based in NYC. She’s made multiple short films that have been selected for festivals such as WyIFF, Gold Coast, AFF and more. She’s also created short films and digital series for Adult Swim and Comedy Central."
             name="Katie Sicking"
             link="https://www.katiesicking.com/"
           />
           <Profile
+            class="flex-1 max-w-[24rem] h-full"
             image={alec}
             blurb="Alec Cohen is a comedy director that has been featured by Comedy Central, Adult Swim, Above Average, Slamdance, Stareable, DUST, SeriesFest, NYTVF, MTV.com, Hatched.nyc, The New Yorker, Funny or Die, and more."
             name="Alec Cohen"
@@ -104,7 +107,7 @@ import { videoGroups } from "../data/videos";
           />
         </div>
       </section>
-      <Image src={tvvbestcrowd} alt="TVV Best Crowd"  />
+      <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="mt-4"/>
       <Footer />
     </main>
   </body>
@@ -114,19 +117,12 @@ import { videoGroups } from "../data/videos";
   section {
     margin: 0 0 2em 0;
     padding: 1em;
+    /* background-color: rgb(var(--color-primary)); */
     /* border: 1px solid black; */
     border-radius: 1em;
     /* box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1); */
   }
 
-  .team-grid {
-    /* display: grid;
-    gap: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-    grid-auto-rows: 1fr;
-    align-items: stretch;
-    justify-items: center; */
-  }
   Profile {
     margin: 0;
     @apply w-full h-full;
