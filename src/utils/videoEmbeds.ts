@@ -27,7 +27,7 @@ export interface VideoEmbed {
 const YOUTUBE_ALLOW =
   "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
 const VIMEO_ALLOW =
-  "autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media";
+  "autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share";
 
 const YOUTUBE_REGEX =
   /(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/i;
@@ -69,12 +69,14 @@ export function getVideoEmbed(video: VideoItem): VideoEmbed | null {
       };
     }
     case "vimeo": {
-      const id = extractVimeoId(video.url);
-      if (!id) return null;
+      const parsed = extractVimeoDetails(video.url);
+      if (!parsed) return null;
+      const { id, hash } = parsed;
+      const hashSuffix = hash ? `?h=${hash}` : "";
       return {
         provider,
         iframe: {
-          src: `https://player.vimeo.com/video/${id}`,
+          src: `https://player.vimeo.com/video/${id}${hashSuffix}`,
           title: video.title,
         },
       };
@@ -114,16 +116,25 @@ function extractYouTubeId(url: string): string | null {
   return null;
 }
 
-function extractVimeoId(url: string): string | null {
-  const match = url.match(VIMEO_REGEX);
-  if (match?.[1]) return match[1];
+function extractVimeoDetails(
+  url: string,
+): { id: string; hash?: string } | null {
   try {
     const parsed = new URL(url);
     const parts = parsed.pathname.split("/").filter(Boolean);
-    const candidate = parts.pop();
-    if (candidate && /^\d+$/.test(candidate)) {
-      return candidate;
-    }
+    // First numeric segment is the ID
+    const id = parts.find((part) => /^\d+$/.test(part));
+    // Second segment (if alphanumeric and not the id) is often the hash
+    const hash =
+      parts.find((part) => /^[a-zA-Z0-9]+$/.test(part) && part !== id) ??
+      undefined;
+
+    // Prefer explicit h query param if present
+    const hParam = parsed.searchParams.get("h");
+    const finalHash = hParam ?? hash;
+
+    if (!id) return null;
+    return { id, hash: finalHash };
   } catch (error) {
     console.warn("Unable to parse Vimeo URL", url, error);
   }
