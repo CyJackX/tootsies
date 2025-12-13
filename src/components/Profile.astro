@@ -62,13 +62,14 @@ const resolvedImage =
     align-items: center;
     gap: 1.5rem;
     text-align: center;
-    width: 100%;
-    /* background: rgb(var(--color-primary)); */
+    background: var(--color-neutral);
     border-radius: 1rem;
     box-shadow: var(--box-shadow);
     padding: 2rem;
-    height: 100%;
-    flex: 1 1 16rem;
+    color: var(--color-neutral-foreground);
+    flex: 1;
+    min-width: 16rem;
+    max-width: 20rem;
   }
 
   .profile-card__media {
@@ -98,7 +99,7 @@ const resolvedImage =
   }
 
   .profile-card__link {
-    color: rgb(var(--color-secondary));
+    /* color: var(--color-secondary); */
 
   }
 
@@ -111,6 +112,6 @@ const resolvedImage =
     text-align: justify;
     margin: 0;
     font-size: 1rem;
-    color: rgb(var(--gray));
+    color: var(--gray);
   }
 </style>

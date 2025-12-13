@@ -109,7 +109,7 @@ export const videoGroups: VideoGroup[] = [
         title: "SCRAPBOOKING",
         url: "https://www.youtube.com/watch?v=mM5wVPIytiM",
         description: {
-          credits: "SCRAPBOOKING by Will Jacobs and Matt Antonucci",
+          credits: "Will Jacobs and Matt Antonucci",
           details: "Winner of Audience Vote!",
         },
       },

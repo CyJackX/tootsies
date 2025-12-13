@@ -21,7 +21,7 @@ import { videoGroups } from "../data/videos";
 ---
 
 <!doctype html>
-<html lang="en" class="bg-neutral-800 text-white">
+<html lang="en" class="bg-neutral text-neutral-foreground">
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
@@ -130,21 +130,18 @@ import { videoGroups } from "../data/videos";
           class="team-grid flex flex-wrap gap-4 justify-center items-stretch"
         >
           <Profile
-            class="flex-1 max-w-[20rem] h-full"
             image={andy}
             blurb="Andy Zou is a producer-director that has been working with comedians all over NYC for the better part of a decade.  He’s done videos for ClickHole, Snapchat, Funny or Die, and spent the last three years at Comedy Central Digital."
             name="Andy Zou"
             link="https://www.andyzou.com/"
           />
           <Profile
-            class="flex-1 max-w-[20rem] h-full"
             image={katie}
             blurb="Katie Sicking is a writer & director based in NYC. She’s made multiple short films that have been selected for festivals such as WyIFF, Gold Coast, AFF and more. She’s also created short films and digital series for Adult Swim and Comedy Central."
             name="Katie Sicking"
             link="https://www.katiesicking.com/"
           />
           <Profile
-            class="flex-1 max-w-[20rem] h-full"
             image={alec}
             blurb="Alec Cohen is a comedy director that has been featured by Comedy Central, Adult Swim, Above Average, Slamdance, Stareable, DUST, SeriesFest, NYTVF, MTV.com, Hatched.nyc, The New Yorker, Funny or Die, and more."
             name="Alec Cohen"
@@ -162,9 +159,10 @@ import { videoGroups } from "../data/videos";
   section {
     margin: 0 0 2em 0;
     padding: 1em;
-    /* background-color: rgb(var(--color-primary)); */
-    /* border: 1px solid black; */
+    background-color: var(--color-neutral-foreground);
+    border: 4px solid black;
     border-radius: 1em;
+    color: black;
     /* box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1); */
   }
 
@@ -179,14 +177,6 @@ import { videoGroups } from "../data/videos";
     height: 100%;
   }
 
-  .card {
-    padding: 1em;
-    /* border: 1px solid black; */
-    border-radius: 1em;
-    background-color: rgb(var(--color-neutral-surface));
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-    margin: 2em 0;
-  }
   figure {
     padding: 0.5em;
   }
