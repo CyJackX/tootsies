@@ -39,7 +39,18 @@ export const videoGroups: VideoGroup[] = [
       {
         title: "The Only Morning Show",
         url: "https://www.youtube.com/watch?v=I4aQrFztoQ8",
-        description: { credits: "Joe Miles", details: "Runner Up for Audience Vote!" },
+        description: {
+          credits: "Joe Miles",
+          details: "Runner Up for Audience Vote!",
+        },
+      },
+      {
+        title: "Pregnancy Test",
+        url: "https://www.youtube.com/watch?v=6qLeT2MyLwA",
+        description: {
+          credits: "Jared Bronen",
+          details: "Best Actor - Marina Gasparyan",
+        },
       },
       {
         title: "Bushwick Bateman",
@@ -77,14 +88,7 @@ export const videoGroups: VideoGroup[] = [
         url: "https://youtu.be/xnQDK29XCqc",
         description: { credits: "Anita Castillo-Halvorssen" },
       },
-      {
-        title: "Pregnancy Test",
-        url: "https://www.youtube.com/watch?v=6qLeT2MyLwA",
-        description: {
-          credits: "Jared Bronen",
-          details: "Best Actor - Marina Gasparyan",
-        },
-      },
+
       //   {
       //     title: "Game Night",
       //     url: "https://www.instagram.com/p/DMQOsjWubh1/",
@@ -96,7 +100,6 @@ export const videoGroups: VideoGroup[] = [
     label: "Tootsie's 3",
     date: "2024-05-31",
     videos: [
-
       {
         title: "Unfamiliar",
         url: "https://vimeo.com/832076218?fl=pl&fe=vl",
@@ -160,7 +163,7 @@ export const videoGroups: VideoGroup[] = [
             "Trevor Williams, starring Masha King, Vincent Peone, Katie Sicking, Andrew Bourne. Shot by Nathan Russell.",
         },
       },
-      
+
       {
         title: "Pick a Random Number",
         url: "https://www.youtube.com/watch?v=Plx-cJik2n8&t=1s",
@@ -201,7 +204,8 @@ export const videoGroups: VideoGroup[] = [
         title: "Melinda's Late Night Radio Talk Show",
         url: "https://www.youtube.com/watch?v=3F4JrzmI2vU",
         description: { credits: "Laura Ornella & Kevin Ralston" },
-      },{
+      },
+      {
         title: "The Partner",
         url: "https://www.youtube.com/watch?v=pnW4EZqCRKk",
         description: { credits: "Paris Adkins, Alexis Pereira, Bill DiPiero" },

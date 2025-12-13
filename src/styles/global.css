@@ -117,9 +117,16 @@ img {
 }
 
 /* shared tab buttons (video + album galleries) */
+.album-toggle,
+.video-toggle {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 1rem;
+}
+
 .tab-toggle__btn {
-	padding: 0.5rem 2rem;
-	border-radius: 9999px;
+	padding: 0.25rem 0.5rem;
+	font-size: 0.75rem;
 	border: 1px solid rgba(0, 0, 0, 0.15);
 	background-color: rgba(var(--color-secondary) / 0.6);
 	transition: background-color 0.2s ease, color 0.2s ease,
@@ -129,6 +136,23 @@ img {
 	align-items: center;
 	gap: 0.125rem;
 	font-weight: bold;
+}
+
+@media (min-width: 768px) {
+	.tab-toggle__btn {
+		font-size: 0.875rem;
+	}
+}
+
+.tab-toggle__btn:first-child {
+	padding-left: 1rem;
+	border-top-left-radius: 9999px;
+	border-bottom-left-radius: 9999px;
+}
+.tab-toggle__btn:last-child {
+	border-top-right-radius: 9999px;
+	border-bottom-right-radius: 9999px;
+	padding-right: 1rem;
 }
 
 .tab-toggle__btn:hover {
