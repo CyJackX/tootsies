@@ -46,9 +46,9 @@ const slugify = (value: string) =>
           data-target={slugify(group.label)}
           aria-pressed={index === 0 ? "true" : "false"}
         >
-          <span class="video-toggle__label">{group.label}</span>
+          <span class="toggle__label">{group.label}</span>
           {group.date && (
-            <span class="video-toggle__date">
+            <span class="toggle__date">
               {new Date(group.date).toLocaleDateString(undefined, {
                 year: "numeric",
                 month: "short",

@@ -76,9 +76,9 @@ const albumData = ALBUMS_CONFIG
             data-target={album.id}
             aria-pressed={index === 0 ? "true" : "false"}
           >
-            <span class="album-toggle__label">{album.label}</span>
+            <span class="toggle__label">{album.label}</span>
             {album.date && (
-              <span class="album-toggle__date">
+              <span class="toggle__date">
                 {new Date(album.date).toLocaleDateString(undefined, {
                   year: "numeric",
                   month: "short",

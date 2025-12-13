@@ -124,11 +124,13 @@ img {
 	margin-bottom: 1rem;
 }
 
+.toggle__date {
+	font-size: 0.75rem;
+}
+
 .tab-toggle__btn {
 	padding: 0.25rem 0.5rem;
-	font-size: 0.75rem;
-	border: 1px solid rgba(0, 0, 0, 0.15);
-	background-color: rgba(var(--color-secondary) / 0.6);
+	font-size: 1rem;
 	transition: background-color 0.2s ease, color 0.2s ease,
 	border-color 0.2s ease;
 	display: flex;
@@ -138,31 +140,14 @@ img {
 	font-weight: bold;
 }
 
-@media (min-width: 768px) {
-	.tab-toggle__btn {
-		font-size: 0.875rem;
-	}
-}
-
-.tab-toggle__btn:first-child {
-	padding-left: 1rem;
-	border-top-left-radius: 9999px;
-	border-bottom-left-radius: 9999px;
-}
-.tab-toggle__btn:last-child {
-	border-top-right-radius: 9999px;
-	border-bottom-right-radius: 9999px;
-	padding-right: 1rem;
-}
-
 .tab-toggle__btn:hover {
 	background-color: rgba(0, 0, 0, 0.08);
 }
 
 .tab-toggle__btn.is-active {
-	background-color: rgb(var(--color-secondary));
-	border-color: transparent;
-	color: white;
+	border-bottom-color: rgb(var(--color-secondary));
+	border-bottom-width: 4px;
+	border-bottom-style: solid;
 }
 
 /* shared swiper nav buttons */
