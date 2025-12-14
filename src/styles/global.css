@@ -142,7 +142,7 @@ img {
 }
 
 .tab-toggle__btn:hover {
-  background-color: rgba(0, 0, 0, 0.08);
+  cursor: pointer;
 }
 
 .tab-toggle__btn.is-active {
