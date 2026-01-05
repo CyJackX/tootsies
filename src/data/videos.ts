@@ -6,6 +6,11 @@ export const videoGroups: VideoGroup[] = [
     date: "2025-06-06",
     videos: [
       {
+        title: "OH, DEER",
+        url: "https://www.youtube.com/watch?v=Dgc4EkRSPk0",
+        description: { credits: "Marjorie LeWit and Dante Russo", details: "Winner of Audience Vote!" },
+      },
+      {
         title: "Gaytheon",
         url: "https://www.youtube.com/watch?v=yHCHWnA81xc",
         description: { credits: "Bill DiPiero" },
