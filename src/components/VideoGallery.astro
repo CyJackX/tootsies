@@ -135,10 +135,10 @@ const slugify = (value: string) =>
                               referrerpolicy="strict-origin-when-cross-origin"
                             ></iframe>
                             <div class="max-w-2/3 mx-auto pt-4 text-center">
-                              <h3 >{video.title}</h3>
-                              <p >By {video.description.credits}</p>
+                              <p >{video.title}
+                                <br />By {video.description.credits}</p>
                               {video.description.details && (
-                                <p class="text-sm">{video.description.details}</p>
+                                <p class="text-sm text-primary">{video.description.details}</p>
                               )}
                             </div>
                           </div>

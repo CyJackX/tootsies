@@ -15,11 +15,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #3b8433;
+  --color-primary: #efaa38;
   --color-primary-foreground: #ffffff;
-  --color-secondary: #e4721d;
+  --color-secondary: #7ad0cf;
   --color-secondary-foreground: #ffffff;
-  --color-neutral: #202030;
+  --color-neutral: #004356;
   --color-neutral-foreground: #ffffff;
   --color-neutral-muted: #6d7aa0;
   --color-neutral-border: #e5e9f0;
@@ -53,9 +53,12 @@ h1 {
 h2 {
   font-size: 3em;
   font-family: "Atelia";
+  color: var(--color-primary);
 }
 h3 {
-  font-size: 1.5em;
+  font-size: 2em;
+  font-family: "Atelia";
+  color: var(--color-primary);
 }
 h4 {
   font-size: 1.25em;
@@ -68,30 +71,17 @@ b {
   font-weight: 700;
 }
 
-ul,
-ol {
-  list-style: disc;
-}
-
-ol {
-  list-style: decimal;
-}
-
-ul ul,
-ol ul {
-  list-style: circle;
-}
-
 li {
   margin: 0.25em 0;
   line-height: 1.6;
 }
 a {
-  color: var(--accent);
-  text-decoration: underline;
+  color: var(--color-secondary);
+
 }
 a:hover {
-  color: var(--accent);
+  color: var(--color-secondary);
+  text-decoration: underline;
 }
 p {
   margin-bottom: 0.5em;

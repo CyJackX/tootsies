@@ -23,6 +23,24 @@ const resolvedImage =
 ---
 
 <article class:list={["profile-card", className]}>
+  {
+    name && (
+      <h4 class="profile-card__name">
+        {link ? (
+          <a
+            href={link}
+            target="_blank"
+            rel="noreferrer noopener"
+            class="profile-card__link"
+          >
+            {name}
+          </a>
+        ) : (
+          name
+        )}
+      </h4>
+    )
+  }
   <figure class="profile-card__media">
     <img
       src={resolvedImage.src}
@@ -32,24 +50,7 @@ const resolvedImage =
     />
   </figure>
   <div class="profile-card__body">
-    {
-      name && (
-        <h3 class="profile-card__name">
-          {link ? (
-            <a
-              href={link}
-              target="_blank"
-              rel="noreferrer noopener"
-              class="profile-card__link"
-            >
-              {name}
-            </a>
-          ) : (
-            name
-          )}
-        </h3>
-      )
-    }
+    
     <p class="profile-card__blurb">{blurb}</p>
   </div>
 </article>
@@ -79,6 +80,7 @@ const resolvedImage =
     place-items: center;
     overflow: hidden;
     border-radius: 50%;
+    width: 66%;
   }
 
   .profile-card__media img {
@@ -99,7 +101,7 @@ const resolvedImage =
   }
 
   .profile-card__link {
-    /* color: var(--color-secondary); */
+    color: var(--color-secondary);
 
   }
 

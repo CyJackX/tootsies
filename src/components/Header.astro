@@ -1,5 +1,4 @@
 ---
-import HeaderLink from "./HeaderLink.astro";
 import { Image } from "astro:assets";
 import logo from "../assets/img/logo.png";
 ---
@@ -16,32 +15,32 @@ import logo from "../assets/img/logo.png";
     <nav class="site-header__nav" aria-label="Primary navigation">
       <ul class="site-header__menu">
         <li>
-          <HeaderLink href="/#home" class="site-header__link">Home</HeaderLink>
+          <a href="/#home" class="site-header__link">Home</a>
         </li>
         <li>
-          <HeaderLink href="/#how-it-works" class="site-header__link">
+          <a href="/#how-it-works" class="site-header__link">
             How It Works
-          </HeaderLink>
+          </a>
         </li>
         <li>
-          <HeaderLink href="/#past-videos" class="site-header__link">
+          <a href="/#past-videos" class="site-header__link">
             Past Videos
-          </HeaderLink>
+          </a>
         </li>
         <li>
-          <HeaderLink href="/#photos" class="site-header__link">
+          <a href="/#photos" class="site-header__link">
             BTS Photos
-          </HeaderLink>
+          </a>
         </li>
         <li>
-          <HeaderLink href="/#next-show" class="site-header__link">
+          <a href="/#next-show" class="site-header__link">
             Next Show
-          </HeaderLink>
+          </a>
         </li>
         <li>
-          <HeaderLink href="/#team" class="site-header__link">
+          <a href="/#team" class="site-header__link">
             About Us
-          </HeaderLink>
+          </a>
         </li>
         <li class="site-header__social">
           <a
@@ -93,7 +92,7 @@ import logo from "../assets/img/logo.png";
   }
 
   .site-header__logo {
-    width: min(180px, 45vw);
+    width: min(240px, 45vw);
     height: auto;
   }
 
@@ -118,11 +117,13 @@ import logo from "../assets/img/logo.png";
   .site-header__link {
     display: inline-flex;
     align-items: center;
-    font-weight: bold;
     gap: 0.5rem;
     padding: 0 0.5rem;
     border-radius: 9999px;
     border: 1px solid transparent;
+    color: var(--color-secondary);
+    font-family: "Atelia";
+    text-decoration: none;
     transition:
       color 0.2s ease,
       border-color 0.2s ease,
@@ -150,11 +151,6 @@ import logo from "../assets/img/logo.png";
   }
 
   @media (min-width: 768px) {
-    .site-header__inner {
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-    }
 
     .site-header__nav {
       width: fit-content;
