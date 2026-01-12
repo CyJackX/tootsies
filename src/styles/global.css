@@ -6,10 +6,18 @@
 
 @font-face {
   font-family: "Atelia";
-  src: url("../assets/Atelia.woff2") format("woff2");
+  src: url("../assets/fonts/Atelia.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Host Grotesk";
+  src: url("../assets/fonts/HostGrotesk-VariableFont_wght.ttf") format("ttf");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
 }
 
 @import "tailwindcss";
@@ -38,6 +46,7 @@ body {
 
 html {
   scroll-behavior: smooth;
+  font-family: "Host Grotesk", sans-serif;
 }
 h1,
 h2,
