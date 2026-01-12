@@ -81,7 +81,6 @@ b {
 }
 
 li {
-  margin: 0.25em 0;
   line-height: 1.6;
 }
 a {
@@ -107,11 +106,6 @@ input {
 }
 table {
   width: 100%;
-}
-img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
 }
 
 /* shared tab buttons (video + album galleries) */

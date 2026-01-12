@@ -1,6 +1,9 @@
 ---
 import { Image } from "astro:assets";
 import logo from "../assets/img/logo.png";
+import hamburgerIcon from "../assets/img/HEADER/Hamburger.svg";
+import closeIcon from "../assets/img/HEADER/CloseX.svg";
+import mobileBg from "../assets/img/HEADER/Mobile BG 1.svg";
 ---
 
 <header class="site-header">
@@ -12,35 +15,25 @@ import logo from "../assets/img/logo.png";
         class="site-header__logo"
       />
     </a>
-    <nav class="site-header__nav" aria-label="Primary navigation">
+    <nav class="site-header__nav desktop-nav" aria-label="Primary navigation">
       <ul class="site-header__menu">
         <li>
           <a href="/#home" class="site-header__link">Home</a>
         </li>
         <li>
-          <a href="/#how-it-works" class="site-header__link">
-            How It Works
-          </a>
+          <a href="/#how-it-works" class="site-header__link"> How It Works </a>
         </li>
         <li>
-          <a href="/#past-videos" class="site-header__link">
-            Past Videos
-          </a>
+          <a href="/#past-videos" class="site-header__link"> Past Videos </a>
         </li>
         <li>
-          <a href="/#photos" class="site-header__link">
-            BTS Photos
-          </a>
+          <a href="/#photos" class="site-header__link"> BTS Photos </a>
         </li>
         <li>
-          <a href="/#next-show" class="site-header__link">
-            Next Show
-          </a>
+          <a href="/#next-show" class="site-header__link"> Next Show </a>
         </li>
         <li>
-          <a href="/#team" class="site-header__link">
-            About Us
-          </a>
+          <a href="/#team" class="site-header__link"> About Us </a>
         </li>
         <li class="site-header__social">
           <a
@@ -69,8 +62,79 @@ import logo from "../assets/img/logo.png";
         </li>
       </ul>
     </nav>
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      data-menu-toggle
+    >
+      <img
+        src={hamburgerIcon.src}
+        alt=""
+        class="menu-toggle__icon"
+        loading="lazy"
+      />
+    </button>
   </div>
 </header>
+<div class="mobile-overlay" data-mobile-overlay hidden></div>
+<div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
+  <div class="mobile-menu__inner">
+    <nav aria-label="Mobile navigation">
+      <ul class="mobile-menu__list">
+        <li>
+          <button
+            class="menu-close"
+            type="button"
+            aria-label="Close menu"
+            data-menu-close
+          >
+            <img
+              src={closeIcon.src}
+              alt=""
+              class="menu-close__icon"
+              loading="lazy"
+            />
+          </button>
+        </li>
+        <li><a href="/#home" data-menu-link>Home</a></li>
+        <li><a href="/#how-it-works" data-menu-link>How It Works</a></li>
+        <li><a href="/#next-show" data-menu-link>Next Show</a></li>
+        <li><a href="/#past-videos" data-menu-link>Past Videos</a></li>
+        <li><a href="/#photos" data-menu-link>BTS Photos</a></li>
+        <li><a href="/#team" data-menu-link>About Us</a></li>
+        <li class="mobile-menu__social">
+          <a
+            href="https://www.instagram.com/tootsiesvideovault/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow Tootsies Video Vault on Instagram"
+            data-menu-link
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="42"
+              height="42"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-instagram-icon lucide-instagram"
+              ><rect width="20" height="20" x="2" y="2" rx="5" ry="5"
+              ></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+              ></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg
+            >
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <img src={mobileBg.src} alt="" class="mobile-menu__divider" loading="lazy" />
+</div>
 <style>
   .site-header {
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
@@ -78,11 +142,14 @@ import logo from "../assets/img/logo.png";
   }
 
   .site-header__inner {
+    position: relative;
     max-width: 96rem;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
   }
 
   .site-header__brand {
@@ -94,10 +161,6 @@ import logo from "../assets/img/logo.png";
   .site-header__logo {
     width: min(240px, 45vw);
     height: auto;
-  }
-
-  .site-header__nav {
-    width: fit-content;
   }
 
   .site-header__menu {
@@ -150,10 +213,193 @@ import logo from "../assets/img/logo.png";
     height: 1.5rem;
   }
 
-  @media (min-width: 768px) {
+  .menu-toggle {
+    position: fixed;
+    right: 1rem;
+    top: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--color-secondary);
+    background: var(--color-neutral);
+    padding: 0.5rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    z-index: 0;
+  }
 
-    .site-header__nav {
-      width: fit-content;
+  .menu-toggle__icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .mobile-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    z-index: 90;
+  }
+
+  .mobile-overlay.is-active {
+    opacity: 1;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-100%);
+    opacity: 0;
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
+  }
+
+  .mobile-menu.is-open {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .mobile-menu__inner {
+    position: relative;
+    padding: 1.5rem 1.25rem 0.5rem;
+    color: white;
+    height:fit-content;
+    background:var(--color-neutral);
+  }
+
+  .mobile-menu__list {
+    list-style: none;
+    margin: 0;
+    padding: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    font-size: 2.5rem;
+    font-weight: 600;
+    gap: .75rem;
+  }
+
+  .mobile-menu__list a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .mobile-menu__list a:hover,
+  .mobile-menu__list a:focus-visible {
+    text-decoration: underline;
+  }
+
+  .mobile-menu__social {
+    margin-left: auto;
+  }
+
+  .menu-close {
+    position:absolute;
+    right: 1rem;
+    top: 1rem;
+    border: none;
+    background: transparent;
+    padding: 0.5rem;
+    cursor: pointer;
+  }
+
+  .menu-close__icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .mobile-menu__divider {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: linear-gradient(to bottom, var(--color-neutral) 0%, var(--color-neutral) 50%, transparent 100%);
+  }
+
+  .site-header__nav {
+    width: fit-content;
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .menu-toggle {
+      display: none;
+    }
+
+    .desktop-nav {
+      display: block;
+    }
+
+    .mobile-menu,
+    .mobile-overlay {
+      display: none;
+    }
+
+    .site-header__inner {
+      justify-content: center;
+      gap: 1.5rem;
     }
   }
+
+  body.mobile-menu-open {
+    overflow: hidden;
+  }
 </style>
+<script is:inline type="module">
+  const toggle = document.querySelector("[data-menu-toggle]");
+  const closeBtn = document.querySelector("[data-menu-close]");
+  const menu = document.querySelector("[data-mobile-menu]");
+  const overlay = document.querySelector("[data-mobile-overlay]");
+  const links = Array.from(document.querySelectorAll("[data-menu-link]"));
+  const body = document.body;
+
+  const openMenu = () => {
+    menu?.removeAttribute("hidden");
+    overlay?.removeAttribute("hidden");
+    // Force a reflow to ensure the element is rendered in initial state
+    void menu?.offsetHeight;
+    // Then trigger the animation
+    requestAnimationFrame(() => {
+      menu?.classList.add("is-open");
+      overlay?.classList.add("is-active");
+      toggle?.setAttribute("aria-expanded", "true");
+      body.classList.add("mobile-menu-open");
+    });
+  };
+
+  const closeMenu = () => {
+    menu?.classList.remove("is-open");
+    overlay?.classList.remove("is-active");
+    toggle?.setAttribute("aria-expanded", "false");
+    body.classList.remove("mobile-menu-open");
+    setTimeout(() => {
+      menu?.setAttribute("hidden", "");
+      overlay?.setAttribute("hidden", "");
+    }, 300);
+  };
+
+  toggle?.addEventListener("click", () => {
+    const isOpen = menu?.classList.contains("is-open");
+    if (isOpen) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  closeBtn?.addEventListener("click", closeMenu);
+  overlay?.addEventListener("click", closeMenu);
+  links.forEach((link) => link.addEventListener("click", closeMenu));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeMenu();
+    }
+  });
+</script>
