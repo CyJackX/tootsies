@@ -11,18 +11,23 @@ import prizebelt from "../assets/img/prizebelt.jpg";
 import superlatives from "../assets/img/superlatives.jpg";
 import trophies from "../assets/img/trophies.jpg";
 import ModalImageProvider from "../components/ModalImageProvider.astro";
-import Profile from "../components/Profile.astro";
 import AlbumGallery from "../components/AlbumGallery.astro";
 import VideoGallery from "../components/VideoGallery.astro";
 import andy from "../assets/img/andy.jpg";
 import katie from "../assets/img/katie.jpg";
 import alec from "../assets/img/alec.png";
+import cloud from "../assets/img/cloud.png";
+import tube from "../assets/img/tube.png";
+import box from "../assets/img/box.png";
+import doorway from "../assets/img/doorway.png";
+import spaghetti from "../assets/img/spaghetti.png";
+import film from "../assets/img/film.png";
 import { videoGroups } from "../data/videos";
 ---
 
 <!doctype html>
 <html lang="en" class="bg-neutral text-neutral-foreground text-center">
-  <head >
+  <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
   <body id="home">
@@ -49,8 +54,7 @@ import { videoGroups } from "../data/videos";
         <a
           href="https://docs.google.com/forms/d/e/1FAIpQLSdJ-Uee0B4gFOxfuqjtpuX9i3t1S34HoGQwNvCApZmoQH8aMA/viewform"
           target="_blank"
-          class="text-secondary font-bold"
-          >Submission Form here!</a
+          class="text-secondary font-bold">Submission Form here!</a
         >
         <p>
           Can't make this one?
@@ -63,17 +67,25 @@ import { videoGroups } from "../data/videos";
 
       <section id="how-it-works" class="space-y-6">
         <h3 class="text-center">How It Works</h3>
-        <ul class="mx-4 flex gap-8 text-center">
-          <li>
-            Submit a <strong>free</strong> application with examples of past work.
+        <ul class="mx-4 flex gap-8 text-center how-it-works__list">
+          <li class="how-it-works__item">
+            <Image src={cloud} alt="Cloud" class="how-it-works__frame" />
+            <div class="how-it-works__content">
+              Submit a <strong>free</strong> application.
+            </div>
           </li>
-          <li>
-            If accepted, participants pay a prize pool fee and get 3 months to
-            produce a brand new short film under 3 minutes in length.
+          <li class="how-it-works__item">
+            <Image src={tube} alt="Tube" class="how-it-works__frame" />
+            <div class="how-it-works__content">
+              Make a brand new 3 minute short.
+            </div>
           </li>
-          <li>
-            Attend the premiere and have a blast with prizes, trophies, and a
-            great crowd!
+          <li class="how-it-works__item">
+            <Image src={box} alt="Box" class="how-it-works__frame" />
+            <div class="how-it-works__content">
+              Attend the premiere and have a blast with prizes, trophies, and a
+              great crowd!
+            </div>
           </li>
         </ul>
       </section>
@@ -130,31 +142,92 @@ import { videoGroups } from "../data/videos";
 
       <section id="team">
         <h3 class="text-center">The Team</h3>
-        <div
-          class="team-grid flex flex-wrap gap-4 justify-center items-stretch"
-        >
-          <Profile
-            image={andy}
-            blurb="Andy Zou is a producer-director that has been working with comedians all over NYC for the better part of a decade.  He’s done videos for ClickHole, Snapchat, Funny or Die, and spent the last three years at Comedy Central Digital."
-            name="Andy Zou"
-            link="https://www.andyzou.com/"
-          />
-          <Profile
-            image={katie}
-            blurb="Katie Sicking is a writer & director based in NYC. She’s made multiple short films that have been selected for festivals such as WyIFF, Gold Coast, AFF and more. She’s also created short films and digital series for Adult Swim and Comedy Central."
-            name="Katie Sicking"
-            link="https://www.katiesicking.com/"
-          />
-          <Profile
-            image={alec}
-            blurb="Alec Cohen is a comedy director that has been featured by Comedy Central, Adult Swim, Above Average, Slamdance, Stareable, DUST, SeriesFest, NYTVF, MTV.com, Hatched.nyc, The New Yorker, Funny or Die, and more."
-            name="Alec Cohen"
-            link="https://www.aleccohen.cool/"
-          />
+        <div class="team-grid">
+          <div class="team-grid__item">
+            <div class="team-profile">
+              <Image
+                src={doorway}
+                alt="Doorway"
+                class="team-profile__bg scale-x-[-1]"
+              />
+              <h4 class="team-profile__name">
+                <a
+                  href="https://www.andyzou.com/"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  class="team-profile__link"
+                >
+                  Andy Zou
+                </a>
+              </h4>
+              <Image src={andy} alt="Andy Zou" class="team-profile__portrait" />
+            </div>
+            <p class="team-profile__blurb">
+              Andy Zou is a producer-director that has been working with
+              comedians all over NYC for the better part of a decade. He's done
+              videos for ClickHole, Snapchat, Funny or Die, and spent the last
+              three years at Comedy Central Digital.
+            </p>
+          </div>
+
+          <div class="team-grid__item">
+            <div class="team-profile">
+              <Image src={film} alt="Film" class="team-profile__bg translate-y-8" />
+              <h4 class="team-profile__name">
+                <a
+                  href="https://www.katiesicking.com/"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  class="team-profile__link"
+                >
+                  Katie Sicking
+                </a>
+              </h4>
+              <Image
+                src={katie}
+                alt="Katie Sicking"
+                class="team-profile__portrait"
+              />
+            </div>
+            <p class="team-profile__blurb">
+              Katie Sicking is a writer & director based in NYC. She's made
+              multiple short films that have been selected for festivals such as
+              WyIFF, Gold Coast, AFF and more. She's also created short films
+              and digital series for Adult Swim and Comedy Central.
+            </p>
+          </div>
+
+          <div class="team-grid__item">
+            <div class="team-profile">
+              <Image src={spaghetti} alt="Spaghetti" class="absolute bottom-0 translate-y-1/2 z-1" />
+              <h4 class="team-profile__name">
+                <a
+                  href="https://www.aleccohen.cool/"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  class="team-profile__link"
+                >
+                  Alec Cohen
+                </a>
+              </h4>
+              <Image
+                src={alec}
+                alt="Alec Cohen"
+                class="team-profile__portrait brightness-150"
+              />
+            </div>
+            <p class="team-profile__blurb">
+              Alec Cohen is a comedy director that has been featured by Comedy
+              Central, Adult Swim, Above Average, Slamdance, Stareable, DUST,
+              SeriesFest, NYTVF, MTV.com, Hatched.nyc, The New Yorker, Funny or
+              Die, and more.
+            </p>
+          </div>
         </div>
       </section>
-      <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="mt-4" />
     </main>
+    <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="mt-4" />
+
     <Footer />
 
     <style>
@@ -168,15 +241,66 @@ import { videoGroups } from "../data/videos";
         /* box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1); */
       }
 
-      Profile {
-        margin: 0;
-        @apply w-full h-full;
+      .team-grid {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        gap: 1.5rem;
       }
 
-      :global(.team-grid .profile-card) {
+      .team-grid__item {
+        position: relative;
+        display: inline-block;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .team-profile__bg {
+        position: absolute;
+        z-index: -1;
+        height: 100%;
+      }
+
+      .team-profile {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        text-align: center;
+        border-radius: 1rem;
+        box-shadow: var(--box-shadow);
+        color: var(--color-neutral-foreground);
+        flex: 1;
+      }
+
+      .team-profile__name {
+        font-family: "Atelia";
         margin: 0;
+      }
+
+      .team-profile__portrait {
+        margin: 0;
+        aspect-ratio: 1 / 1;
+        display: block;
+        overflow: hidden;
+        border-radius: 50%;
+        width: 66%;
+      }
+
+      .team-profile__portrait img {
+        display: block;
         width: 100%;
         height: 100%;
+        object-fit: cover;
+      }
+
+      .team-profile__blurb {
+        text-align: justify;
+        margin: 3rem 0 0;
+        font-size: 1rem;
+        color: var(--gray);
       }
 
       figure {
@@ -184,6 +308,40 @@ import { videoGroups } from "../data/videos";
       }
       figcaption {
         text-align: center;
+      }
+
+      .how-it-works__list {
+        list-style: none;
+        padding: 0;
+        flex-wrap: wrap;
+      }
+
+      .how-it-works__item {
+        position: relative;
+        flex: 1;
+        min-width: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .how-it-works__frame {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .how-it-works__content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        padding: 1rem;
+        color: var(--color-neutral-foreground);
+        text-align: center;
+        font-size: 1rem;
+        z-index: 1;
       }
     </style>
   </body>

@@ -41,7 +41,7 @@ body {
   word-wrap: break-word;
   overflow-wrap: break-word;
   color: var(--gray-dark);
-  @apply text-sm sm:text-base md:text-lg;
+  @apply text-sm sm:text-base;
 }
 
 html {
