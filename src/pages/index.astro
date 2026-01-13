@@ -142,7 +142,7 @@ import { videoGroups } from "../data/videos";
 
       <section id="team">
         <h3 class="text-center">The Team</h3>
-        <div class="team-grid">
+        <div class="flex justify-center md:flex-row flex-col items-center">
           <div class="team-grid__item">
             <div class="team-profile">
               <Image
@@ -172,7 +172,7 @@ import { videoGroups } from "../data/videos";
 
           <div class="team-grid__item">
             <div class="team-profile">
-              <Image src={film} alt="Film" class="team-profile__bg translate-y-8" />
+              <Image src={film} alt="Film" class="team-profile__bg" />
               <h4 class="team-profile__name">
                 <a
                   href="https://www.katiesicking.com/"
@@ -199,7 +199,7 @@ import { videoGroups } from "../data/videos";
 
           <div class="team-grid__item">
             <div class="team-profile">
-              <Image src={spaghetti} alt="Spaghetti" class="absolute bottom-0 translate-y-1/2 z-1" />
+              <Image src={spaghetti} alt="Spaghetti" class="absolute bottom-0 translate-y-1/2 z-0" />
               <h4 class="team-profile__name">
                 <a
                   href="https://www.aleccohen.cool/"
@@ -213,7 +213,7 @@ import { videoGroups } from "../data/videos";
               <Image
                 src={alec}
                 alt="Alec Cohen"
-                class="team-profile__portrait brightness-150"
+                class="team-profile__portrait brightness-200 -z-10"
               />
             </div>
             <p class="team-profile__blurb">
@@ -241,24 +241,18 @@ import { videoGroups } from "../data/videos";
         /* box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1); */
       }
 
-      .team-grid {
-        display: flex;
-        flex-wrap: nowrap;
-        justify-content: space-around;
-        gap: 1.5rem;
-      }
-
       .team-grid__item {
         position: relative;
         display: inline-block;
         flex: 1;
-        min-width: 0;
+        max-width: 75%;
+        margin: 1rem;
       }
 
       .team-profile__bg {
         position: absolute;
         z-index: -1;
-        height: 100%;
+        bottom:0;
       }
 
       .team-profile {
@@ -276,6 +270,7 @@ import { videoGroups } from "../data/videos";
       }
 
       .team-profile__name {
+        font-size: 1.5rem;
         font-family: "Atelia";
         margin: 0;
       }
@@ -286,7 +281,7 @@ import { videoGroups } from "../data/videos";
         display: block;
         overflow: hidden;
         border-radius: 50%;
-        width: 66%;
+        width: 75%;
       }
 
       .team-profile__portrait img {
@@ -297,10 +292,12 @@ import { videoGroups } from "../data/videos";
       }
 
       .team-profile__blurb {
+        z-index:5;
+        position: relative;
         text-align: justify;
         margin: 3rem 0 0;
         font-size: 1rem;
-        color: var(--gray);
+        background-color: var(--color-neutral);
       }
 
       figure {
