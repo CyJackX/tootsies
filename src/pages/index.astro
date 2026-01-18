@@ -40,8 +40,13 @@ import { videoGroups } from "../data/videos";
         comedy film producers, featuring dozens of shorts created by local
         filmmakers!
       </p>
-
-      <Image src={tvvcrowd2} alt="TVV Crowd" class="my-4 w-full rounded-none" />
+      <div class="overflow-x-hidden flex justify-center">
+        <Image
+          src={tvvcrowd2}
+          alt="TVV Crowd"
+          class="my-4 max-w-none w-[125%] md:w-full object-cover"
+        />
+      </div>
       <section id="next-show" class="text-center">
         <h3>Submit to the next show!</h3>
         <iframe
@@ -199,7 +204,11 @@ import { videoGroups } from "../data/videos";
 
           <div class="team-grid__item">
             <div class="team-profile">
-              <Image src={spaghetti} alt="Spaghetti" class="absolute bottom-0 translate-y-1/2 z-0" />
+              <Image
+                src={spaghetti}
+                alt="Spaghetti"
+                class="absolute bottom-0 translate-y-1/2 z-0"
+              />
               <h4 class="team-profile__name">
                 <a
                   href="https://www.aleccohen.cool/"
@@ -226,7 +235,7 @@ import { videoGroups } from "../data/videos";
         </div>
       </section>
     </main>
-    <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="mt-4" />
+    <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="mt-4 w-full" />
 
     <Footer />
 
@@ -252,7 +261,7 @@ import { videoGroups } from "../data/videos";
       .team-profile__bg {
         position: absolute;
         z-index: -1;
-        bottom:0;
+        bottom: 0;
       }
 
       .team-profile {
@@ -292,7 +301,7 @@ import { videoGroups } from "../data/videos";
       }
 
       .team-profile__blurb {
-        z-index:5;
+        z-index: 5;
         position: relative;
         text-align: justify;
         margin: 3rem 0 0;
