@@ -1,4 +1,7 @@
 ---
+import { Image } from "astro:assets";
+import arrowSvg from "../assets/img/WEB_VIDEOS PHOTOS/Arrow.svg";
+
 interface Props {
   direction: "prev" | "next";
   class?: string;
@@ -15,32 +18,25 @@ const label = ariaLabel ?? (isPrev ? "Previous slide" : "Next slide");
   class={`nav-button ${className}`.trim()}
   aria-label={label}
 >
-  {isPrev ? (
-    <svg
-      class="w-fit h-full"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1024 1024"
-      preserveAspectRatio="none"
-      aria-hidden="true"
-    >
-      <path class="ml-auto"
-        fill="currentColor"
-        d="M609.408 149.376L277.76 489.6a32 32 0 0 0 0 44.672l331.648 340.352a29.12 29.12 0 0 0 41.728 0a30.59 30.59 0 0 0 0-42.752L339.264 511.936l311.872-319.872a30.59 30.59 0 0 0 0-42.688a29.12 29.12 0 0 0-41.728 0"
-      />
-    </svg>
-  ) : (
-    <svg
-      class="w-full h-full"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1024 1024"
-      preserveAspectRatio="none"
-      aria-hidden="true"
-    >
-      <path
-        fill="currentColor"
-        d="M340.864 149.312a30.59 30.59 0 0 0 0 42.752L652.736 512L340.864 831.872a30.59 30.59 0 0 0 0 42.752a29.12 29.12 0 0 0 41.728 0L714.24 534.336a32 32 0 0 0 0-44.672L382.592 149.376a29.12 29.12 0 0 0-41.728 0z"
-      />
-    </svg>
-  )}
+  <Image
+    src={arrowSvg}
+    alt=""
+    aria-hidden="true"
+    width={66}
+    height={241}
+    class={`nav-button__icon ${isPrev ? "is-prev" : "is-next"}`}
+  />
 </button>
+
+<style>
+  .nav-button__icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .nav-button__icon.is-prev {
+    transform: rotate(180deg);
+  }
+</style>
 
