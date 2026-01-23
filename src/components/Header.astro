@@ -1,20 +1,27 @@
 ---
 import { Image } from "astro:assets";
-import logo from "../assets/img/logo.png";
-import hamburgerIcon from "../assets/img/HEADER/Hamburger.svg";
-import closeIcon from "../assets/img/HEADER/CloseX.svg";
-import mobileBg from "../assets/img/HEADER/Mobile BG 1.svg";
+import logo from "../assets/img/TVV Logo.svg";
+import hamburgerIcon from "../assets/img/WEB_HEADER/Hamburger.svg";
+import closeIcon from "../assets/img/WEB_HEADER/CloseX.svg";
+import mobileBg from "../assets/img/WEB_HEADER/Mobile BG 1.svg";
+import desktopBg from "../assets/img/WEB_HEADER/Desktop BG 1.svg";
 ---
 
-<header class="site-header">
+<header class="site-header my-8">
   <div class="site-header__inner">
-    <a href="/#home" class="site-header__brand" aria-label="Back to top">
+    <div class="w-full relative overflow-hidden">
+      <Image
+        src={desktopBg}
+        alt=""
+        class="-z-10 w-full h-[408px] object-cover hidden md:block 2k:h-auto 2k:w-full"
+      />
+      <Image src={mobileBg} alt="" class="-z-10 w-full block md:hidden" />
       <Image
         src={logo}
         alt="Tootsies Video Vault Logo"
-        class="site-header__logo"
+        class="absolute left-1/2 top-0 h-full -translate-x-1/2"
       />
-    </a>
+    </div>
     <nav class="site-header__nav desktop-nav" aria-label="Primary navigation">
       <ul class="site-header__menu">
         <li>
@@ -45,15 +52,15 @@ import mobileBg from "../assets/img/HEADER/Mobile BG 1.svg";
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
+              width="40"
+              height="40"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-instagram-icon lucide-instagram w-40 h-40"
+              class="w-40 h-40"
               ><rect width="20" height="20" x="2" y="2" rx="5" ry="5"
               ></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
               ></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg
@@ -137,14 +144,15 @@ import mobileBg from "../assets/img/HEADER/Mobile BG 1.svg";
 </div>
 <style>
   .site-header {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   .site-header__inner {
     position: relative;
-    max-width: 96rem;
-    margin: 0 auto;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -170,6 +178,7 @@ import mobileBg from "../assets/img/HEADER/Mobile BG 1.svg";
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    gap: 2rem;
   }
 
   .site-header__social {
@@ -180,13 +189,12 @@ import mobileBg from "../assets/img/HEADER/Mobile BG 1.svg";
   .site-header__link {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0 0.5rem;
     border-radius: 9999px;
     border: 1px solid transparent;
     color: var(--color-secondary);
     font-family: "Atelia";
     text-decoration: none;
+    font-size: 1.75rem;
     transition:
       color 0.2s ease,
       border-color 0.2s ease,
@@ -209,23 +217,21 @@ import mobileBg from "../assets/img/HEADER/Mobile BG 1.svg";
   }
 
   .site-header__link--icon svg {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
   }
 
   .menu-toggle {
-    position: fixed;
+    position: absolute;
     right: 1rem;
     top: 1rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid var(--color-secondary);
-    background: var(--color-neutral);
     padding: 0.5rem;
     border-radius: 9999px;
     cursor: pointer;
-    z-index: 1;
+    z-index: 10;
   }
 
   .menu-toggle__icon {
@@ -257,6 +263,7 @@ import mobileBg from "../assets/img/HEADER/Mobile BG 1.svg";
     transition:
       transform 0.3s ease,
       opacity 0.3s ease;
+    backdrop-filter: blur(1px);
   }
 
   .mobile-menu.is-open {
@@ -268,20 +275,20 @@ import mobileBg from "../assets/img/HEADER/Mobile BG 1.svg";
     position: relative;
     padding: 1.5rem 1.25rem 0.5rem;
     color: white;
-    height:fit-content;
-    background:var(--color-neutral);
+    height: fit-content;
+    background: var(--color-neutral);
   }
 
   .mobile-menu__list {
     list-style: none;
     margin: 0;
-    padding: 2rem 0;
+    padding: 2rem 0 0;
     display: flex;
     flex-direction: column;
     text-align: right;
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 600;
-    gap: .75rem;
+    gap: 0.75rem;
   }
 
   .mobile-menu__list a {
@@ -299,7 +306,7 @@ import mobileBg from "../assets/img/HEADER/Mobile BG 1.svg";
   }
 
   .menu-close {
-    position:absolute;
+    position: absolute;
     right: 1rem;
     top: 1rem;
     border: none;
@@ -317,7 +324,12 @@ import mobileBg from "../assets/img/HEADER/Mobile BG 1.svg";
     width: 100%;
     height: auto;
     display: block;
-    background: linear-gradient(to bottom, var(--color-neutral) 0%, var(--color-neutral) 50%, transparent 100%);
+    background: linear-gradient(
+      to bottom,
+      var(--color-neutral) 0%,
+      var(--color-neutral) 50%,
+      transparent 100%
+    );
   }
 
   .site-header__nav {

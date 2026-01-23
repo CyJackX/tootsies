@@ -14,10 +14,11 @@
 
 @font-face {
   font-family: "Host Grotesk";
-  src: url("../assets/fonts/HostGrotesk-VariableFont_wght.ttf") format("ttf");
-  font-weight: 400;
+  src: url("../assets/fonts/HostGrotesk-VariableFont_wght.ttf")
+    format("truetype");
+  font-weight: 100 900;
   font-style: normal;
-  font-display: block;
+  font-display: swap;
 }
 
 @import "tailwindcss";
@@ -25,13 +26,14 @@
 @theme {
   --color-primary: #efaa38;
   --color-primary-foreground: #ffffff;
-  --color-secondary: #7ad0cf;
+  --color-secondary: #41AFB4;
   --color-secondary-foreground: #ffffff;
   --color-neutral: #004356;
   --color-neutral-foreground: #ffffff;
   --color-neutral-muted: #6d7aa0;
   --color-neutral-border: #e5e9f0;
   --color-neutral-surface: #ffffff;
+  --breakpoint-2k: 1920px;
 }
 
 body {
@@ -58,9 +60,11 @@ h6 {
 }
 h1 {
   font-size: 2.5em;
+  font-family: "Atelia";
+  color: var(--color-primary);
 }
 h2 {
-  font-size: 3em;
+  font-size: 3.5em;
   font-family: "Atelia";
   color: var(--color-primary);
 }
@@ -93,6 +97,7 @@ a:hover {
 }
 p {
   margin-bottom: 0.5em;
+  font-size: 1.5rem;
 }
 .prose p {
   margin-bottom: 2em;
