@@ -27,6 +27,9 @@ import film from "../assets/img/film.png";
 import vhs from "../assets/img/WEB_SUBMIT/VHS pile.svg";
 import buttonPrimary from "../assets/img/WEB_SUBMIT/Button - Primary.svg";
 import buttonSecondary from "../assets/img/WEB_SUBMIT/Button - Secondary.svg";
+import trophySeal from "../assets/img/WEB_PRIZES/Trophy seal.svg";
+import beltSeal from "../assets/img/WEB_PRIZES/Belt seal.svg";
+import superlativeSeal from "../assets/img/WEB_PRIZES/Superlative seal.svg";
 import { videoGroups } from "../data/videos";
 ---
 
@@ -72,7 +75,7 @@ import { videoGroups } from "../data/videos";
             <Image
               src={buttonPrimary}
               alt="Submit Button"
-              class="max-w-sm hover:scale-105 transition-transform duration-300"
+              class="max-w-sm w-full hover:scale-105 transition-transform duration-300"
             />
             <p class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-nowrap">
               Submission Form here!
@@ -113,57 +116,82 @@ import { videoGroups } from "../data/videos";
           class="absolute inset-0 h-full w-full object-cover -z-10 hidden md:block"
         />
         <h2 class="text-center">How It Works</h2>
-        <ul class="mx-4 flex flex-col text-center my-auto how-it-works__list md:flex-row">
-          <li class="how-it-works__item self-end md:self-auto w-2/3 min-w-[320px] md:basis-1/3 md:max-w-[33.333%]">
-            <Image src={cloud} alt="" class="how-it-works__frame" />
-          </li>
-          <li class="how-it-works__item self-start md:self-auto w-2/3 min-w-[320px] md:basis-1/3 md:max-w-[33.333%]">
-            <Image src={tube} alt="" class="how-it-works__frame" />
-          </li>
-          <li class="how-it-works__item self-end md:self-auto w-2/3 min-w-[320px] md:basis-1/3 md:max-w-[33.333%]">
-            <Image src={box} alt="" class="how-it-works__frame" />
-          </li>
-        </ul>
+        <div class="mx-4 flex flex-col text-center my-auto how-it-works__list md:flex-row">
+          <Image
+            src={cloud}
+            alt="Submit a FREE application form"
+            class="how-it-works__frame self-end md:self-auto w-2/3 min-w-[320px] md:basis-1/3 md:max-w-[33.333%]"
+          />
+          <Image
+            src={tube}
+            alt="Make a brand new 3 minute short"
+            class="how-it-works__frame h-[110%] max-h-none self-start md:self-auto w-2/3 min-w-[320px] md:basis-1/3 md:max-w-[33.333%]"
+          />
+          <Image
+            src={box}
+            alt="Attend the premiere and have a blast with prizes and a great crowd!"
+            class="how-it-works__frame self-end md:self-auto w-2/3 min-w-[320px] md:basis-1/3 md:max-w-[33.333%]"
+          />
+        </div>
       </section>
       <Image src={crowdpic} alt="TVV Best Crowd" class="my-4 w-full" />
       <section id="
-            prizes">
+            prizes" class="prizes-section">
         <h2 class="text-center">Prizes!</h2>
-        <div class="flex">
-          <div class="flex w-full flex-wrap justify-center">
-            <figure class="w-full md:w-1/2">
+        <div class="prizes-grid">
+          <div class="prize-card">
+            <div class="prize-media">
               <Image
                 src={trophies}
                 alt="Tootsie's Video Vault trophies on a table"
-                class="rounded-lg"
+                class="prize-image"
                 loading="lazy"
                 data-modal-image
                 data-modal-full={trophies.src}
               />
-              <figcaption><i>Genuine</i> trophies!</figcaption>
-            </figure>
-            <figure class="w-full md:w-1/2">
+              <Image
+                src={trophySeal}
+                alt=""
+                class="prize-seal"
+                loading="lazy"
+              />
+            </div>
+          </div>
+          <div class="prize-card">
+            <div class="prize-media">
               <Image
                 src={prizebelt}
                 alt="Winners posing with the Tootsie's Video Vault championship belt"
-                class="rounded-lg"
+                class="prize-image"
                 loading="lazy"
                 data-modal-image
                 data-modal-full={prizebelt.src}
               />
-              <figcaption>A championship belt!</figcaption>
-            </figure>
-            <figure class="w-full md:w-1/2">
+              <Image
+                src={beltSeal}
+                alt=""
+                class="prize-seal"
+                loading="lazy"
+              />
+            </div>
+          </div>
+          <div class="prize-card">
+            <div class="prize-media">
               <Image
                 src={superlatives}
                 alt="Winners holding a best dressed award"
-                class="rounded-lg"
+                class="prize-image"
                 loading="lazy"
                 data-modal-image
                 data-modal-full={superlatives.src}
               />
-              <figcaption>Superlatives!</figcaption>
-            </figure>
+              <Image
+                src={superlativeSeal}
+                alt=""
+                class="prize-seal"
+                loading="lazy"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -340,9 +368,57 @@ import { videoGroups } from "../data/videos";
         background-color: var(--color-neutral);
       }
 
-      figure {
-        padding: 0.5em;
+      .prizes-grid {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        width: 100%;
       }
+
+      .prize-card {
+        position: relative;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 10%;
+      }
+
+      .prize-media {
+        position: relative;
+        width: 100%;
+      }
+
+      .prize-image {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 0.5rem;
+      }
+
+      .prize-seal {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translate(-50%, 90%);
+        width: 50%;
+        z-index: 10;
+      }
+
+      @media (max-width: 1000px) 
+      { /* Mobile */
+        .prizes-grid {
+          flex-direction: column;
+          align-items: center;
+        }
+        .prize-card {
+          padding-top: 50%;
+          padding-bottom: 0;
+        }
+        .prize-seal {
+          transform:translate(-50%, -90%);
+      }
+
       figcaption {
         text-align: center;
       }
@@ -357,12 +433,6 @@ import { videoGroups } from "../data/videos";
 
       .how-it-works__item {
         flex: 1;
-      }
-
-      .how-it-works__frame {
-        width: 100%;
-        height: auto;
-        display: block;
       }
     </style>
   </body>
