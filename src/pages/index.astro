@@ -32,6 +32,9 @@ import beltSeal from "../assets/img/WEB_PRIZES/Belt seal.svg";
 import superlativeSeal from "../assets/img/WEB_PRIZES/Superlative seal.svg";
 import prizesBgDesktop from "../assets/img/WEB_PRIZES/Desktop BG 3.svg";
 import prizesBgMobile from "../assets/img/WEB_PRIZES/Mobile BG 3.svg";
+import videosPhotosBgDesktop from "../assets/img/WEB_VIDEOS PHOTOS/Desktop BG 4.svg";
+import videosPhotosBgMobile from "../assets/img/WEB_VIDEOS PHOTOS/Mobile BG 4.svg";
+import popcorn from "../assets/img/WEB_VIDEOS PHOTOS/Popcorn.svg";
 import { videoGroups } from "../data/videos";
 ---
 
@@ -78,7 +81,7 @@ import { videoGroups } from "../data/videos";
           <Image
             src={vhs}
             alt="Submit Button"
-            class="max-w-xl transition-transform duration-300 group-hover:-rotate-3"
+            class="max-w-xl block transition-transform duration-300 group-hover:-rotate-3"
           />
           <div
             class="relative text-black transition-colors duration-300 group-hover:text-white"
@@ -98,22 +101,22 @@ import { videoGroups } from "../data/videos";
         <p>
           Can't make this one?
           <br />Send us an email and get on our mailing list for the next shows!
-          <div
-            class="relative text-black hover:text-white transition-colors duration-300"
-          >
-            <Image
-              src={buttonSecondary}
-              alt="Submit Button"
-              class="max-w-sm hover:scale-105 transition-transform duration-300"
-            />
-            <a
-              href="mailto:tootsiesvideovault@gmail.com"
-              class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-2xl"
-            >
-              TootsiesVideoVault@gmail.com
-            </a>
-          </div>
         </p>
+        <a
+          href="mailto:tootsiesvideovault@gmail.com"
+          class="relative inline-block text-black transition-colors duration-300 group"
+        >
+          <Image
+            src={buttonSecondary}
+            alt="Submit Button"
+            class="block max-w-sm transition-transform duration-300 group-hover:scale-105"
+          />
+          <span
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-2xl group-hover:text-white"
+          >
+            TootsiesVideoVault@gmail.com
+          </span>
+        </a>
       </section>
 
       <section id="how-it-works" class="space-y-6 how-it-works relative">
@@ -218,6 +221,28 @@ import { videoGroups } from "../data/videos";
         <h2 class="text-center">Featured Videos</h2>
         <VideoGallery groups={videoGroups} />
       </section>
+
+      <div class="videos-photos-bg">
+        <Image
+          src={videosPhotosBgMobile}
+          alt=""
+          class="videos-photos-bg__mobile"
+          loading="lazy"
+        />
+        <Image
+          src={videosPhotosBgDesktop}
+          alt=""
+          class="videos-photos-bg__desktop"
+          loading="lazy"
+        />
+        <Image
+          src={popcorn}
+          alt=""
+          class="videos-photos-popcorn"
+          loading="lazy"
+        />
+      </div>
+
       <section id="photos">
         <h2 class="text-center">BTS Photos</h2>
         <AlbumGallery />
@@ -513,6 +538,37 @@ import { videoGroups } from "../data/videos";
         z-index: 10;
       }
 
+      .videos-photos-bg {
+        width: 100%;
+        margin-top: -3rem;
+        margin-bottom: -8rem;
+        z-index: -1;
+        position: relative;
+      }
+
+      .videos-photos-bg__desktop,
+      .videos-photos-bg__mobile {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .videos-photos-bg__desktop {
+        display: none;
+        height: 601px;
+        object-fit: cover;
+      }
+
+      .videos-photos-popcorn {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 30%;
+        height: auto;
+        z-index: 1;
+        pointer-events: none;
+      }
+
       @media (max-width: 768px) {
         /* Mobile */
         .prizes-grid {
@@ -533,6 +589,23 @@ import { videoGroups } from "../data/videos";
 
         .prizes-bg--mobile {
           display: block;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .videos-photos-bg__desktop {
+          display: block;
+        }
+
+        .videos-photos-bg__mobile {
+          display: none;
+        }
+      }
+
+      @media (min-width: 1920px) {
+        .videos-photos-bg__desktop {
+          height: auto;
+          object-fit: unset;
         }
       }
 
