@@ -392,11 +392,12 @@ import { videoGroups } from "../data/videos";
       .prizes-grid {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
-        gap: 2rem;
+        justify-content: space-around;
         width: 100%;
         position: relative;
         z-index: 1;
+        padding: 0 1.5rem;
+        gap: 1.5rem;
       }
 
       .prizes-bg {
@@ -412,6 +413,8 @@ import { videoGroups } from "../data/videos";
 
       .prizes-bg--desktop {
         display: block;
+        transform: translate(0,50%);
+        z-index: -1;
       }
 
       .prizes-bg--mobile {
@@ -443,8 +446,8 @@ import { videoGroups } from "../data/videos";
         position: absolute;
         left: 50%;
         top: 0;
-        transform: translate(-50%, 90%);
-        width: 50%;
+        transform: translate(-50%, 120%);
+        height: 75%;
         z-index: 10;
       }
 
