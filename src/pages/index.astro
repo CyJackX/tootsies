@@ -66,13 +66,13 @@ import { videoGroups } from "../data/videos";
         id="apply"
         class="text-center flex flex-col gap-4 items-center"
       >
-        <h2>Submit to the next show!</h2>
+        <!-- <h2>Submit to the next show!</h2>
         <h3>Deadlines:</h3>
         <ol class="list-disc list-inside text-justify text-2xl">
           <li>Early Bird Deadline: February 17, 2026 - $20</li>
           <li>Regular Deadline: March 1, 2026 - $25</li>
           <li>Late Deadline: June 5, 2026 - <span class="text-red-500">$1000</span></li>
-        </ol>
+        </ol> -->
         <iframe
           class="my-4 aspect-video max-w-5xl mx-auto"
           src="https://www.youtube.com/embed/IrzbL2QAebo?si=z-AiaNgFX2BSVlRo"
@@ -84,7 +84,7 @@ import { videoGroups } from "../data/videos";
         <a
           href="https://docs.google.com/forms/d/e/1FAIpQLSdJ-Uee0B4gFOxfuqjtpuX9i3t1S34HoGQwNvCApZmoQH8aMA/viewform"
           target="_blank"
-          class="text-secondary font-bold items-center gap-2 flex flex-col w-full max-w-xl group"
+          class="text-secondary font-bold items-center gap-2 flex flex-col w-full max-w-xl group hidden"
         >
           <Image
             src={vhs}
@@ -103,10 +103,12 @@ import { videoGroups } from "../data/videos";
               class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-nowrap"
             >
               Submission Form here!
+               
             </p>
           </div>
         </a>
         <p>
+          Our submissions window has passed for our June 6th show, we hope to see you there!<br/>
           Can't make this one?
           <br />Send us an email and get on our mailing list for the next shows!
         </p>
