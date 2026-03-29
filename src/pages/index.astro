@@ -2,7 +2,14 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import {
+  SITE_DESCRIPTION,
+  SITE_EMAIL,
+  SITE_INSTAGRAM,
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_URL,
+} from "../consts";
 import { Image } from "astro:assets";
 import tvvbestcrowd from "../assets/img/tvvbestcrowd.jpg";
 import tvvcrowd2 from "../assets/img/tvvcrowd2.webp";
@@ -36,34 +43,111 @@ import videosPhotosBgDesktop from "../assets/img/WEB_VIDEOS PHOTOS/Desktop BG 4.
 import videosPhotosBgMobile from "../assets/img/WEB_VIDEOS PHOTOS/Mobile BG 4.svg";
 import popcorn from "../assets/img/WEB_VIDEOS PHOTOS/Popcorn.svg";
 import { videoGroups } from "../data/videos";
+import ogImage from "../assets/img/trees/downres/ep4/3 tootsies_06.06.25-05067.jpg";
+
+const ogImageURL = new URL(ogImage.src, SITE_URL).toString();
+
+const homepageStructuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${SITE_URL}/#organization`,
+    name: SITE_NAME,
+    url: SITE_URL,
+    description: SITE_DESCRIPTION,
+    email: `mailto:${SITE_EMAIL}`,
+    sameAs: [SITE_INSTAGRAM],
+    foundingLocation: {
+      "@type": "Place",
+      name: "New York City, New York, United States",
+    },
+    founder: [
+      {
+        "@type": "Person",
+        name: "Andy Zou",
+        url: "https://www.andyzou.com/",
+      },
+      {
+        "@type": "Person",
+        name: "Katie Sicking",
+        url: "https://www.katiesicking.com/",
+      },
+      {
+        "@type": "Person",
+        name: "Alec Cohen",
+        url: "https://www.aleccohen.cool/",
+      },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
+    url: SITE_URL,
+    name: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    inLanguage: "en-US",
+    publisher: {
+      "@id": `${SITE_URL}/#organization`,
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${SITE_URL}/#webpage`,
+    url: SITE_URL,
+    name: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    isPartOf: {
+      "@id": `${SITE_URL}/#website`,
+    },
+    about: {
+      "@id": `${SITE_URL}/#organization`,
+    },
+    primaryImageOfPage: ogImageURL,
+  },
+];
 ---
 
 <!doctype html>
 <html lang="en" class="bg-neutral text-neutral-foreground text-center">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <BaseHead
+      title={SITE_TITLE}
+      description={SITE_DESCRIPTION}
+      image={ogImage.src}
+    />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(homepageStructuredData)}
+    />
   </head>
-  <body id="home">
+  <body>
     <Header />
     <main class="w-full">
       <ModalImageProvider />
-      <section>
-        <h2 class="text-center mt-8 px-4">Welcome to Tootsies Video Vault!</h2>
+      <section id="home" aria-labelledby="home-title">
+        <h1 id="home-title" class="text-center mt-8 px-4">
+          Welcome to Tootsies Video Vault!
+        </h1>
         <p class="text-center max-w-4xl mx-auto px-4">
-          Tootsie’s Video Vault is an annual short film race organized by seasoned
-          comedy film producers, featuring dozens of shorts created by local
-          filmmakers!
+          Tootsie&apos;s Video Vault is an annual short film race organized by
+          seasoned comedy film producers, featuring dozens of shorts created by
+          local filmmakers!
         </p>
         <div class="overflow-x-hidden flex justify-center">
           <Image
             src={tvvcrowd2}
-            alt="TVV Crowd"
+            alt="Crowd at a Tootsie&apos;s Video Vault screening"
             class="my-4 max-w-none w-[125%] md:w-full object-cover"
+            loading="eager"
+            fetchpriority="high"
           />
         </div>
       </section>
       <section
         id="apply"
+        aria-label="Apply"
         class="text-center flex flex-col gap-4 items-center"
       >
         <!-- <h2>Submit to the next show!</h2>
@@ -113,7 +197,7 @@ import { videoGroups } from "../data/videos";
           <br />Send us an email and get on our mailing list for the next shows!
         </p>
         <a
-          href="mailto:tootsiesvideovault@gmail.com"
+          href={`mailto:${SITE_EMAIL}`}
           class="relative inline-block text-black transition-colors duration-300 group"
         >
           <Image
@@ -124,12 +208,16 @@ import { videoGroups } from "../data/videos";
           <span
             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-2xl group-hover:text-white"
           >
-            TootsiesVideoVault@gmail.com
+            {SITE_EMAIL}
           </span>
         </a>
       </section>
 
-      <section id="how-it-works" class="space-y-6 how-it-works relative">
+      <section
+        id="how-it-works"
+        aria-labelledby="how-it-works-title"
+        class="space-y-6 how-it-works relative"
+      >
         <Image
           src={howItWorksBgMobile}
           alt=""
@@ -140,7 +228,7 @@ import { videoGroups } from "../data/videos";
           alt=""
           class="absolute inset-0 h-full w-full object-cover -z-10 hidden md:block"
         />
-        <h2 class="text-center">How It Works</h2>
+        <h2 id="how-it-works-title" class="text-center">How It Works</h2>
         <div class="how-it-works__row">
           <Image
             src={cloud}
@@ -159,10 +247,13 @@ import { videoGroups } from "../data/videos";
           />
         </div>
       </section>
-      <Image src={crowdpic} alt="TVV Best Crowd" class="my-4 w-full" />
-      <section id="
-            prizes" class="prizes-section">
-        <h2 class="text-center">Prizes!</h2>
+      <Image
+        src={crowdpic}
+        alt="Audience at a Tootsie&apos;s Video Vault screening"
+        class="my-4 w-full"
+      />
+      <section id="prizes" aria-labelledby="prizes-title" class="prizes-section">
+        <h2 id="prizes-title" class="text-center">Prizes!</h2>
         <div class="prizes-grid">
           <div class="prize-card">
             <div class="prize-media">
@@ -227,8 +318,8 @@ import { videoGroups } from "../data/videos";
           loading="lazy"
         />
       </section>
-      <section id="past-videos">
-        <h2 class="text-center">Featured Videos</h2>
+      <section id="past-videos" aria-labelledby="featured-videos-title">
+        <h2 id="featured-videos-title" class="text-center">Featured Videos</h2>
         <VideoGallery groups={videoGroups} />
       </section>
 
@@ -253,19 +344,19 @@ import { videoGroups } from "../data/videos";
         />
       </div>
 
-      <section id="photos">
-        <h2 class="text-center">BTS Photos</h2>
+      <section id="photos" aria-labelledby="photos-title">
+        <h2 id="photos-title" class="text-center">BTS Photos</h2>
         <AlbumGallery />
       </section>
 
-      <section id="team">
-        <h2 class="text-center">The Team</h2>
+      <section id="team" aria-labelledby="team-title">
+        <h2 id="team-title" class="text-center">The Team</h2>
         <div class="flex justify-around md:flex-row flex-col items-center gap-4">
           <div class="team-grid__item">
             <div class="team-profile">
               <Image
                 src={doorway}
-                alt="Doorway"
+                alt=""
                 class="team-profile__bg scale-x-[-1]"
               />
               <h4 class="team-profile__name">
@@ -290,7 +381,7 @@ import { videoGroups } from "../data/videos";
 
           <div class="team-grid__item">
             <div class="team-profile">
-              <Image src={film} alt="Film" class="team-profile__bg bottom-0 translate-y-3/20" />
+              <Image src={film} alt="" class="team-profile__bg bottom-0 translate-y-3/20" />
               <h4 class="team-profile__name">
                 <a
                   href="https://www.katiesicking.com/"
@@ -319,7 +410,7 @@ import { videoGroups } from "../data/videos";
             <div class="team-profile">
               <Image
                 src={spaghetti}
-                alt="Spaghetti"
+                alt=""
                 class="absolute bottom-0 translate-y-1/2 z-0"
               />
               <h4 class="team-profile__name">
@@ -348,7 +439,11 @@ import { videoGroups } from "../data/videos";
         </div>
       </section>
     </main>
-    <Image src={tvvbestcrowd} alt="TVV Best Crowd" class="mt-4 w-full" />
+    <Image
+      src={tvvbestcrowd}
+      alt="Filmmakers and audience members at Tootsie&apos;s Video Vault"
+      class="mt-4 w-full"
+    />
 
     <Footer />
 
@@ -452,6 +547,10 @@ import { videoGroups } from "../data/videos";
         font-size: 1.5rem;
         font-family: "Atelia";
         margin: 0;
+      }
+      
+      .team-profile__link { 
+        text-decoration:underline;
       }
 
       .team-profile__portrait {

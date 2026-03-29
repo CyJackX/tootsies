@@ -1,6 +1,6 @@
 {
 	"name": "tootsies",
-	"description": "Build a personal website, blog, or portfolio with Astro.",
+	"description": "Official site for Tootsie's Video Vault.",
 	"cloudflare": {
 		"label": "Astro Framework Starter",
 		"products": [
@@ -13,8 +13,6 @@
 	},
 	"dependencies": {
 		"@astrojs/cloudflare": "12.6.12",
-		"@astrojs/mdx": "4.3.12",
-		"@astrojs/rss": "4.0.14",
 		"@astrojs/sitemap": "3.6.0",
 		"@tailwindcss/vite": "^4.1.17",
 		"astro": "5.16.2",
