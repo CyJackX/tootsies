@@ -34,7 +34,7 @@ const slugify = (value: string) =>
     Highlight reels coming soon.
   </p>
 ) : (
-  <div class="video-gallery">
+  <div class="video-gallery max-w-6xl mx-auto">
     <div class="video-toggle">
 
       <!-- Toggle buttons for each group -->
@@ -87,9 +87,6 @@ const slugify = (value: string) =>
                 },
                 breakpoints: {
                   768: {
-                    slidesPerView: 2,
-                  },
-                  1024: {
                     slidesPerView: 2,
                     grid: {
                       fill: "row",

@@ -175,9 +175,10 @@ table {
 }
 
 .nav-button:disabled {
-  opacity: 0.0;
+  opacity: 0.25;
   cursor: not-allowed;
   color: var(--color-neutral);
+  pointer-events: none;
   &:hover {
     background-color: transparent;
   }
