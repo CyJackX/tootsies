@@ -150,25 +150,26 @@ const homepageStructuredData = [
         aria-label="Apply"
         class="text-center flex flex-col gap-4 items-center"
       >
-        <!-- <h2>Submit to the next show!</h2>
-        <h3>Deadlines:</h3>
+        <h2>Submit to the next show!</h2>
+        <h3>Key Details:</h3>
         <ol class="list-disc list-inside text-justify text-2xl">
-          <li>Early Bird Deadline: February 17, 2026 - $20</li>
-          <li>Regular Deadline: March 1, 2026 - $25</li>
-          <li>Late Deadline: June 5, 2026 - <span class="text-red-500">$1000</span></li>
-        </ol> -->
+          <li>Submission Deadline: July 26, 2026</li>
+          <li>Notification of Acceptance: July 28, 2026</li>
+          <li>Show Date: October 3, 2026</li>
+          <li>Location: Littlefield, Brooklyn</li>
+        </ol>
         <iframe
-          class="my-4 aspect-video max-w-5xl mx-auto hidden"
-          src="https://www.youtube.com/embed/IrzbL2QAebo?si=z-AiaNgFX2BSVlRo"
-          title="Tootsie's Video Vault 2026"
+          class="my-4 aspect-video w-full max-w-5xl mx-auto"
+          src="https://www.youtube.com/embed/Fyhid9vehyY"
+          title="Tootsie's Video Vault October 2026"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerpolicy="strict-origin-when-cross-origin"
           allowfullscreen></iframe>
 
         <a
-          href="https://docs.google.com/forms/d/e/1FAIpQLSdJ-Uee0B4gFOxfuqjtpuX9i3t1S34HoGQwNvCApZmoQH8aMA/viewform"
+          href="https://forms.gle/eeLc7K1Hh22PV6S86"
           target="_blank"
-          class="text-secondary font-bold items-center gap-2 flex flex-col w-full max-w-xl group hidden"
+          class="text-secondary font-bold items-center gap-2 flex flex-col w-full max-w-xl group"
         >
           <Image
             src={vhs}
@@ -190,21 +191,11 @@ const homepageStructuredData = [
             </p>
           </div>
         </a>
-        <div class="text-3xl">
-          Our submissions window has passed for our June 6th show, but we hope to
-          see you there!<br />
-          <br />
+        <p>
+          Questions or want to hear about future shows? Send us an email and get
+          on our mailing list.
+        </p>
 
-          <a class="block" href="https://www.eventbrite.com/e/the-6th-annual-tootsies-video-vault-tickets-1988969820274?aff=oddtdtcreator">https://www.eventbrite.com/e/the-6th-annual-tootsies-video-vault-tickets-1988969820274?aff=oddtdtcreator</a>
-          <br/>
-          <div class="font-bold">
-            Littlefield<br />
-            635 Sackett Street, Brooklyn<br />
-            Doors/Show 6:30/7:30<br /><br />
-          </div>
-          Can't make this one?
-          <br />Send us an email and get on our mailing list for the next shows!
-        </div>
         <a
           href={`mailto:${SITE_EMAIL}`}
           class="relative inline-block text-black transition-colors duration-300 group"
@@ -225,7 +216,7 @@ const homepageStructuredData = [
       <section
         id="how-it-works"
         aria-labelledby="how-it-works-title"
-        class="space-y-6 how-it-works relative"
+        class="space-y-6 how-it-works relative hidden"
       >
         <Image
           src={howItWorksBgMobile}
@@ -266,9 +257,8 @@ const homepageStructuredData = [
         aria-labelledby="prizes-title"
         class="prizes-section"
       >
-        <h2 id="prizes-title" class="text-center">Prizes!</h2>
-        <div class="prizes-grid">
-          <div class="prize-card">
+        <div class="prizes-list">
+          <article class="prize-card">
             <div class="prize-media">
               <Image
                 src={trophies}
@@ -285,8 +275,14 @@ const homepageStructuredData = [
                 loading="lazy"
               />
             </div>
-          </div>
-          <div class="prize-card">
+            <div class="prize-text">
+              <p>
+                Industry judges and a partnership with <a href="https://www.vinyl.tv/" target="_blank" rel="noreferrer noopener">Vinyl.TV</a> for cash prizes
+                and development deals!
+              </p>
+            </div>
+          </article>
+          <article class="prize-card prize-card--reverse">
             <div class="prize-media">
               <Image
                 src={prizebelt}
@@ -298,8 +294,17 @@ const homepageStructuredData = [
               />
               <Image src={beltSeal} alt="" class="prize-seal" loading="lazy" />
             </div>
-          </div>
-          <div class="prize-card">
+            <div class="prize-text">
+              <p>
+                Audience members vote for their favorites using <a
+                  href="https://opavote.com/"
+                  target="_blank"
+                  rel="noopener noreferrer">OpaVote</a
+                >'s fair multi-winner voting from their phone.
+              </p>
+            </div>
+          </article>
+          <article class="prize-card">
             <div class="prize-media">
               <Image
                 src={superlatives}
@@ -316,7 +321,10 @@ const homepageStructuredData = [
                 loading="lazy"
               />
             </div>
-          </div>
+            <div class="prize-text">
+              <p>Superlatives, door prizes, and more!</p>
+            </div>
+          </article>
         </div>
         <Image
           src={prizesBgMobile}
@@ -457,304 +465,432 @@ const homepageStructuredData = [
           </div>
         </div>
       </section>
-    </main>
-    <Image
-      src={tvvbestcrowd}
-      alt="Filmmakers and audience members at Tootsie's Video Vault"
-      class="mt-4 w-full"
-    />
+      <section id="faq" aria-labelledby="faq-title" class="faq-section">
+        <h2 id="faq-title" class="text-center">Frequently Asked Questions</h2>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>Who can submit?</summary>
+            <p>
+              Anyone can apply! We love to see work from experienced filmmakers
+              to performers, writers, and first-time teams.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>Can I screen work I've made before?</summary>
+            <p>
+              No! This is for screening original, unscreened work for the show!
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>How many comps do I get?</summary>
+            <p>
+              Filmmakers get ONE comp ticket as part of their submission fee.  Because some teams are solo creators, and some are large, we can only fairly give one per team.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>What's with the prizes?</summary>
+            <p>
+              Tootsie's Video Vault has partnered with <a href="https://www.vinyl.tv/" target="_blank" rel="noreferrer noopener">VinylTV</a> to provide cash prizes and development awards for select submissions.
+            </p>
+<p>
+              Beyond that, there are several Superlatives we give to audience members and shorts like First to Show Up, Best Dressed, and whatever comes to mind!
+</p>
+            <p>
+              Lastly, the audience votes for their favorite short to receive the Tootsie's Championship Belt using digital voting system <a href="https://opavote.com/" target="_blank" rel="noreferrer noopener">OpaVote</a> which allows for fair multi-winner voting from their phones.  It's great to bring a crowd, but you won't need to worry about people stacking the vote!
+            </p>
+          </details>
+        </div>
+      </section>
+      <Image
+        src={tvvbestcrowd}
+        alt="Filmmakers and audience members at Tootsie's Video Vault"
+        class="mt-4 w-full"
+      />
 
-    <Footer />
+      <Footer />
 
-    <style>
-      section {
-        margin: 5rem 0;
-        /* background-color: var(--color-neutral-foreground); */
-        /* border: 4px solid var(--color-neutral-foreground);
+      <style>
+        section {
+          margin: 5rem 0;
+          /* background-color: var(--color-neutral-foreground); */
+          /* border: 4px solid var(--color-neutral-foreground);
     border-radius: 1em; */
-        /* color: black; */
-        /* box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1); */
-      }
+          /* color: black; */
+          /* box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1); */
+        }
 
-      p {
-        font-size: 1.5rem;
-      }
+        p {
+          font-size: 1.5rem;
+        }
 
-      .how-it-works__row {
-        padding: 1rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-        align-items: center;
-        justify-content: space-around;
-      }
-
-      .how-it-works__frame {
-        width: 66.6667%;
-      }
-
-      .how-it-works__frame--right {
-        align-self: flex-end;
-      }
-
-      .how-it-works__frame--left {
-        align-self: flex-start;
-      }
-
-      .how-it-works__frame--tall {
-        width: 100%;
-      }
-
-      @media (min-width: 768px) {
         .how-it-works__row {
-          flex-direction: row;
+          padding: 1rem;
+          display: flex;
+          flex-direction: column;
           gap: 1rem;
-          align-items: flex-start;
-          width: 100%;
-          padding: 0 1rem;
+          text-align: center;
+          align-items: center;
+          justify-content: space-around;
         }
 
         .how-it-works__frame {
-          min-width: 0;
-          max-width: 100%;
-          flex: 1 1 0;
-          height: auto;
+          width: 66.6667%;
+        }
+
+        .how-it-works__frame--right {
+          align-self: flex-end;
+        }
+
+        .how-it-works__frame--left {
+          align-self: flex-start;
         }
 
         .how-it-works__frame--tall {
-          padding-left: 5%;
-          flex: 1 1 15%;
+          width: 100%;
         }
 
-        .how-it-works__frame--right,
-        .how-it-works__frame--left {
-          align-self: auto;
+        @media (min-width: 768px) {
+          .how-it-works__row {
+            flex-direction: row;
+            gap: 1rem;
+            align-items: flex-start;
+            width: 100%;
+            padding: 0 1rem;
+          }
+
+          .how-it-works__frame {
+            min-width: 0;
+            max-width: 100%;
+            flex: 1 1 0;
+            height: auto;
+          }
+
+          .how-it-works__frame--tall {
+            padding-left: 5%;
+            flex: 1 1 15%;
+          }
+
+          .how-it-works__frame--right,
+          .how-it-works__frame--left {
+            align-self: auto;
+          }
         }
-      }
-      .team-grid__item {
-        position: relative;
-        display: inline-block;
-        width: 25%;
-      }
-      @media (max-width: 768px) {
         .team-grid__item {
-          width: 50%;
+          position: relative;
+          display: inline-block;
+          width: 25%;
         }
-      }
+        @media (max-width: 768px) {
+          .team-grid__item {
+            width: 50%;
+          }
+        }
 
-      .team-profile__bg {
-        position: absolute;
-        z-index: -1;
-      }
+        .team-profile__bg {
+          position: absolute;
+          z-index: -1;
+        }
 
-      .team-profile {
-        position: relative;
-        z-index: 2;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 1rem;
-        text-align: center;
-        box-shadow: var(--box-shadow);
-        color: var(--color-neutral-foreground);
-        flex: 1;
-      }
-
-      .team-profile__name {
-        font-size: 1.5rem;
-        font-family: "Atelia";
-        margin: 0;
-      }
-
-      .team-profile__link {
-        text-decoration: underline;
-      }
-
-      .team-profile__portrait {
-        margin: 0;
-        aspect-ratio: 1 / 1;
-        display: block;
-        overflow: hidden;
-        border-radius: 50%;
-        width: 60%;
-      }
-
-      .team-profile__portrait img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .team-profile__blurb {
-        z-index: 5;
-        position: relative;
-        text-align: justify;
-        margin: 25% 0 0;
-        font-size: 1rem;
-        background-color: var(--color-neutral);
-      }
-
-      .prizes-section {
-        position: relative;
-        width: 100%;
-      }
-
-      .prizes-grid {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        width: 100%;
-        position: relative;
-        z-index: 1;
-        padding: 0 1.5rem;
-        gap: 1.5rem;
-      }
-
-      .prizes-bg {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100%;
-        height: auto;
-        z-index: -1;
-        pointer-events: none;
-      }
-
-      .prizes-bg--desktop {
-        display: block;
-        transform: translate(0, 20%);
-      }
-
-      .prizes-bg--mobile {
-        display: none;
-        width: 100%;
-        max-width: none;
-        object-fit: cover;
-        transform: translate(0, 15%);
-      }
-
-      .prize-card {
-        position: relative;
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        align-items: center;
-        padding-bottom: 10%;
-      }
-
-      .prize-media {
-        position: relative;
-        width: 100%;
-      }
-
-      .prize-image {
-        display: block;
-        width: 100%;
-        height: auto;
-        border-radius: 0.5rem;
-      }
-
-      .prize-seal {
-        position: absolute;
-        left: 50%;
-        top: 0;
-        transform: translate(-50%, 120%);
-        height: 75%;
-        z-index: 10;
-      }
-
-      .videos-photos-bg {
-        width: 100%;
-        margin-top: -3rem;
-        margin-bottom: clamp(-10rem, -6rem + -2vw, 0rem);
-        z-index: -1;
-        position: relative;
-      }
-
-      .videos-photos-bg__desktop,
-      .videos-photos-bg__mobile {
-        display: block;
-        width: 100%;
-        height: auto;
-      }
-
-      .videos-photos-bg__desktop {
-        display: none;
-        height: 601px;
-        object-fit: cover;
-      }
-
-      .videos-photos-popcorn {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 30%;
-        height: auto;
-        z-index: 1;
-        pointer-events: none;
-        min-width: 200px;
-        max-width: 400px;
-      }
-
-      @media (max-width: 768px) {
-        /* Mobile */
-        .prizes-grid {
+        .team-profile {
+          position: relative;
+          z-index: 2;
+          display: flex;
           flex-direction: column;
+          justify-content: flex-start;
           align-items: center;
+          gap: 1rem;
+          text-align: center;
+          box-shadow: var(--box-shadow);
+          color: var(--color-neutral-foreground);
+          flex: 1;
         }
-        .prize-card {
-          padding-top: 50%;
-          padding-bottom: 0;
+
+        .team-profile__name {
+          font-size: 1.5rem;
+          font-family: "Atelia";
+          margin: 0;
         }
-        .prize-seal {
-          transform: translate(-50%, -90%);
+
+        .team-profile__link {
+          text-decoration: underline;
+        }
+
+        .team-profile__portrait {
+          margin: 0;
+          aspect-ratio: 1 / 1;
+          display: block;
+          overflow: hidden;
+          border-radius: 50%;
+          width: 60%;
+        }
+
+        .team-profile__portrait img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .team-profile__blurb {
+          z-index: 5;
+          position: relative;
+          text-align: justify;
+          margin: 25% 0 0;
+          font-size: 1rem;
+          background-color: var(--color-neutral);
+        }
+
+        .faq-section {
+          width: min(100% - 2rem, 960px);
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .faq-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          text-align: left;
+        }
+
+        .faq-item {
+          border: 3px solid var(--color-neutral-foreground);
+          border-radius: 0.5rem;
+          background-color: var(--color-neutral);
+          overflow: hidden;
+        }
+
+        .faq-item summary {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1rem;
+          cursor: pointer;
+          padding: 1rem 1.25rem;
+          font-family: "Atelia";
+          font-size: clamp(1.25rem, 2vw, 1.75rem);
+          list-style: none;
+        }
+
+        .faq-item summary::-webkit-details-marker {
+          display: none;
+        }
+
+        .faq-item summary::after {
+          content: "+";
+          flex: 0 0 auto;
+          font-family: sans-serif;
+          font-size: 1.5rem;
+          line-height: 1;
+        }
+
+        .faq-item[open] summary::after {
+          content: "-";
+        }
+
+        .faq-item p {
+          margin: 0;
+          padding: 0 1.25rem 1.25rem;
+          font-size: clamp(1rem, 1.6vw, 1.35rem);
+          line-height: 1.45;
+        }
+
+        .prizes-section {
+          position: relative;
+          width: 100%;
+        }
+
+        .prizes-list {
+          display: flex;
+          flex-direction: column;
+          width: min(100% - 2rem, 1180px);
+          position: relative;
+          z-index: 1;
+          margin: 0 auto;
+          gap: clamp(2rem, 4vw, 4rem);
+        }
+
+        .prizes-bg {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          width: 100%;
+          height: auto;
+          z-index: -1;
+          pointer-events: none;
         }
 
         .prizes-bg--desktop {
-          display: none;
+          display: block;
+          transform: translate(0, 20%);
         }
 
         .prizes-bg--mobile {
-          display: block;
-        }
-      }
-
-      @media (min-width: 768px) {
-        .videos-photos-bg__desktop {
-          display: block;
-        }
-
-        .videos-photos-bg__mobile {
           display: none;
+          width: 100%;
+          max-width: none;
+          object-fit: cover;
+          transform: translate(0, 15%);
         }
-      }
 
-      @media (min-width: 1920px) {
-        .videos-photos-bg__desktop {
+        .prize-card {
+          position: relative;
+          display: flex;
+          gap: clamp(1.5rem, 4vw, 4rem);
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .prize-card--reverse {
+          flex-direction: row-reverse;
+        }
+
+        .prize-media {
+          position: relative;
+          flex: 0 1 54%;
+          min-width: 0;
+        }
+
+        .prize-image {
+          display: block;
+          width: 100%;
           height: auto;
-          object-fit: unset;
+          border-radius: 0.5rem;
         }
-      }
 
-      figcaption {
-        text-align: center;
-      }
+        .prize-seal {
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          transform: translate(-35%, 30%);
+          width: clamp(6rem, 13vw, 12rem);
+          height: auto;
+          z-index: 10;
+          pointer-events: none;
+        }
 
-      .how-it-works__list {
-        list-style: none;
-        padding: 0;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-      }
+        .prize-card--reverse .prize-seal {
+          left: auto;
+          right: 0;
+          transform: translate(35%, 30%);
+        }
 
-      .how-it-works__item {
-        flex: 1;
-      }
-    </style>
+        .prize-text {
+          flex: 1 1 0;
+          min-width: 0;
+          text-align: left;
+        }
+
+        .prize-text h3 {
+          margin: 0 0 0.75rem;
+        }
+
+        .prize-text p {
+          font-size: clamp(1.25rem, 2vw, 2.75rem);
+          line-height: 1.35;
+          margin: 0;
+        }
+
+        .videos-photos-bg {
+          width: 100%;
+          margin-top: -3rem;
+          margin-bottom: clamp(-10rem, -6rem + -2vw, 0rem);
+          z-index: -1;
+          position: relative;
+        }
+
+        .videos-photos-bg__desktop,
+        .videos-photos-bg__mobile {
+          display: block;
+          width: 100%;
+          height: auto;
+        }
+
+        .videos-photos-bg__desktop {
+          display: none;
+          height: 601px;
+          object-fit: cover;
+        }
+
+        .videos-photos-popcorn {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 30%;
+          height: auto;
+          z-index: 1;
+          pointer-events: none;
+          min-width: 200px;
+          max-width: 400px;
+        }
+
+        @media (max-width: 768px) {
+          /* Mobile */
+          .prizes-list {
+            flex-direction: column;
+            width: min(100% - 1.5rem, 38rem);
+            gap: 3rem;
+          }
+          .prize-card {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 1rem;
+          }
+          .prize-seal {
+            display: none;
+          }
+
+          .prize-card--reverse .prize-seal {
+            display: none;
+          }
+
+          .prize-text {
+            text-align: center;
+          }
+
+          .prizes-bg--desktop {
+            display: none;
+          }
+
+          .prizes-bg--mobile {
+            display: block;
+          }
+        }
+
+        @media (min-width: 768px) {
+          .videos-photos-bg__desktop {
+            display: block;
+          }
+
+          .videos-photos-bg__mobile {
+            display: none;
+          }
+        }
+
+        @media (min-width: 1920px) {
+          .videos-photos-bg__desktop {
+            height: auto;
+            object-fit: unset;
+          }
+        }
+
+        figcaption {
+          text-align: center;
+        }
+
+        .how-it-works__list {
+          list-style: none;
+          padding: 0;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .how-it-works__item {
+          flex: 1;
+        }
+      </style>
+    </main>
   </body>
 </html>
