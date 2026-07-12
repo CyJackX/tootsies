@@ -2,13 +2,77 @@ import type { VideoGroup } from "../utils/videoEmbeds";
 
 export const videoGroups: VideoGroup[] = [
   {
+    label: "Tootsie's 666",
+    date: "2026-06-06",
+    videos: [
+      {
+        title: "Ms. Piggy's Rebound",
+        url: "https://www.youtube.com/watch?v=x1PNMzyo4Yw",
+        description: {
+          credits: "Nick Candreva & John Trowbridge",
+          details: "Audience Vote Winner",
+        },
+      },
+      {
+        title: "The Sleepover",
+        url: "https://youtu.be/gMdT5myITR0",
+        description: { credits: "Off Q Comedy" },
+      },
+
+      {
+        title: "Jim Beam",
+        url: "https://www.youtube.com/watch?v=238GwLyfXUs",
+        description: {
+          credits: "Keenan Grey",
+          details: "Audience Vote Runner Up",
+        },
+      },
+      {
+        title: "Current Events",
+        url: "https://www.youtube.com/watch?v=0-99aHLoLVQ",
+        description: { credits: "Andrew Bourne" },
+      },
+      {
+        title: "Steve Buscemi's Baby",
+        url: " https://www.youtube.com/watch?v=Bm8E8IGodFk",
+        description: { credits: "Neha Kallianpurkar" },
+      },
+
+      // {
+      //   title: "And Justice For All",
+      //   url: "https://vimeo.com/1204394615",
+      //   description: { credits: "Dan Moore & Doroty Nguyen" },
+      // },
+
+      {
+        title: "Call Center",
+        url: "https://www.youtube.com/watch?v=ioOgQ6RfX4Y",
+        description: { credits: "Rajiv Rao", details: "Development Award" },
+      },
+
+      {
+        title: "Down. The. Toilet.",
+        url: "https://www.youtube.com/watch?v=AYiTHv2fdpw",
+        description: { credits: "Laura Ornella & Erica Diederich" },
+      },
+      {
+        title: "Uber for Peter",
+        url: "https://www.youtube.com/watch?v=YjM0_wO9YZM",
+        description: { credits: "Peter Walsh & Sarah Smallwood-Parsons" },
+      },
+    ],
+  },
+  {
     label: "Tootsie's 4",
     date: "2025-06-06",
     videos: [
       {
         title: "OH, DEER",
         url: "https://www.youtube.com/watch?v=Dgc4EkRSPk0",
-        description: { credits: "Marjorie LeWit and Dante Russo", details: "Winner of Audience Vote!" },
+        description: {
+          credits: "Marjorie LeWit and Dante Russo",
+          details: "Winner of Audience Vote!",
+        },
       },
       {
         title: "Gaytheon",
