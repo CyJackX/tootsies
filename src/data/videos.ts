@@ -43,11 +43,15 @@ export const videoGroups: VideoGroup[] = [
       //   url: "https://vimeo.com/1204394615",
       //   description: { credits: "Dan Moore & Doroty Nguyen" },
       // },
-
+      {
+        title: "Jesus Loves You",
+        url: "https://vimeo.com/1198593631",
+        description: { credits: "Katy Berry", details: "VinylTV Development Award" },
+      },
       {
         title: "Call Center",
         url: "https://www.youtube.com/watch?v=ioOgQ6RfX4Y",
-        description: { credits: "Rajiv Rao", details: "Development Award" },
+        description: { credits: "Rajiv Rao", details: "VinylTV Development Award" },
       },
 
       {
