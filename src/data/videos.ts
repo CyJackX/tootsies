@@ -38,11 +38,11 @@ export const videoGroups: VideoGroup[] = [
         description: { credits: "Neha Kallianpurkar" },
       },
 
-      // {
-      //   title: "And Justice For All",
-      //   url: "https://vimeo.com/1204394615",
-      //   description: { credits: "Dan Moore & Doroty Nguyen" },
-      // },
+      {
+        title: "And Justice For All",
+        url: "https://www.youtube.com/watch?v=wiQe9KMyH74",
+        description: { credits: "Dan Moore & Doroty Nguyen" },
+      },
       {
         title: "Jesus Loves You",
         url: "https://vimeo.com/1198593631",
@@ -164,7 +164,7 @@ export const videoGroups: VideoGroup[] = [
       {
         title: "Vagalis",
         url: "https://youtu.be/xnQDK29XCqc",
-        description: { credits: "Anita Castillo-Halvorssen" },
+        description: { credits: "Team Orange: Anita Castillo-Halvorssen, Aimee Lutkin, Spencer Starnes, Anne Hogan, Colleen Cass" },
       },
 
       //   {
