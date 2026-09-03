@@ -11,7 +11,7 @@ const showDetails = [
 ];
 
 export const nextShow = {
-  phase: "submissions" satisfies NextShowPhase,
+  phase: "tickets" satisfies NextShowPhase,
   title: "Tootsie's Video Vault October 2026",
   youtubeEmbedUrl: "https://www.youtube.com/embed/Fyhid9vehyY",
   phases: {
