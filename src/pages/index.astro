@@ -43,6 +43,7 @@ import videosPhotosBgDesktop from "../assets/img/WEB_VIDEOS PHOTOS/Desktop BG 4.
 import videosPhotosBgMobile from "../assets/img/WEB_VIDEOS PHOTOS/Mobile BG 4.svg";
 import popcorn from "../assets/img/WEB_VIDEOS PHOTOS/Popcorn.svg";
 import { videoGroups } from "../data/videos";
+import { nextShow, nextShowPhase } from "../data/nextShow";
 import ogImage from "../assets/img/trees/downres/ep4/3 tootsies_06.06.25-05067.jpg";
 
 const ogImageURL = new URL(ogImage.src, SITE_URL).toString();
@@ -126,54 +127,63 @@ const homepageStructuredData = [
     <Header />
     <main class="w-full">
       <ModalImageProvider />
-      <section id="home" aria-labelledby="home-title">
-        <h1 id="home-title" class="text-center mt-8 px-4">
-          Welcome to Tootsie's Video Vault!
-        </h1>
-        <p class="text-center max-w-4xl mx-auto px-4">
-          Tootsie&apos;s Video Vault is an annual short film race organized by
-          seasoned comedy film producers, featuring dozens of shorts created by
-          local filmmakers!
-        </p>
-        <div class="overflow-x-hidden flex justify-center">
-          <Image
-            src={tvvcrowd2}
-            alt="Crowd at a Tootsie's Video Vault screening"
-            class="my-4 max-w-none w-[125%] md:w-full object-cover"
-            loading="eager"
-            fetchpriority="high"
-          />
+      <section id="home" aria-labelledby="home-title" class="relative">
+        <div class="hero relative overflow-hidden flex items-center justify-center text-center px-4">
+          <video
+            class="hero__video absolute inset-0 w-full h-full object-cover"
+            autoplay
+            muted
+            loop
+            playsinline
+            poster={tvvcrowd2.src}
+          >
+            <source src="/herovideo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="hero__overlay absolute inset-0 bg-black/30"></div>
+          <div class="hero__content relative z-10 max-w-4xl mx-auto py-12">
+            <h1 id="home-title" class="mt-8">
+              Welcome to Tootsie's Video Vault!
+            </h1>
+            <p class="mt-4">
+              Tootsie&apos;s Video Vault is an annual short film race organized by
+              seasoned comedy film producers, featuring dozens of shorts created by
+              local filmmakers!
+            </p>
+          </div>
         </div>
       </section>
       <section
         id="apply"
-        aria-label="Apply"
+        aria-label={nextShowPhase.heading}
         class="text-center flex flex-col gap-4 items-center"
       >
-        <h2>Submit to the next show!</h2>
+        <h2>{nextShowPhase.heading}</h2>
         <h3>Key Details:</h3>
         <ol class="list-disc list-inside text-justify text-2xl">
-          <li>Submission Deadline: July 26, 2026</li>
-          <li>Notification of Acceptance: July 28, 2026</li>
-          <li>Show Date: October 3, 2026, 6:30 Doors / 7:30 Show</li>
-          <li>Location: Littlefield, Brooklyn</li>
+          {nextShowPhase.details.map((detail) => <li>{detail}</li>)}
         </ol>
-        <iframe
-          class="my-4 aspect-video w-full max-w-5xl mx-auto"
-          src="https://www.youtube.com/embed/Fyhid9vehyY"
-          title="Tootsie's Video Vault October 2026"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen></iframe>
+        {
+          nextShow.youtubeEmbedUrl && (
+            <iframe
+              class="my-4 aspect-video w-full max-w-5xl mx-auto"
+              src={nextShow.youtubeEmbedUrl}
+              title={nextShow.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            />
+          )
+        }
 
         <a
-          href="https://forms.gle/eeLc7K1Hh22PV6S86"
+          href={nextShowPhase.url}
           target="_blank"
           class="text-secondary font-bold items-center gap-2 flex flex-col w-full max-w-xl group"
         >
           <Image
             src={vhs}
-            alt="Submit Button"
+            alt={nextShowPhase.buttonAlt}
             class="w-full h-auto block transition-transform duration-300 group-hover:-rotate-3"
           />
           <div
@@ -181,13 +191,13 @@ const homepageStructuredData = [
           >
             <Image
               src={buttonPrimary}
-              alt="Submit Button"
+              alt={nextShowPhase.buttonAlt}
               class="max-w-sm w-full transition-transform duration-300 group-hover:scale-105"
             />
             <p
               class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-nowrap"
             >
-              Submission Form here!
+              {nextShowPhase.buttonText}
             </p>
           </div>
         </a>
@@ -277,8 +287,11 @@ const homepageStructuredData = [
             </div>
             <div class="prize-text">
               <p>
-                Industry judges and a partnership with <a href="https://www.vinyl.tv/" target="_blank" rel="noreferrer noopener">Vinyl.TV</a> for cash prizes
-                and development deals!
+                Industry judges and a partnership with <a
+                  href="https://www.vinyl.tv/"
+                  target="_blank"
+                  rel="noreferrer noopener">Vinyl.TV</a
+                > for cash prizes and development deals!
               </p>
             </div>
           </article>
@@ -476,27 +489,78 @@ const homepageStructuredData = [
             </p>
           </details>
           <details class="faq-item">
-            <summary>Can I screen work I've made before?</summary>
+            <summary>How much does it cost to submit?</summary>
             <p>
-              No! This is for screening original, unscreened work for the show!
+              It's <b>FREE</b> to submit!  You only pay a fee if accepted in order to cover prizes, the venue, and a low stakes commitment to making something for the show!
             </p>
           </details>
           <details class="faq-item">
+            <summary>I'm a first-time filmmaker, can I apply?</summary>
+            <p>
+              Of course! While we are open to a wide variety of skillsets, we
+              encourage you to look at the past videos for an idea of the
+              caliber of production featured at this show. Reach out to
+              experienced DPs, producers, and any other filmmakers you know who
+              might be able to help you make something you're proud to screen!
+              We can also help connect you TKTKTKTK
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>Can I screen work I've made before?</summary>
+            <p>
+              <b>No!</b> This is for screening original, unscreened work for the show!
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>What kind of videos can I make?</summary>
+            <p>
+              We accept any genre of short film! While most of our filmmakers
+              have had a comedy background, we have seen animations,
+              documentaries, and music videos. The few rules we do have are:
+            </p>
+            <ul>
+              <li>
+                Videos must be 3 minutes or less.
+                <ul>
+                  <li>
+                    Don't worry, each video gets a 5 second preroll title/credits
+                    card.
+                  </li>
+                </ul>
+              </li>
+              <li>Horizontal, not vertical</li>
+              <li>You must attend the show!</li>
+            </ul>
+          </details>
+          <!-- <details class="faq-item">
             <summary>How many comps do I get?</summary>
             <p>
               Filmmakers get ONE comp ticket as part of their submission fee.  Because some teams are solo creators, and some are large, we can only fairly give one per team.
             </p>
-          </details>
+          </details> -->
           <details class="faq-item">
             <summary>What's with the prizes?</summary>
             <p>
-              Tootsie's Video Vault has partnered with <a href="https://www.vinyl.tv/" target="_blank" rel="noreferrer noopener">VinylTV</a> to provide cash prizes and development awards for select submissions.
+              Tootsie's Video Vault has partnered with <a
+                href="https://www.vinyl.tv/"
+                target="_blank"
+                rel="noreferrer noopener">Vinyl.TV</a
+              > to provide cash prizes and development awards for select submissions.
             </p>
-<p>
-              Beyond that, there are several Superlatives we give to audience members and shorts like First to Show Up, Best Dressed, and whatever comes to mind!
-</p>
             <p>
-              Lastly, the audience votes for their favorite short to receive the Tootsie's Championship Belt using digital voting system <a href="https://opavote.com/" target="_blank" rel="noreferrer noopener">OpaVote</a> which allows for fair multi-winner voting from their phones.  It's great to bring a crowd, but you won't need to worry about people stacking the vote!
+              Beyond that, there are several Superlatives we give to audience
+              members and shorts like First to Show Up, Best Dressed, and
+              whatever comes to mind!
+            </p>
+            <p>
+              Lastly, the audience votes for their favorite short to receive the
+              Tootsie's Championship Belt using digital voting system <a
+                href="https://opavote.com/"
+                target="_blank"
+                rel="noreferrer noopener">OpaVote</a
+              > which allows for fair multi-winner voting from their phones. It's
+              great to bring a crowd, but you won't need to worry about people stacking
+              the vote!
             </p>
           </details>
         </div>
@@ -688,11 +752,22 @@ const homepageStructuredData = [
           content: "-";
         }
 
-        .faq-item p {
+        .faq-item p,
+        .faq-item ul {
           margin: 0;
           padding: 0 1.25rem 1.25rem;
           font-size: clamp(1rem, 1.6vw, 1.35rem);
           line-height: 1.45;
+        }
+
+        .faq-item ul {
+          list-style-type: disc;
+          list-style-position: outside;
+          padding-left: 2.75rem;
+        }
+
+        .faq-item li ul {
+          padding: 0 0 0 1.5rem;
         }
 
         .prizes-section {
@@ -889,6 +964,42 @@ const homepageStructuredData = [
 
         .how-it-works__item {
           flex: 1;
+        }
+
+        /* Hero video styles */
+        #home {
+          position: relative;
+        }
+
+        .hero {
+          aspect-ratio: 4 / 3;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .hero__video {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          pointer-events: none;
+          position: absolute;
+          inset: 0;
+        }
+
+        .hero__overlay {
+          z-index: 5;
+          pointer-events: none;
+          position: absolute;
+          inset: 0;
+        }
+
+        .hero__content {
+          z-index: 10;
+          color: white;
         }
       </style>
     </main>
