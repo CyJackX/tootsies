@@ -220,10 +220,10 @@ const homepageStructuredData = [
           <Image
             src={buttonSecondary}
             alt="Submit Button"
-            class="block max-w-sm transition-transform duration-300 group-hover:scale-105"
+            class="absolute inset-0 block transition-transform duration-300 group-hover:scale-105"
           />
           <span
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-2xl group-hover:text-white"
+            class="relative z-10 text-2xl group-hover:text-white"
           >
             {SITE_EMAIL}
           </span>
@@ -666,18 +666,26 @@ const homepageStructuredData = [
           }
         }
 
-        .apply-section__primary-link,
-        .apply-section__email-link {
+        .apply-section__primary-link {
           max-width: min(100%, 36rem);
+        }
+
+        .apply-section__email-link {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: max-content;
+          aspect-ratio: 747 / 153;
+          padding: 1.25rem 3rem;
         }
 
         .apply-section__email-link img {
           width: 100%;
-          height: auto;
+          max-width: none;
+          height: 100%;
         }
 
         .apply-section__email-link span {
-          width: 90%;
           white-space: nowrap;
           line-height: 1.1;
         }
