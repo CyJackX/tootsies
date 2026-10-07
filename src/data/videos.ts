@@ -18,7 +18,11 @@ export const videoGroups: VideoGroup[] = [
         url: "https://youtu.be/gMdT5myITR0",
         description: { credits: "Off Q Comedy" },
       },
-
+{
+        title: "And Justice For All",
+        url: "https://www.youtube.com/watch?v=wiQe9KMyH74",
+        description: { credits: "Dan Moore & Doroty Nguyen" },
+      },
       {
         title: "Jim Beam",
         url: "https://www.youtube.com/watch?v=238GwLyfXUs",
@@ -38,11 +42,7 @@ export const videoGroups: VideoGroup[] = [
         description: { credits: "Neha Kallianpurkar" },
       },
 
-      {
-        title: "And Justice For All",
-        url: "https://www.youtube.com/watch?v=wiQe9KMyH74",
-        description: { credits: "Dan Moore & Doroty Nguyen" },
-      },
+      
       {
         title: "Jesus Loves You",
         url: "https://vimeo.com/1198593631",
@@ -52,6 +52,11 @@ export const videoGroups: VideoGroup[] = [
         title: "Call Center",
         url: "https://www.youtube.com/watch?v=ioOgQ6RfX4Y",
         description: { credits: "Rajiv Rao", details: "VinylTV Development Award" },
+      },
+      {
+        title: "My Big Break In",
+        url: "https://www.youtube.com/watch?v=V8iDMznDUmw",
+        description: { credits: "Marisa Brau-Reyes & Jessie Cannizzaro"},
       },
 
       {
