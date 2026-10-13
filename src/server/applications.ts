@@ -24,8 +24,7 @@ export async function beginApplication(env: SubmissionEnv, input: Record<string,
   const intent = await stripe<SetupIntent>(env, "setup_intents", {
     usage: "off_session", "payment_method_types[0]": "card",
     "metadata[integration]": integration, "metadata[show_id]": show.id,
-    "metadata[answers_hash]": hash, "metadata[fee_cents]": String(show.feeCents),
-    "metadata[currency]": show.currency,
+    "metadata[answers_hash]": hash,
   }, `application:${input.attemptId}:${hash}:setup`);
   if (!intent.client_secret) throw new Error("Missing setup client secret");
   return { clientSecret: intent.client_secret, status: 200 };
@@ -45,12 +44,10 @@ export async function finishApplication(env: SubmissionEnv, input: Record<string
   if (intent.metadata.answers_hash !== await answersHash(a)) return { error: "These answers do not match the authorized application. Please contact us.", status: 409 };
   const show = nextShow;
   if (intent.metadata.show_id !== show.id) throw new Error("This application belongs to a different show");
-  const fee = Number(intent.metadata.fee_cents);
-  if (!Number.isSafeInteger(fee) || fee <= 0 || !/^[a-z]{3}$/.test(intent.metadata.currency)) throw new Error("Invalid fee snapshot");
   const sheets = new Sheets(env, show);
   const existing = await sheets.find(intent.id);
   if (existing) {
-    if (!existing.values[16] || existing.values[17] !== intent.id || existing.values[18] !== intent.payment_method) throw new Error("Conflicting application record");
+    if (!existing.values[14] || existing.values[15] !== intent.id || existing.values[16] !== intent.payment_method) throw new Error("Conflicting application record");
     return { complete: true, status: 200 };
   }
   const method = await stripe<PaymentMethod>(env, `payment_methods/${encodeURIComponent(intent.payment_method)}`);
@@ -72,6 +69,6 @@ export async function finishApplication(env: SubmissionEnv, input: Record<string
   }
   const created = new Date(intent.created * 1000).toISOString();
   const customerURL = `https://dashboard.stripe.com/${intent.livemode ? "" : "test/"}customers/${customerId}`;
-  await sheets.insert([intent.id, show.id, created, a.name, a.email, a.socials, a.location, a.attendance, a.attendedBefore, a.newVideo, a.portfolio, a.notes, String(fee), intent.metadata.currency, typeof input.consentText === "string" ? input.consentText : "", created, customerId, intent.id, method.id, customerURL, "", "", ""]);
+  await sheets.insert([intent.id, show.id, created, a.name, a.email, a.socials, a.location, a.attendance, a.attendedBefore, a.newVideo, a.portfolio, a.notes, typeof input.consentText === "string" ? input.consentText : "", created, customerId, intent.id, method.id, customerURL, "", "", ""]);
   return { complete: true, status: 200 };
 }

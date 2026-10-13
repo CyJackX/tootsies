@@ -5,7 +5,7 @@ The form uses embedded Stripe Card Element, Astro endpoints, and the direct Goog
 ## Where data goes
 
 1. Applicants fill in their answers and enter their card in a Stripe-hosted iframe on the same page.
-2. The server validates answers and consent, then creates a card-only, off-session SetupIntent. It stores no draft application. Stripe metadata contains show/fee details and a SHA-256 digest binding the answers to the setup, not the answers themselves.
+2. The server validates answers and consent, then creates a card-only, off-session SetupIntent. It stores no draft application. Stripe metadata contains show identifiers and a SHA-256 digest binding the answers to the setup, not the answers themselves.
 3. Stripe confirms and saves the card, including any authentication challenge. Card details never pass through the site's server.
 4. The browser sends its original answers and Stripe client secret to the completion endpoint. The server independently retrieves the SetupIntent, verifies success and the answer digest, creates a customer, attaches the card, and appends a completed application to Sheets.
 5. The browser clears the form and its in-memory pending state only after Sheets confirms the save. No cookies, local storage, session storage, or database hold application drafts.
@@ -23,7 +23,7 @@ Abandoned setup does not create an incomplete Sheet row or customer. Stripe stil
 
 The new template omits the old setup-status and Checkout-session columns: every application row represents successful setup. If you previously created a Sheet from the earlier template, create a fresh tab using this template; do not change a populated old tab without reviewing its records.
 
-Columns A:T are application-owned; U:W (`decision`, `payment_status`, `organizer_notes`) are yours. Retry completion never overwrites an existing row. Use filter views for review; preserve IDs and headers. Answers use `RAW` values, so strings beginning with `=` are not executed as formulas.
+Columns A:R are application-owned; S:U (`decision`, `payment_status`, `organizer_notes`) are yours. Retry completion never overwrites an existing row. Use filter views for review; preserve IDs and headers. Answers use `RAW` values, so strings beginning with `=` are not executed as formulas.
 
 ## Credentials
 
@@ -50,14 +50,14 @@ Edit the single current-show configuration in `src/data/nextShow.ts`, using a ne
 
 `open` controls whether applications are invited. The form also stays hidden, and new card setup is blocked, unless all four credentials, a show ID, spreadsheet ID, positive fee, and currency are configured. This checks local configuration presence, not whether external credentials or spreadsheet permissions are valid. Deadline and notification date are display-only strings, such as `February 1 at midnight` and `Mid-February`; they are not parsed or enforced. Close applications manually by setting `open: false`. Credentials and the spreadsheet still need to be configured for submissions to save successfully.
 
-Edit the visible wording in the `consent-text` span in `src/pages/submit.astro`. The submission script reads that text directly. The browser sends that displayed wording for recording; the server requires the checked checkbox but does not validate wording or require text. Text, when supplied, is saved only in Sheets. Keep the amount in this wording consistent with `feeCents`/`currency` in the show configuration. The SetupIntent snapshots fee, currency, and its server-created timestamp. Completion uses that snapshot even after fees change or the show closes. No application can start when `open` is false.
+Edit the visible wording in the `consent-text` span in `src/pages/submit.astro`. The submission script reads that text directly. The browser sends that displayed wording for recording; the server requires the checked checkbox but does not validate wording or require text. Text, when supplied, is saved only in Sheets. Keep the amount in this wording consistent with `feeCents`/`currency` in the show configuration. The SetupIntent records the show ID and its server-created timestamp. Completion can finish after the show closes. No application can start when `open` is false.
 
 The homepage and application form share `src/data/nextShow.ts`. Set `phase` to `submissions` when inviting applications, or `tickets` when promoting attendance; configure `ticketsUrl` for the current show before switching to tickets. `open` independently controls whether applications are accepted. Screening time, venue, deadline, and notification date feed both pages automatically. `youtubeEmbedUrl` controls the homepage video.
 
 ## Manual acceptance and charges
 
-1. Review completed Sheet applications; mark acceptance in U and email participants manually.
-2. Open the row's Stripe customer link. Verify application/show IDs, the saved card, and the original authorized fee/currency in the row.
+1. Review completed Sheet applications; mark acceptance in S and email participants manually.
+2. Open the row's Stripe customer link. Verify application/show IDs and the saved card. Use the fee described in the consent wording when charging manually.
 3. Check existing successful payments before charging. Create a payment in Stripe's dashboard using the saved method, for the authorized fee, identifying the show/application in its description. Charge once per accepted application; never charge a rejected or missing application.
 4. Record payment outcome/reference in W:X. Enable Stripe receipts if desired; the site sends no email.
 
@@ -93,3 +93,5 @@ Run `npm run applications:test-integrations` after filling in `.dev.vars` and th
 The two required Yes/No questions are stored separately as `attendance` (can attend this screening) and `attended_before` (has attended a prior show). The commitment accepts `YESTOOTSIE`, case-insensitively. Portfolio links and their passwords share the required `portfolio` answer, matching the form; there is no separate password field. Name, email, location, portfolio, both Yes/No answers, commitment, and fee consent are required. Socials and notes are optional.
 
 An empty tab with the previous headers automatically upgrades to this layout. A populated tab with old headers is never rewritten automatically; choose a new `sheetTab` or review and migrate the old columns before using it. Adding questions requires corresponding updates to server validation and the saved row/header mapping.
+
+Application rows and Stripe metadata no longer store `fee_cents` or `currency`. The show configuration retains the fee for display. Empty tabs with the old fee columns upgrade automatically; populated tabs are preserved and need those two columns removed manually, or a new tab selected, before new applications can save.

@@ -52,6 +52,7 @@ async function providers(callback) {
         assert.equal(state.rows.length, 0);
         assert.ok(path.includes('valueInputOption=RAW'));
         state.sheetHeaders = JSON.parse(options.body).values[0];
+        while (state.sheetHeaders.at(-1) === "") state.sheetHeaders.pop();
         return reply({});
       }
       if (options.method === 'POST') {
@@ -108,6 +109,8 @@ test('starting or abandoning setup stores no Sheet row, customer, or answers in 
   const metadata = state.intents.values().next().value.metadata;
   assert.match(metadata.answers_hash, /^[a-f0-9]{64}$/);
   assert.equal(metadata.consent_text, undefined);
+  assert.equal(metadata.fee_cents, undefined); assert.equal(metadata.currency, undefined);
+  assert.equal(headers.includes('fee_cents'), false); assert.equal(headers.includes('currency'), false);
   assert.equal((await beginApplication(env, { ...input, consentText: 'x'.repeat(501) })).status, 200);
   for (const value of [answers.name, answers.email, answers.notes, answers.portfolio]) assert.equal(JSON.stringify(metadata).includes(value), false);
   assert.equal((await finishApplication(env, { ...answers, clientSecret: first.clientSecret })).status, 409);
@@ -118,18 +121,18 @@ test('starting or abandoning setup stores no Sheet row, customer, or answers in 
   assert.equal((await beginApplication(env, input)).status, 409);
 }));
 
-test('verified success inserts once, keeps fee snapshots and manual columns, and allows shared emails', async () => providers(async ({ env, show, state, startInput, succeed }) => {
+test('verified success inserts once, preserves manual columns, and allows shared emails', async () => providers(async ({ env, show, state, startInput, succeed }) => {
   const first = await beginApplication(env, startInput()); succeed(first.clientSecret);
-  const originalFee = show.feeCents; show.feeCents = 3000; show.open = false;
+  show.open = false;
   assert.equal((await finishApplication(env, { ...answers, clientSecret: first.clientSecret })).complete, true);
-  assert.equal(state.rows.length, 1); assert.equal(state.rows[0][12], String(originalFee));
+  assert.equal(state.rows.length, 1);
   assert.equal(state.rows[0][11], answers.notes); assert.equal(state.rows[0][10], answers.portfolio);
   assert.equal(state.rows[0][7], 'No'); assert.equal(state.rows[0][8], 'Yes');
   assert.equal(state.rows[0][9], 'YESTOOTSIE'); assert.equal(state.rows[0][10], 'N/A');
-  assert.equal(state.rows[0][0], state.rows[0][17]); assert.equal(state.customers.size, 1);
-  state.rows[0].splice(20, 3, 'accepted', 'manual', 'keep');
+  assert.equal(state.rows[0][0], state.rows[0][15]); assert.equal(state.customers.size, 1);
+  state.rows[0].splice(18, 3, 'accepted', 'manual', 'keep');
   assert.equal((await finishApplication(env, { ...answers, clientSecret: first.clientSecret })).complete, true);
-  assert.equal(state.rows.length, 1); assert.deepEqual(state.rows[0].slice(20), ['accepted', 'manual', 'keep']);
+  assert.equal(state.rows.length, 1); assert.deepEqual(state.rows[0].slice(18), ['accepted', 'manual', 'keep']);
   show.open = true;
   const second = await beginApplication(env, startInput()); succeed(second.clientSecret);
   await finishApplication(env, { ...answers, clientSecret: second.clientSecret });
@@ -205,6 +208,7 @@ test('homepage derives shared show details and switches submission/ticket links'
 
 test('empty old tabs upgrade headers while populated old tabs remain untouched', async () => providers(async ({ env, show, state }) => {
   const oldHeaders = headers.filter(header => header !== 'attended_before');
+  oldHeaders.splice(oldHeaders.indexOf('consent_text'), 0, 'fee_cents', 'currency');
   oldHeaders.splice(oldHeaders.indexOf('portfolio') + 1, 0, 'portfolio_password');
   state.sheetHeaders = [...oldHeaders];
   await new Sheets(env, show).rows();
@@ -219,10 +223,10 @@ test('consent wording is optional and unrestricted while the checkbox remains re
   const input = startInput(); delete input.consentText;
   const first = await beginApplication(env, input); assert.equal(first.status, 200); succeed(first.clientSecret);
   assert.equal((await finishApplication(env, { ...answers, clientSecret: first.clientSecret })).complete, true);
-  assert.equal(state.rows[0][14], '');
+  assert.equal(state.rows[0][12], '');
   const second = await beginApplication(env, { ...startInput(), consentText: 'x'.repeat(1000) }); succeed(second.clientSecret);
   assert.equal((await finishApplication(env, { ...answers, consentText: 'x'.repeat(1000), clientSecret: second.clientSecret })).complete, true);
-  assert.equal(state.rows[1][14], 'x'.repeat(1000));
+  assert.equal(state.rows[1][12], 'x'.repeat(1000));
   assert.equal((await beginApplication(env, { ...startInput(), consent: false })).status, 400);
 }));
 

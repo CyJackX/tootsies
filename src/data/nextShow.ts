@@ -39,10 +39,17 @@ export const nextShow: Show = {
   phase: "submissions",
   youtubeEmbedUrl: "https://www.youtube.com/embed/Fyhid9vehyY",
   ticketsUrl: "", // Add the ticket URL for this show when ready.
-  id: "summer-2027", subtitle: "Summer 2027", open: true,
-  screeningAt: "June 4, 2027 7:30PM", venue: "Littlefield, Brooklyn", deadline: "February 28, 2027 11:59 PM", notificationDate: "March 7, 2027",
+  id: "summer-2027",
+  subtitle: "Summer 2027",
+  open: true,
+  screeningAt: "June 4, 2027 7:30PM", 
+  venue: "Littlefield, Brooklyn", 
+  deadline: "February 28, 2027 11:59 PM", 
+  notificationDate: "March 7, 2027",
   productionInstructions: "Create a new 16:9 video under 3 minutes long.",
-  feeCents: 2500, currency: "usd", spreadsheetId: "1wDLSPhDhqw5DF9PL7iuG5cA7qT29kM-gw3HBsoD-MYY",
+  feeCents: 2500,
+  currency: "usd",
+  spreadsheetId: "1wDLSPhDhqw5DF9PL7iuG5cA7qT29kM-gw3HBsoD-MYY",
 };
 export function feeLabel(show: Show) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: show.currency }).format(show.feeCents / 100);

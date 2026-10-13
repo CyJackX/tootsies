@@ -1,7 +1,7 @@
 import type { Show } from "../data/nextShow";
 import type { SubmissionEnv } from "./env";
 
-export const headers = ["application_id", "show_id", "created_at", "name", "email", "socials", "location", "attendance", "attended_before", "new_video", "portfolio", "notes", "fee_cents", "currency", "consent_text", "consented_at", "stripe_customer_id", "stripe_setup_intent_id", "stripe_payment_method_id", "stripe_customer_url", "decision", "payment_status", "organizer_notes"];
+export const headers = ["application_id", "show_id", "created_at", "name", "email", "socials", "location", "attendance", "attended_before", "new_video", "portfolio", "notes", "consent_text", "consented_at", "stripe_customer_id", "stripe_setup_intent_id", "stripe_payment_method_id", "stripe_customer_url", "decision", "payment_status", "organizer_notes"];
 export type ApplicationRow = string[];
 const encoder = new TextEncoder();
 const base64url = (bytes: Uint8Array) => btoa(String.fromCharCode(...bytes)).replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
@@ -67,12 +67,14 @@ export class Sheets {
     if (initialize) await this.ensureTab();
     let { values = [] } = await this.request("A:W");
     // Upgrade only an empty tab from the previous form; populated old tabs need review.
-    const previousHeaders = headers.filter(header => header !== "attended_before");
+    const feeHeaders = [...headers];
+    feeHeaders.splice(feeHeaders.indexOf("consent_text"), 0, "fee_cents", "currency");
+    const previousHeaders = feeHeaders.filter(header => header !== "attended_before");
     previousHeaders.splice(previousHeaders.indexOf("portfolio") + 1, 0, "portfolio_password");
-    const emptyPreviousTab = values.length === 1 && previousHeaders.every((header, index) => values[0]?.[index] === header) && values[0].length === previousHeaders.length;
+    const emptyPreviousTab = values.length === 1 && [feeHeaders, previousHeaders].some(old => old.every((header, index) => values[0]?.[index] === header) && values[0].length === old.length);
     if (initialize && (values.length === 0 || emptyPreviousTab)) {
       // Also support an existing, completely blank tab; never replace mismatched headers.
-      await this.request("A1:W1", "PUT", { values: [headers] }, "?valueInputOption=RAW");
+      await this.request("A1:W1", "PUT", { values: [[...headers, "", ""]] }, "?valueInputOption=RAW");
       ({ values = [] } = await this.request("A:W"));
     }
     if (headers.some((header, index) => values[0]?.[index] !== header)) throw new Error("Sheets headers do not match");
@@ -89,7 +91,7 @@ export class Sheets {
     const existing = await this.find(values[0]);
     if (existing) return existing;
     try {
-      await this.request("A:W", "POST", { values: [values] }, ":append?valueInputOption=RAW&insertDataOption=INSERT_ROWS");
+      await this.request("A:U", "POST", { values: [values] }, ":append?valueInputOption=RAW&insertDataOption=INSERT_ROWS");
     } catch {
       // An append timeout may still have written. Never blindly append again here.
       const recovered = await this.find(values[0]);

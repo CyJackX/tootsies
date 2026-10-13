@@ -9,6 +9,6 @@ for (const [index, row] of rows.entries()) {
   groups.set(id, [...(groups.get(id) || []), index + 2]);
 }
 const duplicates = [...groups].filter(([, rows]) => rows.length > 1).map(([id, rows]) => ({ id, rows }));
-const missingReferences = rows.flatMap((row, index) => !row[16] || !row[17] || !row[18] ? [{ id: row[0], row: index + 2, missingCustomer: !row[16], missingIntent: !row[17], missingPaymentMethod: !row[18] }] : []);
+const missingReferences = rows.flatMap((row, index) => !row[14] || !row[15] || !row[16] ? [{ id: row[0], row: index + 2, missingCustomer: !row[14], missingIntent: !row[15], missingPaymentMethod: !row[16] }] : []);
 console.log(JSON.stringify({ showId: show.id, count: rows.length, duplicates, missingReferences }, null, 2));
 // This command only reads Sheets; it never changes records or calls Stripe.

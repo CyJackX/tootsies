@@ -1,1 +1,1 @@
-application_id,show_id,created_at,name,email,socials,location,attendance,attended_before,new_video,portfolio,notes,fee_cents,currency,consent_text,consented_at,stripe_customer_id,stripe_setup_intent_id,stripe_payment_method_id,stripe_customer_url,decision,payment_status,organizer_notes
+application_id,show_id,created_at,name,email,socials,location,attendance,attended_before,new_video,portfolio,notes,consent_text,consented_at,stripe_customer_id,stripe_setup_intent_id,stripe_payment_method_id,stripe_customer_url,decision,payment_status,organizer_notes
