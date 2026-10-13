@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import logo from "../assets/img/TVV LOGO.svg";
 import hamburgerIcon from "../assets/img/WEB_HEADER/Hamburger.svg";
 import closeIcon from "../assets/img/WEB_HEADER/CloseX.svg";
@@ -10,14 +9,18 @@ import desktopBg from "../assets/img/WEB_HEADER/Desktop BG 1.svg";
 <header class="site-header my-8">
   <div class="site-header__inner">
     <div class="w-full relative overflow-hidden">
-      <Image
-        src={desktopBg}
+      <img
+        src={desktopBg.src}
+        width={desktopBg.width}
+        height={desktopBg.height}
         alt=""
         class="-z-10 w-full h-[408px] object-cover hidden md:block 2k:h-auto 2k:w-full"
       />
-      <Image src={mobileBg} alt="" class="-z-10 w-full block md:hidden" />
-      <Image
-        src={logo}
+      <img src={mobileBg.src} width={mobileBg.width} height={mobileBg.height} alt="" class="-z-10 w-full block md:hidden" />
+      <img
+        src={logo.src}
+        width={logo.width}
+        height={logo.height}
         alt="Tootsies Video Vault Logo"
         class="absolute left-1/2 top-0 h-full -translate-x-1/2"
       />

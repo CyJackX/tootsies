@@ -1,4 +1,5 @@
-import { nextShow, isAccepting } from "../data/nextShow";
+import { applicationsConfigured } from "./configuration";
+import { nextShow } from "../data/nextShow";
 import type { SubmissionEnv } from "./env";
 import { Sheets } from "./sheets";
 import { stripe, type SetupIntent, type PaymentMethod } from "./stripe";
@@ -13,7 +14,8 @@ async function answersHash(answers: Answers) {
 // No Google writes or customer records here. Stripe gets a digest, not answers.
 export async function beginApplication(env: SubmissionEnv, input: Record<string, unknown>) {
   const show = nextShow;
-  if (!isAccepting(show) || input.showId !== show.id) return { error: "Applications are closed or this form is out of date. Please reload.", status: 409 };
+  if (!show.open || input.showId !== show.id) return { error: "Applications are closed or this form is out of date. Please reload.", status: 409 };
+  if (!applicationsConfigured(show, env)) return { error: "Applications are not available yet. Please check back later.", status: 503 };
   const { answers, errors } = validateAnswers(input);
   if (Object.keys(errors).length) return { errors, status: 400 };
   if (typeof input.attemptId !== "string" || !/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(input.attemptId)) return { error: "Please reload the form and try again.", status: 400 };

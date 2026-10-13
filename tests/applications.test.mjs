@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { validateAnswers } from '../src/server/validation.ts';
-import { isAccepting, nextShow, homepagePhase } from '../src/data/nextShow.ts';
+import { nextShow, homepagePhase } from '../src/data/nextShow.ts';
 import { Sheets, headers } from '../src/server/sheets.ts';
 import { beginApplication, finishApplication } from '../src/server/applications.ts';
 import { passesHoneypot, sameOrigin, readInput } from '../src/server/http.ts';
@@ -14,13 +14,6 @@ test('validation accepts first time creators and attendance No, and requires ema
   assert.ok(validateAnswers({ ...answers, attendedBefore: '' }).errors.attendedBefore);
   assert.ok(validateAnswers({ ...answers, newVideo: 'YES' }).errors.newVideo);
   assert.deepEqual(validateAnswers({ ...answers, attendedBefore: 'No', newVideo: 'yestootsie' }).errors, {});
-});
-test('show acceptance depends only on open, regardless of display dates', () => {
-  const show = { ...nextShow, open: true, spreadsheetId: '', screeningAt: '', notificationDate: '', deadline: '' };
-  assert.equal(isAccepting(show), true);
-  assert.equal(isAccepting({ ...show, deadline: 'Applications close next Friday', notificationDate: 'A week later' }), true);
-  assert.equal(isAccepting({ ...show, deadline: 'January 1, 2000' }), true);
-  assert.equal(isAccepting({ ...show, open: false }), false);
 });
 test('HTTP and honeypot reject invalid origins, oversized input and filled hidden fields', async () => {
   const request = new Request('https://example.com/api/applications', { method: 'POST', headers: { Origin: 'https://example.com' }, body: '{}' });
@@ -36,7 +29,7 @@ test('HTTP and honeypot reject invalid origins, oversized input and filled hidde
 
 async function providers(callback) {
   const pair = await crypto.subtle.generateKey({ name: 'RSASSA-PKCS1-v1_5', modulusLength: 2048, publicExponent: new Uint8Array([1, 0, 1]), hash: 'SHA-256' }, true, ['sign', 'verify']);
-  const env = { GOOGLE_SERVICE_ACCOUNT_EMAIL: 'test@example.com', GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY: Buffer.from(await crypto.subtle.exportKey('pkcs8', pair.privateKey)).toString('base64'), STRIPE_SECRET_KEY: 'sk_test_fake' };
+  const env = { GOOGLE_SERVICE_ACCOUNT_EMAIL: 'test@example.com', GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY: Buffer.from(await crypto.subtle.exportKey('pkcs8', pair.privateKey)).toString('base64'), STRIPE_SECRET_KEY: 'sk_test_fake', PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk_test_fake' };
   const show = nextShow, originalShow = { ...show }, originalFetch = globalThis.fetch;
   Object.assign(show, { open: true, spreadsheetId: 'sheet', screeningAt: 'future', notificationDate: 'future', deadline: '2030-01-01T00:00:00Z' });
   const state = { rows: [], calls: [], intents: new Map(), methods: new Map(), customers: new Map(), idempotency: new Map(), unavailable: false, appendUnavailable: false, uncertainAppend: false, tabExists: true, sheetHeaders: headers, creationUncertain: false };
@@ -231,4 +224,23 @@ test('consent wording is optional and unrestricted while the checkbox remains re
   assert.equal((await finishApplication(env, { ...answers, consentText: 'x'.repeat(1000), clientSecret: second.clientSecret })).complete, true);
   assert.equal(state.rows[1][14], 'x'.repeat(1000));
   assert.equal((await beginApplication(env, { ...startInput(), consent: false })).status, 400);
+}));
+
+test('server opens solely with open, independent of display dates', async () => providers(async ({ env, show, startInput }) => {
+  show.deadline = 'Last Friday'; show.notificationDate = ''; show.screeningAt = '';
+  assert.equal((await beginApplication(env, startInput())).status, 200);
+  show.open = false;
+  assert.equal((await beginApplication(env, startInput())).status, 409);
+}));
+
+test('missing credentials or invalid storage/fee configuration prevent card setup', async () => providers(async ({ env, show, state, startInput }) => {
+  for (const key of ['GOOGLE_SERVICE_ACCOUNT_EMAIL', 'GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY', 'STRIPE_SECRET_KEY', 'PUBLIC_STRIPE_PUBLISHABLE_KEY']) {
+    assert.equal((await beginApplication({ ...env, [key]: '' }, startInput())).status, 503);
+  }
+  const original = { ...show };
+  for (const change of [{ spreadsheetId: '' }, { feeCents: 0 }, { currency: '' }]) {
+    Object.assign(show, original, change);
+    assert.equal((await beginApplication(env, startInput())).status, 503);
+  }
+  assert.equal(state.intents.size, 0);
 }));

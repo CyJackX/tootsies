@@ -2,7 +2,10 @@ import { loadStripe } from "@stripe/stripe-js/pure";
 import type { Stripe, StripeCardElement } from "@stripe/stripe-js";
 
 interface Result { error?: string; errors?: Record<string, string>; clientSecret?: string; complete?: boolean }
-const form = document.querySelector<HTMLFormElement>("#application")!;
+const applicationForm = document.querySelector<HTMLFormElement>("#application");
+// Closed shows render no form and do not initialize Stripe.
+if (applicationForm) {
+const form = applicationForm;
 const button = document.querySelector<HTMLButtonElement>("#submit-button")!;
 const fields = document.querySelector<HTMLFieldSetElement>("#application-fields")!;
 const status = document.querySelector<HTMLElement>("#form-status")!;
@@ -93,3 +96,5 @@ form.addEventListener("submit", async event => {
 });
 
 void initializeCard();
+
+}

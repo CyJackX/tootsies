@@ -44,9 +44,6 @@ export const nextShow: Show = {
   productionInstructions: "Create a new 16:9 video under 3 minutes long.",
   feeCents: 2500, currency: "usd", spreadsheetId: "1wDLSPhDhqw5DF9PL7iuG5cA7qT29kM-gw3HBsoD-MYY",
 };
-export function isAccepting(show: Show) {
-  return show.open;
-}
 export function feeLabel(show: Show) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: show.currency }).format(show.feeCents / 100);
 }

@@ -2,15 +2,17 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { nextShow, isAccepting, feeLabel } from "../data/nextShow";
+import { nextShow, feeLabel } from "../data/nextShow";
+import { applicationsConfigured } from "../server/configuration";
 import type { SubmissionEnv } from "../server/env";
 import { SITE_EMAIL } from "../consts";
 export const prerender = false;
 Astro.response.headers.set("Cache-Control", "no-store");
 Astro.response.headers.set("Referrer-Policy", "no-referrer");
 const show = nextShow;
-const publishableKey = (Astro.locals.runtime.env as unknown as SubmissionEnv).PUBLIC_STRIPE_PUBLISHABLE_KEY;
-const accepting = isAccepting(show);
+const env = Astro.locals.runtime.env as unknown as SubmissionEnv;
+const publishableKey = env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
+const configured = applicationsConfigured(show, env);
 const fields = [
   { name: "name", label: "Your name (or group name)", required: true, max: 200 },
   { name: "email", label: "Contact email", required: true, max: 254, type: "email" },
@@ -21,14 +23,13 @@ const fields = [
 <!doctype html><html lang="en"><head><BaseHead title={`Apply - ${show.subtitle}`} description="Apply to participate in Tootsie's Video Vault. Applying is free." /></head>
 <body class="bg-neutral text-white"><Header /><main class="max-w-2xl mx-auto px-6 py-16">
   <h1 class="text-center">Tootsie's Video Vault<br/>{show.subtitle}</h1>
+  {show.open && configured ? <>
   <p>We're looking for the funniest, weirdest, most rad filmmakers in the frickin' universe. Apply with examples of your work. If selected, you'll create something fresh for the show!</p>
   <p>Applying is free. Selected participants pay {feeLabel(show)} toward judges, the venue, prizes, and one comp to the show.</p>
-  {accepting ? <>
     <dl><dt>Screening</dt><dd>{show.screeningAt} - {show.venue}</dd><dt>Application deadline</dt><dd>{show.deadline}</dd><dt>Notification Date</dt><dd>{show.notificationDate}</dd></dl>
     <p>{show.productionInstructions}</p>
-  </> : <p class="notice">Applications are currently closed. Check back for the next show.</p>}
-  <form id="application" data-show={show.id} data-open={String(accepting)} data-stripe-key={publishableKey}>
-    <fieldset id="application-fields" disabled={!accepting}>
+  <form id="application" data-show={show.id} data-open="true" data-stripe-key={publishableKey}>
+    <fieldset id="application-fields">
       {fields.map(field => <label>{field.label}{field.required && " *"}<input name={field.name} type={field.type || "text"} required={field.required} maxlength={field.max} /><span class="error" data-error={field.name}></span></label>)}
       <label>The screening is scheduled for {show.screeningAt} at {show.venue}. Can you attend the screening? *<select name="attendance" required><option value="">Choose an answer</option><option>Yes</option><option>No</option></select><span class="error" data-error="attendance"></span></label>
       <label>Have you been to Tootsie's before? We strongly encourage checking out a show to understand the vibe and effort people bring to their projects!*<select name="attendedBefore" required><option value="">Choose an answer</option><option>Yes</option><option>No</option></select><span class="error" data-error="attendedBefore"></span></label>
@@ -39,7 +40,7 @@ const fields = [
       
       <label class="honeypot" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off" /></label>
     </fieldset>
-    <section id="card-section" aria-labelledby="card-heading" hidden={!accepting}>
+    <section id="card-section" aria-labelledby="card-heading">
       <h4 id="card-heading">Submission Fee card commitment with Stripe</h4>
       <p>Applying is <b>FREE!</b> Only accepted submissions will be charged.  Save a card securely below with Stripe. No payment is collected now. Stripe handles your card details securely; your work samples and notes are stored separately.</p>
       <div id="card-element"></div>
@@ -50,8 +51,8 @@ const fields = [
     <button id="submit-button" type="submit" disabled>Save card and submit application</button>
     <button id="new-application" type="button" hidden>Start a separate application</button>
     <noscript><p>Please enable JavaScript to apply and securely save your card.</p></noscript>
-    {accepting && !publishableKey && <p>Applications are not configured yet. Please contact us or check back later.</p>}
   </form>
+  </> : <p class="notice">{show.open ? "Applications are not available yet. Please check back later." : "Applications are currently closed. Check back for the next show."}</p>}
   <p>Need help? <a href={`mailto:${SITE_EMAIL}`}>{SITE_EMAIL}</a></p>
 </main><Footer />
 <script src="../scripts/apply.ts"></script>
