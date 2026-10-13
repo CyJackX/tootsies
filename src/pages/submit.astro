@@ -47,11 +47,10 @@ const fields = [
       <p id="card-error" class="error" role="alert"></p>
     </section>
     <label class="consent"><input name="consent" type="checkbox" required /><span id="consent-text">I understand that if selected to participate in Tootsie's Video Vault, I authorize Tootsie's Video Vault to charge my saved card once for $25 USD. No fee will be charged if this application is not selected. *</span></label><span class="error" data-error="consent"></span>
-    <p id="form-status" role="status" aria-live="polite"></p>
     <button id="submit-button" type="submit" disabled>Save card and submit application</button>
-    <button id="new-application" type="button" hidden>Start a separate application</button>
     <noscript><p>Please enable JavaScript to apply and securely save your card.</p></noscript>
   </form>
+  <p id="form-status" role="status" aria-live="polite" tabindex="-1"></p>
   </> : <p class="notice">{show.open ? "Applications are not available yet. Please check back later." : "Applications are currently closed. Check back for the next show."}</p>}
   <p>Need help? <a href={`mailto:${SITE_EMAIL}`}>{SITE_EMAIL}</a></p>
 </main><Footer />

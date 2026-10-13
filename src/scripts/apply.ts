@@ -10,7 +10,6 @@ const button = document.querySelector<HTMLButtonElement>("#submit-button")!;
 const fields = document.querySelector<HTMLFieldSetElement>("#application-fields")!;
 const status = document.querySelector<HTMLElement>("#form-status")!;
 const cardError = document.querySelector<HTMLElement>("#card-error")!;
-const separate = document.querySelector<HTMLButtonElement>("#new-application")!;
 const attemptId = crypto.randomUUID();
 let stripe: Stripe | null = null;
 let card: StripeCardElement | undefined;
@@ -48,7 +47,6 @@ async function initializeCard() {
   }
 }
 
-separate.addEventListener("click", () => { location.assign("/submit"); });
 window.addEventListener("beforeunload", event => {
   if (pending && !received) { event.preventDefault(); event.returnValue = ""; }
 });
@@ -86,9 +84,10 @@ form.addEventListener("submit", async event => {
     const result = await post("/api/applications/complete", { ...pending.answers, clientSecret: pending.clientSecret });
     if (!result.complete) throw new Error("Could not confirm your application. Keep this page open and retry saving.");
     received = true; pending = undefined;
-    form.reset(); card.clear(); card.destroy(); document.querySelector<HTMLElement>("#card-section")!.hidden = true;
+    form.reset(); card.clear(); card.destroy(); form.hidden = true;
     status.textContent = "Application received! Your card and application are saved. You have not been charged. We will contact you with our decision.";
-    button.hidden = true; separate.hidden = false;
+    status.focus();
+    status.scrollIntoView({ block: "center" });
   } catch (error) {
     status.textContent = error instanceof Error ? error.message : "Please retry. Keep this page open so your answers are not lost.";
     button.disabled = false;
