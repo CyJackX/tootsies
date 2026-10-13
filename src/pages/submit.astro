@@ -14,57 +14,281 @@ const env = Astro.locals.runtime.env as unknown as SubmissionEnv;
 const publishableKey = env.PUBLIC_STRIPE_PUBLISHABLE_KEY;
 const configured = applicationsConfigured(show, env);
 const fields = [
-  { name: "name", label: "Your name (or group name)", required: true, max: 200 },
-  { name: "email", label: "Contact email", required: true, max: 254, type: "email" },
-  { name: "socials", label: "Any social handles for you or your projects?", max: 1000 },
+  {
+    name: "name",
+    label: "Your name (or group name)",
+    required: true,
+    max: 200,
+  },
+  {
+    name: "email",
+    label: "Contact email",
+    required: true,
+    max: 254,
+    type: "email",
+  },
+  {
+    name: "socials",
+    label: "Any social handles for you or your projects?",
+    max: 1000,
+  },
   { name: "location", label: "Where are you based?", required: true, max: 200 },
 ];
 ---
-<!doctype html><html lang="en"><head><BaseHead title={`Apply - ${show.subtitle}`} description="Apply to participate in Tootsie's Video Vault. Applying is free." /></head>
-<body class="bg-neutral text-white"><Header /><main class="max-w-2xl mx-auto px-6 py-16">
-  <h1 class="text-center">Tootsie's Video Vault<br/>{show.subtitle}</h1>
-  {show.open && configured ? <>
-  <p>We're looking for the funniest, weirdest, most rad filmmakers in the frickin' universe. Apply with examples of your work. If selected, you'll create something fresh for the show!</p>
-  <p>Applying is free. Selected participants pay {feeLabel(show)} toward judges, the venue, prizes, and one comp to the show.</p>
-    <dl><dt>Screening</dt><dd>{show.screeningAt} - {show.venue}</dd><dt>Application deadline</dt><dd>{show.deadline}</dd><dt>Notification Date</dt><dd>{show.notificationDate}</dd></dl>
-    <p>{show.productionInstructions}</p>
-  <form id="application" data-show={show.id} data-open="true" data-stripe-key={publishableKey}>
-    <fieldset id="application-fields">
-      {fields.map(field => <label>{field.label}{field.required && " *"}<input name={field.name} type={field.type || "text"} required={field.required} maxlength={field.max} /><span class="error" data-error={field.name}></span></label>)}
-      <label>The screening is scheduled for {show.screeningAt} at {show.venue}. Can you attend the screening? *<select name="attendance" required><option value="">Choose an answer</option><option>Yes</option><option>No</option></select><span class="error" data-error="attendance"></span></label>
-      <label>Have you been to Tootsie's before? We strongly encourage checking out a show to understand the vibe and effort people bring to their projects!*<select name="attendedBefore" required><option value="">Choose an answer</option><option>Yes</option><option>No</option></select><span class="error" data-error="attendedBefore"></span></label>
-      <label>The magic of Tootsie's is that everybody is taking the time to create a new video from scratch. Do you understand that you'll be making a new 16:9 video under 3 minutes, not screening old material? People who underestimate the commitment and either dropout or slap something together the night before really bum us out!  <br/>If you feel you can make this commitment, type YESTOOTSIE. *<input name="newVideo" required maxlength="10" /><span class="error" data-error="newVideo"></span></label>
-      <label>Links to portfolio or examples of past videos. Make sure to include any passwords if needed. *<textarea name="portfolio" required maxlength="5000" rows="4"></textarea><span class="error" data-error="portfolio"></span></label>
-      <label>Anything else we should know?<textarea name="notes" maxlength="5000" rows="4"></textarea><span class="error" data-error="notes"></span></label>
-      
-      
-      <label class="honeypot" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off" /></label>
-    </fieldset>
-    <section id="card-section" aria-labelledby="card-heading">
-      <h4 id="card-heading">Submission Fee card commitment with Stripe</h4>
-      <p>Applying is <b>FREE!</b> Only accepted submissions will be charged.  Save a card securely below with Stripe. No payment is collected now. Stripe handles your card details securely; your work samples and notes are stored separately.</p>
-      <div id="card-element"></div>
-      <p id="card-error" class="error" role="alert"></p>
-    </section>
-    <label class="consent"><input name="consent" type="checkbox" required /><span id="consent-text">I understand that if selected to participate in Tootsie's Video Vault, I authorize Tootsie's Video Vault to charge my saved card once for $25 USD. No fee will be charged if this application is not selected. *</span></label><span class="error" data-error="consent"></span>
-    <button id="submit-button" type="submit" disabled>Save card and submit application</button>
-    <noscript><p>Please enable JavaScript to apply and securely save your card.</p></noscript>
-  </form>
-  <p id="form-status" role="status" aria-live="polite" tabindex="-1"></p>
-  </> : <p class="notice">{show.open ? "Applications are not available yet. Please check back later." : "Applications are currently closed. Check back for the next show."}</p>}
-  <p>Need help? <a href={`mailto:${SITE_EMAIL}`}>{SITE_EMAIL}</a></p>
-</main><Footer />
-<script src="../scripts/apply.ts"></script>
-<style>
-  main, main p, label, dt, dd { color: #ffffff; }
-  main p, dl { margin: 1.25rem 0; } dt { font-weight: 700; } dd { margin: 0 0 .75rem; }
-  label { display: flex; flex-direction: column; gap: .4rem; margin: 1.25rem 0; font-weight: 600; }
-  label span { font-weight: 400; } input, select, textarea { background: white; color: #004356; padding: .75rem; border: 2px solid #49cec8; border-radius: .4rem; width: 100%; }
-  input:focus, select:focus, textarea:focus, button:focus-visible { outline: 3px solid #efaa38; outline-offset: 3px; }
-  .consent { flex-direction: row; align-items: start; } .consent input { width: 1.3rem; height: 1.3rem; flex-shrink: 0; margin-top: .2rem; }
-  button { background: #efaa38; color: #004356; border-radius: .4rem; padding: .9rem 1.2rem; font-weight: 700; margin: .5rem .5rem .5rem 0; cursor: pointer; }
-  button:disabled { opacity: .5; cursor: default; } fieldset:disabled input, fieldset:disabled select, fieldset:disabled textarea { opacity: .65; } .error { color: #ffcfaa; } .notice { border: 1px solid #49cec8; padding: 1rem; }
-  .honeypot { position: absolute; left: -10000px; } [hidden] { display: none !important; }
-  #card-element { background: white; padding: 1rem; border: 2px solid #49cec8; border-radius: .4rem; margin-top: .75rem; }
-</style>
-</body></html>
+
+<!doctype html>
+<html lang="en">
+  <head
+    ><BaseHead
+      title={`Apply - ${show.subtitle}`}
+      description="Apply to participate in Tootsie's Video Vault. Applying is free."
+    /></head
+  >
+  <body class="bg-neutral text-white"
+    ><Header /><main class="max-w-2xl mx-auto px-6 py-16">
+      <h1 class="text-center">Tootsie's Video Vault<br />{show.subtitle}</h1>
+      {
+        show.open && configured ? (
+          <>
+            <p>
+              We're looking for the funniest, weirdest, most rad filmmakers in
+              the frickin' universe. Apply with examples of your work. If
+              selected, you'll create something fresh for the show!
+            </p>
+            <p>
+              Applying is free. Selected participants pay {feeLabel(show)}{" "}
+              toward judges, the venue, prizes, and one comp to the show.
+            </p>
+            <dl>
+                <dt>Screening</dt>
+                <dd>
+                  {show.screeningAt} - {show.venue}
+                </dd>
+                <dt>Application deadline</dt>
+                <dd>{show.deadline}</dd>
+                <dt>Notification Date</dt>
+                <dd>{show.notificationDate}</dd>
+            </dl>
+            <p>{show.productionInstructions}</p>
+            <form
+              id="application"
+              data-show={show.id}
+              data-open="true"
+              data-stripe-key={publishableKey}
+            >
+              <fieldset id="application-fields">
+                {fields.map((field) => (
+                  <label>
+                    {field.label}
+                    {field.required && " *"}
+                    <input
+                      name={field.name}
+                      type={field.type || "text"}
+                      required={field.required}
+                      maxlength={field.max}
+                    />
+                    <span class="error" data-error={field.name} />
+                  </label>
+                ))}
+                <label>
+                  The screening is scheduled for {show.screeningAt} at{" "}
+                  {show.venue}. Can you attend the screening? *
+                    <select name="attendance" required>
+                        <option value="">Choose an answer</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                    <span class="error" data-error="attendance" />
+                </label>
+                <label>
+                  Have you been to Tootsie's before? We strongly encourage
+                  checking out a show to understand the vibe and effort people
+                  bring to their projects!*
+                    <select name="attendedBefore" required>
+                        <option value="">Choose an answer</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                    <span class="error" data-error="attendedBefore" />
+                </label>
+                <label>
+                  The magic of Tootsie's is that everybody is taking the time to
+                  create a new video from scratch. Do you understand that you'll
+                  be making a new 16:9 video under 3 minutes, not screening old
+                  material? People who underestimate the commitment and either
+                  dropout or slap something together the night before really bum
+                  us out! <br />
+                  If you feel you can make this commitment, type YESTOOTSIE. *
+                    <input name="newVideo" required maxlength="10" />
+                    <span class="error" data-error="newVideo" />
+                </label>
+                <label>
+                  Links to portfolio or examples of past videos. Make sure to
+                  include any passwords if needed. *
+                    <textarea
+                      name="portfolio"
+                      required
+                      maxlength="5000"
+                      rows="4"
+                    />
+                    <span class="error" data-error="portfolio" />
+                </label>
+                <label>
+                  Anything else we should know?
+                    <textarea name="notes" maxlength="5000" rows="4" />
+                    <span class="error" data-error="notes" />
+                </label>
+
+                <label class="honeypot" aria-hidden="true">
+                  Website
+                  <input name="website" tabindex="-1" autocomplete="off" />
+                </label>
+              </fieldset>
+              <div class="border p-4 rounded-md">
+                <section id="card-section" aria-labelledby="card-heading">
+                  <h4 id="card-heading">
+                    Submission Fee card commitment with Stripe
+                  </h4>
+                  <p>
+                    Applying is <b>FREE!</b> Only accepted submissions will be
+                    charged. Save a card securely below with Stripe. No payment
+                    is collected now. Stripe handles your card details securely;
+                    your work samples and notes are stored separately.
+                  </p>
+                  <div id="card-element" />
+                  <p id="card-error" class="error" role="alert" />
+                </section>
+                  <label class="consent">
+                      <input name="consent" type="checkbox" required />
+                      <span id="consent-text">
+                        I understand that if selected to participate in
+                        Tootsie's Video Vault, I authorize Tootsie's Video Vault
+                        to charge my saved card once for $25 USD. No fee will be
+                        charged if this application is not selected. *
+                      </span>
+                  </label>
+                  <span class="error" data-error="consent" />
+                  </div>
+                <button id="submit-button" type="submit" disabled>
+                  Save card and submit application
+                </button>
+                <noscript><p>Please enable JavaScript to apply and securely save your card.</p></noscript>
+
+              
+            </form>
+            <p
+              id="form-status"
+              role="status"
+              aria-live="polite"
+              tabindex="-1"
+            />
+          </>
+        ) : (
+          <p class="notice">
+            {show.open
+              ? "Applications are not available yet. Please check back later."
+              : "Applications are currently closed. Check back for the next show."}
+          </p>
+        )
+      }
+      <p>Need help? <a href={`mailto:${SITE_EMAIL}`}>{SITE_EMAIL}</a></p>
+    </main><Footer />
+    <script src="../scripts/apply.ts"></script>
+    <style>
+      main,
+      main p,
+      label,
+      dt,
+      dd {
+        color: #ffffff;
+      }
+      main p,
+      dl {
+        margin: 1.25rem 0;
+      }
+      dt {
+        font-weight: 700;
+      }
+      dd {
+        margin: 0 0 0.75rem;
+      }
+      label {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        margin: 1.25rem 0;
+        font-weight: 600;
+      }
+      label span {
+        font-weight: 400;
+      }
+      input,
+      select,
+      textarea {
+        background: white;
+        color: #004356;
+        padding: 0.75rem;
+        border: 2px solid #49cec8;
+        border-radius: 0.4rem;
+        width: 100%;
+      }
+      input:focus,
+      select:focus,
+      textarea:focus,
+      button:focus-visible {
+        outline: 3px solid #efaa38;
+        outline-offset: 3px;
+      }
+      .consent {
+        flex-direction: row;
+        align-items: start;
+      }
+      .consent input {
+        width: 1.3rem;
+        height: 1.3rem;
+        flex-shrink: 0;
+        margin-top: 0.2rem;
+      }
+      button {
+        background: #efaa38;
+        color: #004356;
+        border-radius: 0.4rem;
+        padding: 0.9rem 1.2rem;
+        font-weight: 700;
+        margin: 0.5rem auto;
+        cursor: pointer;
+        display: block;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      fieldset:disabled input,
+      fieldset:disabled select,
+      fieldset:disabled textarea {
+        opacity: 0.65;
+      }
+      .error {
+        color: #ffcfaa;
+      }
+      .notice {
+        border: 1px solid #49cec8;
+        padding: 1rem;
+      }
+      .honeypot {
+        position: absolute;
+        left: -10000px;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      #card-element {
+        background: white;
+        padding: 1rem;
+        border: 2px solid #49cec8;
+        border-radius: 0.4rem;
+        margin-top: 0.75rem;
+      }
+    </style>
+  </body>
+</html>
