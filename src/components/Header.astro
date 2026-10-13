@@ -1,9 +1,12 @@
 ---
+import { nextShow } from "../data/nextShow";
 import logo from "../assets/img/TVV LOGO.svg";
 import hamburgerIcon from "../assets/img/WEB_HEADER/Hamburger.svg";
 import closeIcon from "../assets/img/WEB_HEADER/CloseX.svg";
 import mobileBg from "../assets/img/WEB_HEADER/Mobile BG 1.svg";
 import desktopBg from "../assets/img/WEB_HEADER/Desktop BG 1.svg";
+
+const submissionLabel = nextShow.phase === "tickets" ? "Tickets" : "Submit";
 ---
 
 <header class="site-header my-8">
@@ -31,7 +34,7 @@ import desktopBg from "../assets/img/WEB_HEADER/Desktop BG 1.svg";
           <a href="/#home" class="site-header__link">Home</a>
         </li>
         <li>
-          <a href="/#apply" class="site-header__link"> Apply </a>
+          <a href="/#apply" class="site-header__link">{submissionLabel}</a>
         </li>
         <li>
           <a href="/#how-it-works" class="site-header__link"> How It Works </a>
@@ -110,7 +113,7 @@ import desktopBg from "../assets/img/WEB_HEADER/Desktop BG 1.svg";
           </button>
         </li>
         <li><a href="/#home" data-menu-link>Home</a></li>
-        <li><a href="/#apply" data-menu-link>Apply</a></li>
+        <li><a href="/#apply" data-menu-link>{submissionLabel}</a></li>
         <li><a href="/#how-it-works" data-menu-link>How It Works</a></li>
         <li><a href="/#past-videos" data-menu-link>Past Videos</a></li>
         <li><a href="/#photos" data-menu-link>BTS Photos</a></li>
