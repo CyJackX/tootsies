@@ -1,0 +1,6 @@
+export interface SubmissionEnv {
+  GOOGLE_SERVICE_ACCOUNT_EMAIL: string;
+  GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY: string;
+  STRIPE_SECRET_KEY: string;
+  PUBLIC_STRIPE_PUBLISHABLE_KEY: string;
+}

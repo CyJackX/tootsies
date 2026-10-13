@@ -14,6 +14,7 @@
 	"dependencies": {
 		"@astrojs/cloudflare": "12.6.12",
 		"@astrojs/sitemap": "3.6.0",
+		"@stripe/stripe-js": "^10.0.0",
 		"@tailwindcss/vite": "^4.1.17",
 		"astro": "5.16.2",
 		"astro-swiper": "^1.3.0",
@@ -25,6 +26,9 @@
 	},
 	"private": true,
 	"scripts": {
+		"test": "node --import ./tests/register.mjs --test tests/applications.test.mjs",
+		"applications:test-integrations": "node --import ./tests/register.mjs scripts/test-integrations.mjs",
+		"applications:reconcile": "node --import ./tests/register.mjs scripts/reconcile-applications.mjs",
 		"astro": "astro",
 		"build": "astro build",
 		"cf-typegen": "wrangler types",
