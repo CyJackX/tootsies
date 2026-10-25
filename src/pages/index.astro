@@ -128,7 +128,9 @@ const homepageStructuredData = [
     <main class="w-full">
       <ModalImageProvider />
       <section id="home" aria-labelledby="home-title" class="relative">
-        <div class="hero relative overflow-hidden flex items-center justify-center text-center px-4">
+        <div
+          class="hero relative overflow-hidden flex items-center justify-center text-center px-4"
+        >
           <video
             class="hero__video absolute inset-0 w-full h-full object-cover"
             autoplay
@@ -146,78 +148,12 @@ const homepageStructuredData = [
               Welcome to Tootsie's Video Vault!
             </h1>
             <p class="mt-4">
-              Tootsie&apos;s Video Vault is an annual short film race organized by
-              seasoned comedy film producers, featuring dozens of shorts created by
-              local filmmakers!
+              Tootsie&apos;s Video Vault is an annual short film race organized
+              by seasoned comedy film producers, featuring dozens of shorts
+              created by local filmmakers!
             </p>
           </div>
         </div>
-      </section>
-      <section
-        id="apply"
-        aria-label={nextShowPhase.heading}
-        class="apply-section text-center flex flex-col gap-4 items-center"
-      >
-        <h2>{nextShowPhase.heading}</h2>
-        {nextShowPhase.description && <p>{nextShowPhase.description}</p>}
-        {nextShowPhase.details.length > 0 && <>
-        <h3>Key Details:</h3>
-        <ol class="apply-section__details">
-          {
-            nextShowPhase.details.map((detail) => (
-              <li>
-                <span class="apply-section__detail-label">{detail.label}</span>
-                <span class="apply-section__detail-value">{detail.value}</span>
-              </li>
-            ))
-          }
-        </ol>
-        </>}
-        {nextShowPhase.url && <a
-          href={nextShowPhase.url}
-          target="_blank"
-          class="apply-section__primary-link text-secondary font-bold items-center gap-2 flex flex-col w-full max-w-xl group"
-        >
-          <Image
-            src={vhs}
-            alt={nextShowPhase.buttonAlt}
-            class="w-full h-auto block transition-transform duration-300 group-hover:-rotate-3"
-          />
-          <div
-            class="relative text-black transition-colors duration-300 group-hover:text-white"
-          >
-            <Image
-              src={buttonPrimary}
-              alt={nextShowPhase.buttonAlt}
-              class="max-w-sm w-full transition-transform duration-300 group-hover:scale-105"
-            />
-            <p
-              class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-nowrap"
-            >
-              {nextShowPhase.buttonText}
-            </p>
-          </div>
-        </a>}
-        <p>
-          Questions or want to hear about future shows? Send us an email and get
-          on our mailing list.
-        </p>
-
-        <a
-          href={`mailto:${SITE_EMAIL}`}
-          class="apply-section__email-link relative inline-block text-black transition-colors duration-300 group"
-        >
-          <Image
-            src={buttonSecondary}
-            alt="Submit Button"
-            class="absolute inset-0 block transition-transform duration-300 group-hover:scale-105"
-          />
-          <span
-            class="relative z-10 text-2xl group-hover:text-white"
-          >
-            {SITE_EMAIL}
-          </span>
-        </a>
       </section>
 
       <section
@@ -254,11 +190,7 @@ const homepageStructuredData = [
           />
         </div>
       </section>
-      <Image
-        src={crowdpic}
-        alt="Audience at a Tootsie's Video Vault screening"
-        class="my-4 w-full"
-      />
+
       <section
         id="prizes"
         aria-labelledby="prizes-title"
@@ -350,7 +282,7 @@ const homepageStructuredData = [
         />
       </section>
       <section id="past-videos" aria-labelledby="featured-videos-title">
-        <h2 id="featured-videos-title" class="text-center">Featured Videos</h2>
+        <h2 id="featured-videos-title" class="text-center">Past Videos</h2>
         <VideoGallery groups={videoGroups} />
       </section>
 
@@ -475,6 +407,81 @@ const homepageStructuredData = [
           </div>
         </div>
       </section>
+      <section
+        id="apply"
+        aria-label={nextShowPhase.heading}
+        class="apply-section text-center flex flex-col gap-4 items-center"
+      >
+        <h2>{nextShowPhase.heading}</h2>
+        {nextShowPhase.description && <p>{nextShowPhase.description}</p>}
+        {
+          nextShowPhase.details.length > 0 && (
+            <>
+              <h3>Key Details:</h3>
+              <ol class="apply-section__details">
+                {nextShowPhase.details.map((detail) => (
+                  <li>
+                    <span class="apply-section__detail-label">
+                      {detail.label}
+                    </span>
+                    <span class="apply-section__detail-value">
+                      {detail.value}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </>
+          )
+        }
+        {
+          nextShowPhase.url && (
+            <a
+              href={nextShowPhase.url}
+              target="_blank"
+              class="apply-section__primary-link text-secondary font-bold items-center gap-2 flex flex-col w-full max-w-xl group"
+            >
+              <Image
+                src={vhs}
+                alt={nextShowPhase.buttonAlt}
+                class="w-full h-auto block transition-transform duration-300 group-hover:-rotate-3"
+              />
+              <div class="relative text-black transition-colors duration-300 group-hover:text-white">
+                <Image
+                  src={buttonPrimary}
+                  alt={nextShowPhase.buttonAlt}
+                  class="max-w-sm w-full transition-transform duration-300 group-hover:scale-105"
+                />
+                <p class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-nowrap">
+                  {nextShowPhase.buttonText}
+                </p>
+              </div>
+            </a>
+          )
+        }
+        <p>
+          Questions or want to hear about future shows? Send us an email and get
+          on our mailing list.
+        </p>
+
+        <a
+          href={`mailto:${SITE_EMAIL}`}
+          class="apply-section__email-link relative inline-block text-black transition-colors duration-300 group"
+        >
+          <Image
+            src={buttonSecondary}
+            alt="Submit Button"
+            class="absolute inset-0 block transition-transform duration-300 group-hover:scale-105"
+          />
+          <span class="relative z-10 text-2xl group-hover:text-white">
+            {SITE_EMAIL}
+          </span>
+        </a>
+      </section>
+      <Image
+        src={crowdpic}
+        alt="Audience at a Tootsie's Video Vault screening"
+        class="my-4 w-full"
+      />
       <section id="faq" aria-labelledby="faq-title" class="faq-section">
         <h2 id="faq-title" class="text-center">Frequently Asked Questions</h2>
         <div class="faq-list">
@@ -488,7 +495,9 @@ const homepageStructuredData = [
           <details class="faq-item">
             <summary>How much does it cost to submit?</summary>
             <p>
-              It's <b>FREE</b> to submit!  You only pay a fee if accepted in order to cover prizes, the venue, and a low stakes commitment to making something for the show!
+              It's <b>FREE</b> to submit! You only pay a fee if accepted in order
+              to cover prizes, the venue, and a low stakes commitment to making something
+              for the show!
             </p>
           </details>
           <details class="faq-item">
@@ -520,8 +529,8 @@ const homepageStructuredData = [
                 Videos must be 3 minutes or less.
                 <ul>
                   <li>
-                    Don't worry, each video gets a 5 second preroll title/credits
-                    card.
+                    Don't worry, each video gets a 5 second preroll
+                    title/credits card.
                   </li>
                 </ul>
               </li>
