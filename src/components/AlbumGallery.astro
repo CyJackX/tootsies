@@ -1,7 +1,6 @@
 ---
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
-import { Swiper, SwiperWrapper, SwiperSlide } from "astro-swiper";
 import SwiperNavButton from "./SwiperNavButton.astro";
 
 type Album = {
@@ -60,8 +59,24 @@ const albumData = ALBUMS_CONFIG
     };
   })
   .filter(Boolean) as Album[];
+// Split in filename order at the point that best balances the displayed row widths.
+function photoRows(images: ImageMetadata[]) {
+  const widths = images.map(image => 320 * image.width / image.height + 10);
+  const total = widths.reduce((sum, width) => sum + width, 0);
+  let split = images.length;
+  let bestDifference = Infinity;
+  let firstWidth = 0;
+  for (let i = 1; i < images.length; i++) {
+    firstWidth += widths[i - 1];
+    const difference = Math.abs(total - 2 * firstWidth);
+    if (difference < bestDifference) {
+      bestDifference = difference;
+      split = i;
+    }
+  }
+  return [images.slice(0, split), images.slice(split)].filter(row => row.length);
+}
 ---
-
 
   {albumData.length === 0 ? (
     <p class="text-center text-sm opacity-70">
@@ -92,7 +107,7 @@ const albumData = ALBUMS_CONFIG
           </button>
         ))}
       </div>
-      <div class="album-carousels space-y-6">
+      <div class="album-carousels">
         {albumData.map((album, index) => {
           const navNext = `album-nav-next-${index}`;
           const navPrev = `album-nav-prev-${index}`;
@@ -108,48 +123,36 @@ const albumData = ALBUMS_CONFIG
                 class={`${navPrev}`}
                 ariaLabel="Previous slide"
               />
-              <Swiper
-                options={{
-                  loop: true,
-                  spaceBetween: 10,
-                  lazyPreloadPrevNext: 4,
-                  slidesPerView: "auto",
-                  // centeredSlides: true,
-                  navigation: {
-                    nextEl: `.${navNext}`,
-                    prevEl: `.${navPrev}`,
-                  },
-                  breakpoints: {
-                    1024: {
-                      centeredSlides: false,
-                      loop: false,
-                      grid: {
-                        fill: "row",
-                        rows: 2,
-                      },
-                    },
-                  },
-                }}
-                class="not-content"
+              <div
+                class="album-scroll not-content"
+                id={`album-scroll-${album.id}`}
+                data-album-scroll
+                tabindex="0"
+                role="region"
+                aria-label={`${album.label} photos`}
               >
-                <SwiperWrapper>
-                  {album.images.map((image) => (
-                    <SwiperSlide class="w-auto!">
-                      <Image
-                        src={image}
-                        alt={`BTS ${album.label} still`}
-                        height={320}
-                        widths={[240, 360, 480, 720]}
-                        sizes="(min-width: 1024px) 480px, 75vw"
-                        loading="lazy"
-                        data-modal-image
-                        data-modal-full={image.src}
-                        class="h-64! lg:h-80! w-auto cursor-zoom-in"
-                      />
-                    </SwiperSlide>
+                <div class="album-track">
+                  {photoRows(album.images).map(row => (
+                    <div class="album-row">
+                      {row.map((image) => (
+                        <Image
+                          src={image}
+                          alt={`BTS ${album.label} still`}
+                          height={320}
+                          widths={[240, 360, 480, 720]}
+                          sizes={`(min-width: 1024px) ${Math.round(320 * image.width / image.height)}px, ${Math.round(256 * image.width / image.height)}px`}
+                          loading="lazy"
+                          draggable="false"
+                          data-modal-image
+                          data-modal-full={image.src}
+                          style={`--photo-ratio: ${image.width / image.height}`}
+                          class="album-photo cursor-zoom-in"
+                        />
+                      ))}
+                    </div>
                   ))}
-                </SwiperWrapper>
-              </Swiper>
+                </div>
+              </div>
               <SwiperNavButton
                 direction="next"
                 class={`${navNext}`}
@@ -160,40 +163,86 @@ const albumData = ALBUMS_CONFIG
         })}
       </div>
       <script type="module" is:inline>
-        const toggles = Array.from(
-          document.querySelectorAll("[data-album-toggle]")
-        );
-        const panels = Array.from(
-          document.querySelectorAll("[data-album-panel]")
-        );
+        document.querySelectorAll(".album-gallery").forEach(gallery => {
+          const toggles = [...gallery.querySelectorAll("[data-album-toggle]")];
+          const panels = [...gallery.querySelectorAll("[data-album-panel]")];
+          const updates = new Map();
 
-        if (toggles.length && panels.length) {
-          toggles.forEach((btn) => {
-            btn.addEventListener("click", () => {
-              const target = btn.dataset.target;
-
-              toggles.forEach((toggle) => {
-                const isActive = toggle === btn;
-                toggle.classList.toggle("is-active", isActive);
-                toggle.setAttribute(
-                  "aria-pressed",
-                  isActive ? "true" : "false"
-                );
-              });
-
-              panels.forEach((panel) => {
-                const matches = panel.dataset.album === target;
-                panel.toggleAttribute("hidden", !matches);
-                if (matches) {
-                  const swiperRoot = panel.querySelector(".swiper");
-                  if (swiperRoot?.swiper?.update) {
-                    swiperRoot.swiper.update();
-                  }
-                }
-              });
+          panels.forEach(panel => {
+            const scroller = panel.querySelector("[data-album-scroll]");
+            const [previous, next] = panel.querySelectorAll(".nav-button");
+            previous.setAttribute("aria-controls", scroller.id);
+            next.setAttribute("aria-controls", scroller.id);
+            const update = () => {
+              previous.disabled = scroller.scrollLeft <= 1;
+              next.disabled = scroller.scrollLeft >= scroller.scrollWidth - scroller.clientWidth - 1;
+            };
+            updates.set(panel, update);
+            const scrollPage = direction => scroller.scrollBy({
+              left: direction * scroller.clientWidth * 0.85,
+              behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
             });
+            previous.addEventListener("click", () => scrollPage(-1));
+            next.addEventListener("click", () => scrollPage(1));
+            scroller.addEventListener("scroll", update, { passive: true });
+            new ResizeObserver(update).observe(scroller);
+
+            // Touch uses native scrolling. Mouse dragging must not open the image modal.
+            let drag = null;
+            let suppressClick = false;
+            scroller.addEventListener("pointerdown", event => {
+              suppressClick = false;
+              if (event.pointerType !== "mouse" || event.button !== 0) return;
+              drag = { id: event.pointerId, x: event.clientX, left: scroller.scrollLeft, moved: false };
+            });
+            scroller.addEventListener("pointermove", event => {
+              if (!drag || event.pointerId !== drag.id) return;
+              const distance = event.clientX - drag.x;
+              if (!drag.moved && Math.abs(distance) < 6) return;
+              if (!drag.moved) {
+                drag.moved = true;
+                scroller.setPointerCapture(event.pointerId);
+                scroller.classList.add("is-dragging");
+              }
+              scroller.scrollLeft = drag.left - distance;
+              event.preventDefault();
+            });
+            const endDrag = () => {
+              suppressClick = drag?.moved ?? false;
+              drag = null;
+              scroller.classList.remove("is-dragging");
+            };
+            scroller.addEventListener("pointerup", endDrag);
+            scroller.addEventListener("pointercancel", endDrag);
+            scroller.addEventListener("lostpointercapture", () => {
+              if (drag) endDrag();
+            });
+            scroller.addEventListener("pointerleave", () => {
+              if (drag && !drag.moved) drag = null;
+            });
+            scroller.addEventListener("click", event => {
+              if (suppressClick) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                suppressClick = false;
+              }
+            }, true);
+            update();
           });
-        }
+
+          toggles.forEach(btn => btn.addEventListener("click", () => {
+            toggles.forEach(toggle => {
+              const active = toggle === btn;
+              toggle.classList.toggle("is-active", active);
+              toggle.setAttribute("aria-pressed", String(active));
+            });
+            panels.forEach(panel => {
+              const active = panel.dataset.album === btn.dataset.target;
+              panel.hidden = !active;
+              if (active) updates.get(panel)();
+            });
+          }));
+        });
       </script>
     </div>
   )}
@@ -206,9 +255,61 @@ const albumData = ALBUMS_CONFIG
     justify-content: center;
   }
 
-  .album-carousels__panel > .swiper {
+  .album-carousels__panel[hidden] {
+    display: none;
+  }
+
+  .album-scroll {
+    --photo-height: 16rem;
     flex: 1 1 0;
     min-width: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-secondary) transparent;
+    user-select: none;
+  }
+
+  .album-scroll:focus-visible {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 2px;
+  }
+
+  .album-track,
+  .album-row {
+    display: flex;
+    gap: 10px;
+    width: max-content;
+  }
+
+  .album-row {
+    display: contents;
+  }
+
+  .album-photo {
+    flex: none;
+    height: var(--photo-height);
+    width: calc(var(--photo-height) * var(--photo-ratio));
+    max-width: none;
+    object-fit: contain;
+  }
+
+  .album-scroll.is-dragging,
+  .album-scroll.is-dragging .album-photo {
+    cursor: grabbing;
+  }
+
+  @media (min-width: 1024px) {
+    .album-scroll {
+      --photo-height: 20rem;
+    }
+
+    .album-track {
+      flex-direction: column;
+    }
+
+    .album-row {
+      display: flex;
+    }
   }
 </style>
-
