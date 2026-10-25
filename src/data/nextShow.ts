@@ -1,4 +1,4 @@
-export type NextShowPhase = "submissions" | "tickets";
+export type NextShowPhase = "between-shows" | "submissions" | "tickets";
 
 export interface Show {
   phase: NextShowPhase;
@@ -36,12 +36,12 @@ export const activeApplicationShow: ApplicationShow = {
   spreadsheetId: "1wDLSPhDhqw5DF9PL7iuG5cA7qT29kM-gw3HBsoD-MYY",
 };*/
 export const nextShow: Show = {
-  phase: "submissions",
+  phase: "between-shows", // Switch to "submissions" or "tickets" when ready.
   youtubeEmbedUrl: "https://www.youtube.com/embed/Fyhid9vehyY",
   ticketsUrl: "", // Add the ticket URL for this show when ready.
   id: "summer-2027",
   subtitle: "Summer 2027",
-  open: true,
+  open: false,
   screeningAt: "June 4, 2027 7:30PM", 
   venue: "Littlefield, Brooklyn", 
   deadline: "February 28, 2027 11:59 PM", 
@@ -54,8 +54,19 @@ export const nextShow: Show = {
 export function feeLabel(show: Show) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: show.currency }).format(show.feeCents / 100);
 }
+export function applicationsOpen(show: Show) {
+  return show.open && show.phase !== "between-shows";
+}
 // Homepage details derive from the same dates and venue used by the form.
 export function homepagePhase(show: Show) {
+  if (show.phase === "between-shows") return {
+    url: "",
+    heading: "Next show coming soon!",
+    description: "We're between shows. Check back for the next event and submission dates!",
+    buttonText: "",
+    buttonAlt: "",
+    details: [],
+  };
   const showDetails = [
     { label: "Show Date", value: show.screeningAt },
     { label: "Location", value: show.venue },

@@ -2,7 +2,7 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { nextShow, feeLabel } from "../data/nextShow";
+import { nextShow, feeLabel, applicationsOpen } from "../data/nextShow";
 import { applicationsConfigured } from "../server/configuration";
 import type { SubmissionEnv } from "../server/env";
 import { SITE_EMAIL } from "../consts";
@@ -46,9 +46,19 @@ const fields = [
   >
   <body class="bg-neutral text-white"
     ><Header /><main class="max-w-2xl mx-auto px-6 py-16">
+      {show.youtubeEmbedUrl && (
+        <iframe
+          class="mb-8 aspect-video w-full"
+          src={show.youtubeEmbedUrl}
+          title={`${show.subtitle} video`}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        />
+      )}
       <h1 class="text-center">Tootsie's Video Vault<br />{show.subtitle}</h1>
       {
-        show.open && configured ? (
+        applicationsOpen(show) && configured ? (
           <>
             <p>
               We're looking for the funniest, weirdest, most rad filmmakers in
@@ -185,7 +195,7 @@ const fields = [
           </>
         ) : (
           <p class="notice">
-            {show.open
+            {applicationsOpen(show)
               ? "Applications are not available yet. Please check back later."
               : "Applications are currently closed. Check back for the next show."}
           </p>

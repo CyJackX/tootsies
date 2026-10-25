@@ -6,7 +6,7 @@ import closeIcon from "../assets/img/WEB_HEADER/CloseX.svg";
 import mobileBg from "../assets/img/WEB_HEADER/Mobile BG 1.svg";
 import desktopBg from "../assets/img/WEB_HEADER/Desktop BG 1.svg";
 
-const submissionLabel = nextShow.phase === "tickets" ? "Tickets" : "Submit";
+const submissionLabel = nextShow.phase === "between-shows" ? "Next Show" : nextShow.phase === "tickets" ? "Tickets" : "Submit";
 ---
 
 <header class="site-header my-8">

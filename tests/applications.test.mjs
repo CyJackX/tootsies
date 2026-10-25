@@ -31,7 +31,7 @@ async function providers(callback) {
   const pair = await crypto.subtle.generateKey({ name: 'RSASSA-PKCS1-v1_5', modulusLength: 2048, publicExponent: new Uint8Array([1, 0, 1]), hash: 'SHA-256' }, true, ['sign', 'verify']);
   const env = { GOOGLE_SERVICE_ACCOUNT_EMAIL: 'test@example.com', GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY: Buffer.from(await crypto.subtle.exportKey('pkcs8', pair.privateKey)).toString('base64'), STRIPE_SECRET_KEY: 'sk_test_fake', PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk_test_fake' };
   const show = nextShow, originalShow = { ...show }, originalFetch = globalThis.fetch;
-  Object.assign(show, { open: true, spreadsheetId: 'sheet', screeningAt: 'future', notificationDate: 'future', deadline: '2030-01-01T00:00:00Z' });
+  Object.assign(show, { phase: 'submissions', open: true, spreadsheetId: 'sheet', screeningAt: 'future', notificationDate: 'future', deadline: '2030-01-01T00:00:00Z' });
   const state = { rows: [], calls: [], intents: new Map(), methods: new Map(), customers: new Map(), idempotency: new Map(), unavailable: false, appendUnavailable: false, uncertainAppend: false, tabExists: true, sheetHeaders: headers, creationUncertain: false };
   globalThis.fetch = async (url, options = {}) => {
     const path = String(url); state.calls.push({ path, ...options });
@@ -203,8 +203,19 @@ test('homepage derives shared show details and switches submission/ticket links'
   const tickets = homepagePhase({ ...show, phase: 'tickets' });
   assert.equal(tickets.url, show.ticketsUrl);
   assert.equal(tickets.details.length, 2);
-  assert.equal(homepagePhase({ ...show, deadline: '' }).details.some(detail => detail.label === 'Submission Deadline'), false);
+  assert.equal(homepagePhase({ ...show, phase: 'submissions', deadline: '' }).details.some(detail => detail.label === 'Submission Deadline'), false);
+  const betweenShows = homepagePhase({ ...show, phase: 'between-shows' });
+  assert.equal(betweenShows.url, '');
+  assert.deepEqual(betweenShows.details, []);
+  assert.ok(betweenShows.description);
 });
+
+test('between shows blocks new applications even if open is true', async () => providers(async ({ env, show, state, startInput }) => {
+  show.phase = 'between-shows';
+  const result = await beginApplication(env, startInput());
+  assert.equal(result.status, 409);
+  assert.equal(state.calls.length, 0);
+}));
 
 test('empty old tabs upgrade headers while populated old tabs remain untouched', async () => providers(async ({ env, show, state }) => {
   const oldHeaders = headers.filter(header => header !== 'attended_before');
@@ -230,7 +241,7 @@ test('consent wording is optional and unrestricted while the checkbox remains re
   assert.equal((await beginApplication(env, { ...startInput(), consent: false })).status, 400);
 }));
 
-test('server opens solely with open, independent of display dates', async () => providers(async ({ env, show, startInput }) => {
+test('during submissions server opens with open, independent of display dates', async () => providers(async ({ env, show, startInput }) => {
   show.deadline = 'Last Friday'; show.notificationDate = ''; show.screeningAt = '';
   assert.equal((await beginApplication(env, startInput())).status, 200);
   show.open = false;

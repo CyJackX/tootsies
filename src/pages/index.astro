@@ -43,7 +43,7 @@ import videosPhotosBgDesktop from "../assets/img/WEB_VIDEOS PHOTOS/Desktop BG 4.
 import videosPhotosBgMobile from "../assets/img/WEB_VIDEOS PHOTOS/Mobile BG 4.svg";
 import popcorn from "../assets/img/WEB_VIDEOS PHOTOS/Popcorn.svg";
 import { videoGroups } from "../data/videos";
-import { nextShow, nextShowPhase } from "../data/nextShow";
+import { nextShowPhase } from "../data/nextShow";
 import ogImage from "../assets/img/trees/downres/ep4/3 tootsies_06.06.25-05067.jpg";
 
 const ogImageURL = new URL(ogImage.src, SITE_URL).toString();
@@ -159,6 +159,8 @@ const homepageStructuredData = [
         class="apply-section text-center flex flex-col gap-4 items-center"
       >
         <h2>{nextShowPhase.heading}</h2>
+        {nextShowPhase.description && <p>{nextShowPhase.description}</p>}
+        {nextShowPhase.details.length > 0 && <>
         <h3>Key Details:</h3>
         <ol class="apply-section__details">
           {
@@ -170,20 +172,8 @@ const homepageStructuredData = [
             ))
           }
         </ol>
-        {
-          nextShow.youtubeEmbedUrl && (
-            <iframe
-              class="my-4 aspect-video w-full max-w-5xl mx-auto"
-              src={nextShow.youtubeEmbedUrl}
-              title={nextShow.subtitle}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen
-            />
-          )
-        }
-
-        <a
+        </>}
+        {nextShowPhase.url && <a
           href={nextShowPhase.url}
           target="_blank"
           class="apply-section__primary-link text-secondary font-bold items-center gap-2 flex flex-col w-full max-w-xl group"
@@ -207,7 +197,7 @@ const homepageStructuredData = [
               {nextShowPhase.buttonText}
             </p>
           </div>
-        </a>
+        </a>}
         <p>
           Questions or want to hear about future shows? Send us an email and get
           on our mailing list.
